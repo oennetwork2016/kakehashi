@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>岡山の地酒メニュー</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --black:#1C1810;--bg:#F7F5F2;--white:#fff;
+  --gold:#D4A055;--gold-dark:#B08030;--gold-light:#FAF0DC;
+  --border:#EAE8E4;--border2:#E0DDD8;
+  --text:#1C1810;--text2:#6A6560;--text3:#8A8680;
+  --pink-bg:#FDE8F4;--pink:#D4537E;--pink-dark:#8B1A5A;
+  --pur-bg:#EEF0FE;--pur:#7C6FD4;--pur-dark:#3B3899;
+  --teal-bg:#E6F4EF;--teal:#2BAE82;--teal-dark:#1A5C3A;
+  --blue-bg:#E8F5FF;--blue:#3A8CCA;--blue-dark:#0C3D6E;
+  --red:#B03030;--red-bg:#FEF0F0;
+}
+body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-thumb{background:#D0CCCA;border-radius:2px;}
+.topbar{background:var(--black);color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.logo{display:flex;align-items:center;gap:12px;}
+.logo-mark{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;font-size:20px;}
+.logo-ja{font-size:18px;font-weight:600;letter-spacing:0.05em;}
+.logo-en{font-size:10px;color:rgba(255,255,255,0.45);letter-spacing:0.15em;margin-top:2px;}
+.topbar-right{display:flex;align-items:center;gap:8px;}
+.count-badge{font-size:11px;padding:4px 10px;border-radius:99px;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.8);}
+.reload-btn{font-size:11px;padding:4px 10px;border-radius:99px;cursor:pointer;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.6);border:0.5px solid rgba(255,255,255,0.2);display:flex;align-items:center;gap:4px;}
+.reload-btn:hover{background:rgba(255,255,255,0.18);}
+.tabs{background:var(--black);border-bottom:1px solid rgba(255,255,255,0.08);display:flex;padding:0 20px;}
+.tab{padding:10px 18px;font-size:13px;cursor:pointer;border-bottom:2px solid transparent;color:rgba(255,255,255,0.4);display:flex;align-items:center;gap:5px;transition:color 0.15s;}
+.tab.on{color:rgba(255,255,255,0.95);border-bottom-color:var(--gold);}
+.body{padding:18px 20px 60px;}
+.loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;gap:16px;}
+.spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.loading-txt{font-size:13px;color:var(--text3);}
+.gas-banner{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px;}
+.gas-title{font-size:14px;font-weight:600;margin-bottom:6px;}
+.gas-sub{font-size:12px;color:var(--text3);line-height:1.7;margin-bottom:14px;}
+.gas-row{display:flex;gap:8px;margin-bottom:8px;}
+.gas-inp{flex:1;padding:9px 12px;font-size:12px;border:1px solid var(--border2);border-radius:8px;background:#FAF9F7;outline:none;font-family:monospace;}
+.gas-inp:focus{border-color:var(--gold);background:var(--white);}
+.gas-msg{font-size:12px;margin-top:6px;}
+.gas-ok{color:var(--teal-dark);}.gas-err{color:var(--red);}
+.steps-box{background:#FAF9F7;border-radius:10px;padding:12px 14px;margin-top:12px;}
+.steps-title{font-size:11px;font-weight:600;color:var(--text3);margin-bottom:8px;}
+.step{display:flex;gap:8px;align-items:flex-start;padding:4px 0;}
+.step-n{width:20px;height:20px;border-radius:50%;flex-shrink:0;background:var(--gold-light);color:#7A5010;font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;}
+.step-t{font-size:12px;color:var(--text3);line-height:1.6;}
+.step-t code{background:#EDE9E0;padding:1px 5px;border-radius:4px;font-size:11px;}
+.filter-wrap{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:14px;}
+.search-row{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.search-inp{flex:1;min-width:200px;padding:9px 14px;font-size:14px;border:1px solid var(--border2);border-radius:10px;background:#FAF9F7;outline:none;}
+.search-inp:focus{border-color:var(--gold);background:var(--white);}
+.sort-sel{padding:9px 12px;font-size:13px;border:1px solid var(--border2);border-radius:10px;background:#FAF9F7;outline:none;cursor:pointer;}
+.filter-section{margin-bottom:10px;}
+.filter-label{font-size:11px;color:var(--text3);font-weight:600;margin-bottom:6px;}
+.chip-row{display:flex;gap:6px;flex-wrap:wrap;}
+.chip{font-size:12px;padding:5px 12px;border:1px solid var(--border2);border-radius:99px;cursor:pointer;background:var(--white);color:var(--text2);transition:all 0.12s;white-space:nowrap;user-select:none;}
+.chip:hover{border-color:var(--gold);color:#7A5010;}
+.chip.on{background:var(--gold-light);color:#7A5010;border-color:var(--gold);font-weight:500;}
+.chip.ck-甘口.on{background:var(--pink-bg);color:var(--pink-dark);border-color:var(--pink);}
+.chip.ck-やや甘口.on{background:#FCEAF0;color:#7A2048;border-color:#E07090;}
+.chip.ck-中口.on{background:var(--pur-bg);color:var(--pur-dark);border-color:var(--pur);}
+.chip.ck-やや辛口.on{background:var(--teal-bg);color:var(--teal-dark);border-color:var(--teal);}
+.chip.ck-辛口.on{background:var(--blue-bg);color:var(--blue-dark);border-color:var(--blue);}
+.chip.stock-on.on{background:#E8F5EE;color:var(--teal-dark);border-color:var(--teal);}
+.kura-legend{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:14px 16px;margin-bottom:14px;}
+.kura-legend-title{font-size:11px;font-weight:600;color:var(--text3);margin-bottom:10px;}
+.kura-chips{display:flex;gap:6px;flex-wrap:wrap;}
+.kura-chip{font-size:12px;padding:5px 12px;border-radius:99px;cursor:pointer;display:flex;align-items:center;gap:5px;border:1px solid var(--border);background:#FAF9F7;color:var(--text);transition:all 0.12s;user-select:none;}
+.kura-chip.all-on{background:var(--black);color:#fff;border-color:var(--black);}
+.kura-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.shd{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.slbl{font-size:13px;color:var(--text3);}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px;}
+.sake-card{background:var(--white);border:1px solid var(--border);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;transition:border-color 0.15s,transform 0.15s;}
+.sake-card:hover{border-color:var(--gold);transform:translateY(-1px);}
+.card-strip{height:4px;}
+.card-body{padding:16px;flex:1;display:flex;flex-direction:column;gap:10px;}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
+.card-name{font-size:15px;font-weight:600;color:var(--text);line-height:1.4;margin-bottom:4px;}
+.card-kura{font-size:11px;color:var(--text3);display:flex;align-items:center;gap:4px;}
+.kura-dot-sm{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.price-wrap{text-align:right;flex-shrink:0;}
+.price-val{font-size:16px;font-weight:600;}
+.price-unit{font-size:10px;color:var(--text3);margin-top:1px;}
+.price-tbd{font-size:12px;color:#B0ADA8;font-style:italic;}
+.tags{display:flex;gap:5px;flex-wrap:wrap;}
+.tag{font-size:10px;padding:3px 9px;border-radius:99px;font-weight:500;}
+.tk-甘口{background:var(--pink-bg);color:var(--pink-dark);}
+.tk-やや甘口{background:#FCEAF0;color:#7A2048;}
+.tk-中口{background:var(--pur-bg);color:var(--pur-dark);}
+.tk-やや辛口{background:var(--teal-bg);color:var(--teal-dark);}
+.tk-辛口{background:var(--blue-bg);color:var(--blue-dark);}
+.tk-ntan{background:#F2F0EC;color:var(--text2);}
+.tk-mai{background:#EEF0EC;color:#3A5030;}
+.tk-nostock{background:#F5F0EC;color:#9A8A78;}
+.taste-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.taste-lbl{font-size:10px;color:var(--text3);margin-bottom:3px;}
+.bar-bg{height:4px;background:#F0EDE8;border-radius:99px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:99px;}
+.card-desc{font-size:12px;color:var(--text2);line-height:1.7;flex:1;}
+.card-place{font-size:11px;color:var(--text3);display:flex;align-items:center;gap:3px;margin-top:auto;padding-top:4px;}
+.empty{padding:60px 20px;text-align:center;color:var(--text3);}
+.empty-icon{font-size:36px;margin-bottom:10px;}
+.btn-primary{background:var(--gold);color:#fff;border:none;border-radius:8px;padding:9px 18px;font-size:13px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:background 0.15s;}
+.btn-primary:hover{background:var(--gold-dark);}
+.btn-sm{font-size:12px;padding:6px 12px;border-radius:8px;cursor:pointer;border:1px solid var(--border2);background:var(--white);color:var(--text2);display:inline-flex;align-items:center;gap:4px;transition:all 0.12s;white-space:nowrap;}
+.btn-sm:hover{background:#F5F2EE;}
+.btn-danger{color:var(--red);border-color:#EABFBF;}
+.btn-danger:hover{background:var(--red-bg);}
+.btn-full{width:100%;justify-content:center;}
+.lock-wrap{display:flex;flex-direction:column;align-items:center;padding:60px 20px;}
+.lock-card{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:32px;max-width:320px;width:100%;display:flex;flex-direction:column;gap:14px;align-items:center;}
+.lock-icon{font-size:32px;}
+.lock-title{font-size:18px;font-weight:600;}
+.lock-sub{font-size:12px;color:var(--text3);text-align:center;}
+.lock-inp{width:100%;padding:10px 14px;font-size:14px;border:1px solid var(--border2);border-radius:10px;background:#FAF9F7;outline:none;}
+.lock-inp:focus{border-color:var(--gold);background:var(--white);}
+.err-txt{font-size:12px;color:var(--red);}
+.admin-list{display:flex;flex-direction:column;gap:8px;}
+.row-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:12px;}
+.row-strip{width:4px;height:44px;border-radius:2px;flex-shrink:0;}
+.row-left{flex:1;min-width:0;}
+.row-name{font-size:14px;font-weight:500;}
+.row-sub{font-size:11px;color:var(--text3);margin-top:2px;}
+.row-right{text-align:right;flex-shrink:0;}
+.row-price{font-size:13px;font-weight:500;}
+.stock-ok{font-size:11px;color:var(--teal-dark);margin-top:2px;}
+.stock-no{font-size:11px;color:var(--red);margin-top:2px;}
+.row-actions{display:flex;gap:6px;flex-shrink:0;}
+.form-card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:20px;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.fg{display:flex;flex-direction:column;gap:4px;}
+.fg.full{grid-column:1/-1;}
+.fg label{font-size:11px;color:var(--text3);font-weight:600;}
+.fg input,.fg select,.fg textarea{padding:8px 10px;font-size:13px;border:1px solid var(--border2);border-radius:8px;background:#FAF9F7;color:var(--text);outline:none;font-family:inherit;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--gold);background:var(--white);}
+.fg textarea{min-height:64px;resize:vertical;}
+.cb-row{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+.cb-row input{width:16px;height:16px;accent-color:var(--gold);}
+.cb-row label{font-size:13px;cursor:pointer;}
+.back-row{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+.section-btn-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+@media(max-width:600px){.grid{grid-template-columns:1fr;}.form-grid{grid-template-columns:1fr;}.fg.full{grid-column:1;}.search-row{flex-direction:column;}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">
+    <div class="logo-mark">🍶</div>
+    <div>
+      <div class="logo-ja">岡山の地酒</div>
+      <div class="logo-en">OKAYAMA SAKE MENU</div>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <span class="count-badge" id="count-badge">読み込み中…</span>
+    <button class="reload-btn" onclick="loadData()">🔄 更新</button>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab on" id="tab-menu" onclick="switchTab('menu')">🍶 メニュー</div>
+  <div class="tab" id="tab-admin" onclick="switchTab('admin')">⚙️ 管理</div>
+</div>
+
+<div class="body">
+  <!-- MENU -->
+  <div id="view-menu">
+    <div id="loading" class="loading">
+      <div class="spinner"></div>
+      <div class="loading-txt">データを読み込み中…</div>
+    </div>
+    <div id="menu-content" style="display:none">
+      <div class="filter-wrap">
+        <div class="search-row">
+          <input class="search-inp" id="search-inp" placeholder="🔍 銘柄名・酒蔵・酒米・産地で検索…" oninput="applyFilters()">
+          <select class="sort-sel" id="sort-sel" onchange="applyFilters()">
+            <option value="default">並び替え：デフォルト</option>
+            <option value="kuchi_asc">飲み口：甘口 → 辛口</option>
+            <option value="kuchi_desc">飲み口：辛口 → 甘口</option>
+            <option value="ntan_asc">濃淡：スッキリ → 濃厚</option>
+            <option value="ntan_desc">濃淡：濃厚 → スッキリ</option>
+            <option value="price_asc">価格：安い順</option>
+            <option value="price_desc">価格：高い順</option>
+          </select>
+        </div>
+        <div class="filter-section">
+          <div class="filter-label">飲み口</div>
+          <div class="chip-row" id="chips-kuchi"></div>
+        </div>
+        <div class="filter-section">
+          <div class="filter-label">濃淡</div>
+          <div class="chip-row" id="chips-ntan"></div>
+        </div>
+        <div class="filter-section" style="margin-bottom:0">
+          <div class="filter-label">在庫</div>
+          <div class="chip-row">
+            <span class="chip stock-on" id="chip-stock" onclick="toggleStock()">在庫あり</span>
+          </div>
+        </div>
+      </div>
+      <div class="kura-legend">
+        <div class="kura-legend-title">酒蔵で絞り込む</div>
+        <div class="kura-chips" id="kura-chips"></div>
+      </div>
+      <div class="shd">
+        <span class="slbl" id="result-count"></span>
+      </div>
+      <div class="grid" id="sake-grid"></div>
+      <div class="empty" id="empty-msg" style="display:none">
+        <div class="empty-icon">🍶</div>
+        <div>条件に合う銘柄がありません</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN -->
+  <div id="view-admin" style="display:none">
+    <div id="admin-lock">
+      <div class="lock-wrap">
+        <div class="lock-card">
+          <div class="lock-icon">🔒</div>
+          <div class="lock-title">管理者ログイン</div>
+          <div class="lock-sub">スタッフ専用ページです</div>
+          <input class="lock-inp" type="password" id="pw-inp" placeholder="パスワード" onkeydown="if(event.key==='Enter')tryLogin()">
+          <button class="btn-primary btn-full" onclick="tryLogin()">ログイン</button>
+          <div class="err-txt" id="pw-err"></div>
+        </div>
+      </div>
+    </div>
+    <div id="admin-main" style="display:none">
+      <div class="gas-banner">
+        <div class="gas-title">🔗 スプレッドシート自動連携</div>
+        <div class="gas-sub">Google Apps ScriptのURLを設定すると、スプレッドシートを更新して「🔄 更新」を押すだけでアプリのデータが反映されます。</div>
+        <div class="gas-row">
+          <input class="gas-inp" id="gas-url-inp" placeholder="https://script.google.com/macros/s/...">
+          <button class="btn-sm" onclick="saveGasUrl()">💾 保存</button>
+          <button class="btn-sm" onclick="loadData()">🔄 テスト</button>
+        </div>
+        <div class="gas-msg" id="gas-msg"></div>
+        <div class="steps-box">
+          <div class="steps-title">Google Apps Script 設定手順</div>
+          <div class="step"><div class="step-n">1</div><div class="step-t">スプレッドシートを開き「拡張機能」→「Apps Script」をクリック</div></div>
+          <div class="step"><div class="step-n">2</div><div class="step-t">一緒にダウンロードした <code>gas_script.gs</code> の内容を貼り付けて保存（💾）</div></div>
+          <div class="step"><div class="step-n">3</div><div class="step-t">「デプロイ」→「新しいデプロイ」→ 種類「ウェブアプリ」・アクセス「全員」で公開</div></div>
+          <div class="step"><div class="step-n">4</div><div class="step-t">表示されたURLをコピーして上のフィールドに貼り付け「保存」→「テスト」で確認</div></div>
+        </div>
+      </div>
+      <div id="admin-list-view">
+        <div class="section-btn-row">
+          <span class="slbl" id="admin-count"></span>
+          <div style="display:flex;gap:8px">
+            <button class="btn-sm" onclick="adminLogout()">ログアウト</button>
+            <button class="btn-primary" onclick="showForm(null)">＋ 新規追加</button>
+          </div>
+        </div>
+        <div class="admin-list" id="admin-list"></div>
+      </div>
+      <div id="admin-form-view" style="display:none">
+        <div class="back-row">
+          <button class="btn-sm" onclick="showAdminList()">← 戻る</button>
+          <span style="font-size:15px;font-weight:500" id="form-title">新規追加</span>
+        </div>
+        <div class="form-card">
+          <div class="form-grid">
+            <div class="fg full"><label>銘柄名</label><input id="f-name" placeholder="例：獺祭 三割九分"></div>
+            <div class="fg"><label>酒蔵</label><input id="f-kura" placeholder="例：旭酒造"></div>
+            <div class="fg"><label>酒米</label><input id="f-mai" placeholder="例：雄町"></div>
+            <div class="fg"><label>飲み口</label>
+              <select id="f-kuchi"><option value="">—</option><option>甘口</option><option>やや甘口</option><option>中口</option><option>やや辛口</option><option>辛口</option></select>
+            </div>
+            <div class="fg"><label>濃淡</label>
+              <select id="f-ntan"><option value="">—</option><option>スッキリ</option><option>ややスッキリ</option><option>やや濃厚</option><option>濃厚</option></select>
+            </div>
+            <div class="fg"><label>グラス価格（円）</label><input type="number" id="f-price" placeholder="850"></div>
+            <div class="fg"><label>産地</label><input id="f-place" placeholder="例：岡山市"></div>
+            <div class="fg full"><label>スタッフメモ</label><input id="f-detail" placeholder="おすすめポイント、ペアリングなど"></div>
+            <div class="fg full"><label>説明文</label><textarea id="f-desc"></textarea></div>
+          </div>
+          <div class="cb-row"><input type="checkbox" id="f-stock" checked><label for="f-stock">在庫あり</label></div>
+          <button class="btn-primary" onclick="saveForm()">💾 保存する</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const ADMIN_PW='sake2024';
+const KUCHI_ORDER=['甘口','やや甘口','中口','やや辛口','辛口'];
+const NTAN_ORDER=['スッキリ','ややスッキリ','やや濃厚','濃厚'];
+const KURA_COLORS=['#E8608A','#7C6FD4','#2BAE82','#E09040','#5BB8D4','#C05090','#4488CC','#88AA44','#CC7733','#7755BB','#44AAAA','#DD5555'];
+const KUCHI_BAR={甘口:'#D4537E',やや甘口:'#E07090',中口:'#7C6FD4',やや辛口:'#2BAE82',辛口:'#3A8CCA'};
+const NTAN_BAR={スッキリ:'#5BB8D4',ややスッキリ:'#7EC8A0',やや濃厚:'#D4A055',濃厚:'#C07040'};
+
+const FALLBACK=[
+  {kura:'三光正宗',name:'三光政宗 純米吟醸',mai:'雄町',place:'新見市哲西町',kuchi:'辛口',ntan:'濃厚',detail:'',price:850,desc:'最高の雄町米を全量使用した純米吟醸。雄町米の旨み・深みのある味わいに吟醸酒の上品さと香りを併せ持つ。',stock:true},
+  {kura:'三光正宗',name:'三光政宗 吟醸酒',mai:'山田錦',place:'新見市哲西町',kuchi:'辛口',ntan:'ややスッキリ',detail:'',price:750,desc:'地元産契約栽培の山田錦を全量使用。山田錦の甘み・深みある味わいに上品さと香りを持つ吟醸酒。',stock:false},
+  {kura:'三光正宗',name:'蔵訪問者限定 本醸原酒',mai:'',place:'新見市哲西町',kuchi:'やや辛口',ntan:'やや濃厚',detail:'',price:850,desc:'',stock:true},
+  {kura:'白菊酒造',name:'大典白菊 白菊米',mai:'白菊',place:'高梁市成羽町',kuchi:'やや辛口',ntan:'やや濃厚',detail:'',price:650,desc:'五十五粒の種籾から蘇った酒米「白菊」で醸した純米酒。IWC2017ブロンズメダル受賞。',stock:true},
+  {kura:'白菊酒造',name:'大典白菊 造酒錦',mai:'造酒錦',place:'高梁市成羽町',kuchi:'やや辛口',ntan:'やや濃厚',detail:'',price:650,desc:'世界唯一の酒米「造酒錦」で醸した純米酒。IWC2017シルバーメダル受賞。',stock:true},
+  {kura:'白菊酒造',name:'大典白菊 純米トリプルA',mai:'朝日・あけぼの・アキヒカリ',place:'高梁市成羽町',kuchi:'中口',ntan:'濃厚',detail:'',price:650,desc:'岡山特産の朝日・アケボノ・アキヒカリの3種で仕込んだ純米酒。',stock:true},
+  {kura:'白菊酒造',name:'大典白菊 きもと純米雄町七十',mai:'雄町',place:'高梁市成羽町',kuchi:'やや辛口',ntan:'ややスッキリ',detail:'',price:650,desc:'伝統の「生もと」で仕込んだ純米酒。自然の乳酸菌や蔵付き酵母により醸された深みのある味わい。',stock:true},
+  {kura:'白菊酒造',name:'大典白菊 純米大吟醸 雄町',mai:'雄町',place:'高梁市成羽町',kuchi:'中口',ntan:'スッキリ',detail:'',price:1100,desc:'幻の酒米「雄町」を50%磨き上げた純米大吟醸。フランス クラマスター2025・オーストラリア酒アワード2025 ゴールドメダル受賞。',stock:true},
+  {kura:'白菊酒造',name:'大典白菊 きもと純米酒 雄町七十 プロトタイプ',mai:'雄町',place:'高梁市成羽町',kuchi:'やや辛口',ntan:'スッキリ',detail:'',price:750,desc:'伝統の「生酛」製法で雄町を全量使用した試験醸造品。しっかりとした酸が後口のキレを演出。',stock:true},
+  {kura:'芳烈酒造',name:'備中松山城',mai:'アケボノ',place:'高梁市有漢町',kuchi:'やや辛口',ntan:'スッキリ',detail:'',price:650,desc:'現存する日本一高い山城をPRするために造った辛口のお酒。',stock:true},
+  {kura:'芳烈酒造',name:'櫻芳烈 有漢 生原酒',mai:'',place:'高梁市有漢町',kuchi:'やや甘口',ntan:'やや濃厚',detail:'',price:750,desc:'しぼりたての生の原酒。できる前から予約の入るお酒。',stock:true},
+  {kura:'山成酒造',name:'蘭の誉 純米酒',mai:'アケボノ',place:'井原市芳井町',kuchi:'やや辛口',ntan:'やや濃厚',detail:'',price:650,desc:'【2023年 備中杜氏自醸清酒品評会 第1位受賞・2年連続入賞】冷やですっきり、熱燗では旨味がふくらむ。',stock:true},
+  {kura:'山成酒造',name:'蘭の誉 桜渓',mai:'雄町',place:'井原市芳井町',kuchi:'やや辛口',ntan:'ややスッキリ',detail:'',price:750,desc:'【令和6年 備中杜氏品評会 第3位受賞】井原市産雄町を使った完全地元産の純米吟醸酒。',stock:true},
+  {kura:'山成酒造',name:'蘭の誉 大吟醸原酒 朗蘆の里',mai:'山田錦',place:'井原市芳井町',kuchi:'中口',ntan:'濃厚',detail:'',price:850,desc:'山田錦を50%高精白した大吟醸の原酒。原酒ならではの力強さと華やかな吟醸香。',stock:true},
+  {kura:'山成酒造',name:'大吟醸40％磨き「蘭の誉」',mai:'山田錦',place:'井原市芳井町',kuchi:'やや甘口',ntan:'',detail:'',price:1100,desc:'山田錦を40%まで磨き上げた限定酒。令和6年 全国新酒鑑評会入賞酒。',stock:false},
+  {kura:'山成酒造',name:'蘭の誉 原酒えんぺい',mai:'アケボノ',place:'井原市芳井町',kuchi:'やや甘口',ntan:'濃厚',detail:'',price:650,desc:'四段仕込みで醸した蔵出し原酒。備中地方らしい濃醇で力強い旨さ。',stock:false},
+  {kura:'三宅酒造',name:'粋府 特別純米酒 媛',mai:'都',place:'総社市宿',kuchi:'やや辛口',ntan:'濃厚',detail:'',price:750,desc:'幻の米「都」でつくった純米酒。味わい深い食中酒。',stock:true},
+  {kura:'三宅酒造',name:'粋府 原酒',mai:'',place:'総社市宿',kuchi:'やや辛口',ntan:'濃厚',detail:'',price:650,desc:'まろやかでありながらぐっとくる味わい。',stock:true},
+  {kura:'丸本酒造',name:'竹林 寒星',mai:'山田錦（自社栽培）',place:'浅口市鴨方町',kuchi:'中口',ntan:'やや濃厚',detail:'',price:null,desc:'天文の聖地で星空が一番綺麗な時期に搾った限定酒。精米歩合50%。',stock:true},
+  {kura:'丸本酒造',name:'竹林 ふかまり',mai:'山田錦（自社栽培）',place:'浅口市鴨方町',kuchi:'やや辛口',ntan:'やや濃厚',detail:'',price:null,desc:'熟成酒を何層にも掛け合わせたブレンディング。蜂蜜・バニラのニュアンス。醤油を使った甘辛味や肉料理、燻製に合う。',stock:false},
+  {kura:'丸本酒造',name:'丸本屋',mai:'雄町',place:'浅口市鴨方町',kuchi:'中口',ntan:'やや濃厚',detail:'酒蔵イベント限定酒',price:null,desc:'酒蔵イベント限定酒。',stock:true},
+  {kura:'丸本酒造',name:'矢掛本陣',mai:'',place:'浅口市鴨方町',kuchi:'中口',ntan:'やや濃厚',detail:'',price:null,desc:'',stock:true},
+  {kura:'嘉美心酒造',name:'備中流大吟醸',mai:'岡山県産米',place:'浅口市寄島町',kuchi:'やや辛口',ntan:'スッキリ',detail:'',price:650,desc:'ワイングラスでおいしい日本酒アワード2022金賞・2015〜2017三年連続最高金賞受賞。端麗で上品な飲み口。',stock:true},
+  {kura:'嘉美心酒造',name:'純米 eme',mai:'岡山県産米',place:'浅口市寄島町',kuchi:'やや甘口',ntan:'スッキリ',detail:'',price:750,desc:'Kura Master2025プラチナ賞受賞。マスカット・オブ・アレキサンドリア酵母使用。フルーティーで飲みやすい。',stock:true},
+  {kura:'嘉美心酒造',name:'木陰の魚',mai:'岡山県産米',place:'浅口市寄島町',kuchi:'甘口',ntan:'スッキリ',detail:'',price:650,desc:'ワイングラスでおいしい日本酒アワード2025金賞受賞。アルコール8%。白ワインのような味わい。',stock:true},
+  {kura:'嘉美心酒造',name:'神心 自耕自醸',mai:'雄町',place:'浅口市寄島町',kuchi:'中口',ntan:'ややスッキリ',detail:'',price:null,desc:'矢掛町の「旬家ファーム様」と共同栽培した雄町米を使用。',stock:true},
+  {kura:'嘉美心酒造',name:'神心 オーバーフロー',mai:'雄町',place:'浅口市寄島町',kuchi:'やや甘口',ntan:'ややスッキリ',detail:'',price:null,desc:'もろみ発酵由来の炭酸ガスを極力残した活性にごり酒。爽快なガス感とミルキーなコク。',stock:true},
+  {kura:'熊屋酒造',name:'倉敷吟醸 伊七',mai:'山田錦',place:'倉敷市林',kuchi:'やや辛口',ntan:'スッキリ',detail:'',price:null,desc:'',stock:true},
+  {kura:'熊屋酒造',name:'伊七 純米吟醸 雄町 ピンクラベル',mai:'雄町',place:'倉敷市林',kuchi:'中口',ntan:'スッキリ',detail:'甘ったるくはないがフルーティ',price:null,desc:'甘ったるくはないがフルーティな純米吟醸。',stock:true},
+  {kura:'熊屋酒造',name:'伊七 雄町特別純米 青ラベル',mai:'雄町',place:'倉敷市林',kuchi:'やや辛口',ntan:'スッキリ',detail:'',price:null,desc:'',stock:true},
+  {kura:'熊屋酒造',name:'伊七 朝日純米吟醸 レッドラベル',mai:'朝日米',place:'倉敷市林',kuchi:'',ntan:'',detail:'',price:null,desc:'',stock:true},
+  {kura:'熊屋酒造',name:'郷内',mai:'朝日米',place:'倉敷市林',kuchi:'やや辛口',ntan:'ややスッキリ',detail:'',price:null,desc:'',stock:true},
+  {kura:'熊屋酒造',name:'寒しぼり',mai:'',place:'倉敷市林',kuchi:'やや辛口',ntan:'スッキリ',detail:'',price:null,desc:'',stock:true},
+  {kura:'菊池酒造',name:'燦然 純米吟醸 山田錦',mai:'山田錦',place:'倉敷市玉島',kuchi:'中口',ntan:'スッキリ',detail:'',price:null,desc:'',stock:true},
+  {kura:'菊池酒造',name:'木村式奇跡のお酒 純米吟醸 雄町',mai:'雄町',place:'倉敷市玉島',kuchi:'甘口',ntan:'スッキリ',detail:'',price:850,desc:'',stock:true},
+  {kura:'菊池酒造',name:'燦然 純米大吟醸 蔵リズム',mai:'雄町',place:'倉敷市玉島',kuchi:'やや甘口',ntan:'スッキリ',detail:'',price:1100,desc:'',stock:true},
+  {kura:'菊池酒造',name:'燦然 新酒祭り 純米吟醸 雄町 生原酒',mai:'雄町',place:'倉敷市玉島',kuchi:'やや甘口',ntan:'ややスッキリ',detail:'',price:null,desc:'',stock:true},
+  {kura:'森田酒造',name:'萬年雪 荒にごり生酒 森田の白',mai:'',place:'倉敷市本町',kuchi:'やや辛口',ntan:'やや濃厚',detail:'にごりだが甘くない。にごり苦手な辛口好みの方にもおすすめ。',price:null,desc:'にごりだが甘くない。にごり苦手な辛口好みの方にもおすすめ。',stock:true},
+  {kura:'森田酒造',name:'萬年雪 純米吟醸 荒走り',mai:'',place:'倉敷市本町',kuchi:'辛口',ntan:'ややスッキリ',detail:'深い旨み、キレの良さと香り高さも抜群。',price:null,desc:'深い旨み、キレの良さと香り高さも抜群。',stock:true},
+  {kura:'森田酒造',name:'萬年雪 激辛荒走り',mai:'',place:'倉敷市本町',kuchi:'辛口',ntan:'やや濃厚',detail:'辛いだけではない、旨口の辛口。',price:null,desc:'辛いだけではない、旨口の辛口。',stock:true},
+  {kura:'十八盛酒造',name:'十八盛 雄町純米',mai:'雄町',place:'倉敷市児島',kuchi:'中口',ntan:'ややスッキリ',detail:'海のものにはベスト。',price:null,desc:'海のものにはベスト。',stock:true},
+  {kura:'十八盛酒造',name:'多賀治 純米雄町',mai:'',place:'倉敷市児島',kuchi:'中口',ntan:'ややスッキリ',detail:'フレッシュ感が持ち味。微発砲。',price:null,desc:'フレッシュ感が持ち味。微発砲。',stock:true},
+  {kura:'十八盛酒造',name:'多賀治 純米大吟醸雄町',mai:'',place:'倉敷市児島',kuchi:'中口',ntan:'スッキリ',detail:'贅沢な逸品。洗練された味。',price:null,desc:'贅沢な逸品。洗練された味。',stock:true},
+  {kura:'十八盛酒造',name:'裏多賀治 純米大吟醸 朝日',mai:'朝日米',place:'倉敷市児島',kuchi:'中口',ntan:'やや濃厚',detail:'縛り終わりに加圧したもの。濃口。',price:750,desc:'縛り終わりに加圧したもの。濃口。',stock:true},
+  {kura:'十八盛酒造',name:'ことのわ',mai:'吟のさと',place:'倉敷市児島',kuchi:'甘口',ntan:'スッキリ',detail:'口当たりよく、飲みやすい。',price:null,desc:'口当たりよく、飲みやすい。',stock:true},
+  {kura:'三冠酒造',name:'三冠 朝日純米 にごり生酒',mai:'朝日米',place:'倉敷市児島',kuchi:'やや辛口',ntan:'ややスッキリ',detail:'くどくなく、暑い日にぴったり。',price:null,desc:'くどくなく、暑い日にぴったり。',stock:true},
+  {kura:'三冠酒造',name:'生酛 和井田 一回火入',mai:'雄町',place:'倉敷市児島',kuchi:'やや辛口',ntan:'ややスッキリ',detail:'2024年雄町米の酒コンテスト熱燗部門最優秀。',price:null,desc:'2024年雄町米の酒コンテスト熱燗部門最優秀。気もとだが酸味は抑え目、冷も美味しい。',stock:true},
+  {kura:'三冠酒造',name:'三冠 朝日純米 無濾過生原酒',mai:'朝日米',place:'倉敷市児島',kuchi:'辛口',ntan:'スッキリ',detail:'',price:null,desc:'',stock:true},
+  {kura:'渡邊酒造本店',name:'嶺の誉 特別純米 雄町',mai:'雄町',place:'倉敷市連島',kuchi:'やや辛口',ntan:'やや濃厚',detail:'直火和釜蒸し、槽搾り。',price:null,desc:'直火和釜蒸し、槽搾り。',stock:true},
+  {kura:'渡邊酒造本店',name:'桃幻仙花',mai:'雄町',place:'倉敷市連島',kuchi:'やや辛口',ntan:'やや濃厚',detail:'直火和釜蒸し、槽搾り。麹米は山田錦、掛米は雄町。',price:null,desc:'直火和釜蒸し、槽搾り。麹米は山田錦、掛米は雄町。',stock:true},
+];
+
+let allData=[],kuraColorMap={},fKuchi='',fNtan='',fKura='',fStock=false,editingIdx=null;
+
+async function loadData(){
+  const url=localStorage.getItem('gasUrl')||'';
+  if(!url){useFallback();return;}
+  document.getElementById('loading').style.display='flex';
+  document.getElementById('menu-content').style.display='none';
+  try{
+    const res=await fetch(url);
+    if(!res.ok)throw new Error();
+    const json=await res.json();
+    if(!Array.isArray(json)||json.length===0)throw new Error();
+    allData=json.filter(d=>d.name);
+    buildColors();showContent();
+    setGasMsg('✓ スプレッドシートからデータを取得しました','ok');
+  }catch(e){useFallback();}
+}
+function useFallback(){allData=FALLBACK.filter(d=>d.name);buildColors();showContent();}
+function buildColors(){const ks=[...new Set(allData.map(d=>d.kura))];kuraColorMap={};ks.forEach((k,i)=>kuraColorMap[k]=KURA_COLORS[i%KURA_COLORS.length]);}
+function showContent(){
+  document.getElementById('loading').style.display='none';
+  document.getElementById('menu-content').style.display='';
+  buildChips();buildKuraChips();applyFilters();renderAdminList();
+  document.getElementById('gas-url-inp').value=localStorage.getItem('gasUrl')||'';
+}
+function buildChips(){
+  const ks=[...new Set(allData.map(d=>d.kuchi).filter(Boolean))].sort((a,b)=>KUCHI_ORDER.indexOf(a)-KUCHI_ORDER.indexOf(b));
+  const ns=[...new Set(allData.map(d=>d.ntan).filter(Boolean))].sort((a,b)=>NTAN_ORDER.indexOf(a)-NTAN_ORDER.indexOf(b));
+  document.getElementById('chips-kuchi').innerHTML=['<span class="chip on" onclick="setKuchi(\'\')">すべて</span>',...ks.map(k=>`<span class="chip ck-${k}" onclick="setKuchi('${k}')">${k}</span>`)].join('');
+  document.getElementById('chips-ntan').innerHTML=['<span class="chip on" onclick="setNtan(\'\')">すべて</span>',...ns.map(n=>`<span class="chip" onclick="setNtan('${n}')">${n}</span>`)].join('');
+}
+function buildKuraChips(){
+  const ks=[...new Set(allData.map(d=>d.kura))];
+  document.getElementById('kura-chips').innerHTML=[`<span class="kura-chip all-on" id="kc-all" onclick="setKura('')"><span class="kura-dot" style="background:#fff"></span>すべて</span>`,...ks.map(k=>`<span class="kura-chip" id="kc-${encodeURIComponent(k)}" onclick="setKura('${k.replace(/'/g,"\\'")}')"><span class="kura-dot" style="background:${kuraColorMap[k]}"></span>${k}</span>`)].join('');
+}
+function setKuchi(v){fKuchi=v;document.querySelectorAll('#chips-kuchi .chip').forEach(c=>{const isAll=c.textContent==='すべて';c.classList.toggle('on',v===''?isAll:c.textContent===v);});applyFilters();}
+function setNtan(v){fNtan=v;document.querySelectorAll('#chips-ntan .chip').forEach(c=>{const isAll=c.textContent==='すべて';c.classList.toggle('on',v===''?isAll:c.textContent===v);});applyFilters();}
+function setKura(v){
+  fKura=v;
+  document.querySelectorAll('.kura-chip').forEach(c=>{c.classList.remove('on','all-on');c.style.background='';c.style.borderColor='';c.style.color='';});
+  if(v===''){document.getElementById('kc-all').classList.add('all-on');}
+  else{const el=document.getElementById('kc-'+encodeURIComponent(v));if(el){el.classList.add('on');el.style.background=kuraColorMap[v];el.style.borderColor=kuraColorMap[v];el.style.color='#fff';}}
+  applyFilters();
+}
+function toggleStock(){fStock=!fStock;const el=document.getElementById('chip-stock');el.classList.toggle('on',fStock);applyFilters();}
+function applyFilters(){
+  const q=document.getElementById('search-inp').value;
+  const sort=document.getElementById('sort-sel').value;
+  let list=allData.filter(s=>{
+    if(fStock&&!s.stock)return false;
+    if(fKuchi&&s.kuchi!==fKuchi)return false;
+    if(fNtan&&s.ntan!==fNtan)return false;
+    if(fKura&&s.kura!==fKura)return false;
+    if(q&&![s.name,s.kura,s.mai,s.place,s.desc,s.detail].some(f=>(f||'').includes(q)))return false;
+    return true;
+  });
+  if(sort==='kuchi_asc')list.sort((a,b)=>KUCHI_ORDER.indexOf(a.kuchi)-KUCHI_ORDER.indexOf(b.kuchi));
+  if(sort==='kuchi_desc')list.sort((a,b)=>KUCHI_ORDER.indexOf(b.kuchi)-KUCHI_ORDER.indexOf(a.kuchi));
+  if(sort==='ntan_asc')list.sort((a,b)=>NTAN_ORDER.indexOf(a.ntan)-NTAN_ORDER.indexOf(b.ntan));
+  if(sort==='ntan_desc')list.sort((a,b)=>NTAN_ORDER.indexOf(b.ntan)-NTAN_ORDER.indexOf(a.ntan));
+  if(sort==='price_asc')list.sort((a,b)=>(a.price||9999)-(b.price||9999));
+  if(sort==='price_desc')list.sort((a,b)=>(b.price||0)-(a.price||0));
+  renderGrid(list);
+  const sc=allData.filter(d=>d.stock).length;
+  document.getElementById('count-badge').textContent=`在庫 ${sc} / 全 ${allData.length} 銘柄`;
+  document.getElementById('result-count').textContent=`${list.length} 銘柄を表示中`;
+}
+function renderGrid(list){
+  const grid=document.getElementById('sake-grid'),empty=document.getElementById('empty-msg');
+  if(!list.length){grid.innerHTML='';empty.style.display='';return;}
+  empty.style.display='none';
+  grid.innerHTML=list.map(s=>{
+    const kc=kuraColorMap[s.kura]||'#888';
+    const ki=KUCHI_ORDER.indexOf(s.kuchi),ni=NTAN_ORDER.indexOf(s.ntan);
+    const kp=ki>=0?Math.round(ki/(KUCHI_ORDER.length-1)*100):0;
+    const np=ni>=0?Math.round(ni/(NTAN_ORDER.length-1)*100):0;
+    const kb=KUCHI_BAR[s.kuchi]||'#ccc',nb=NTAN_BAR[s.ntan]||'#ccc';
+    const txt=(s.desc||s.detail||'');
+    const sd=txt.length>120?txt.slice(0,120)+'…':txt;
+    return `<div class="sake-card">
+      <div class="card-strip" style="background:${kc}"></div>
+      <div class="card-body">
+        <div class="card-top">
+          <div><div class="card-name">${s.name}</div><div class="card-kura"><span class="kura-dot-sm" style="background:${kc}"></span>${s.kura}</div></div>
+          <div class="price-wrap">${s.price?`<div class="price-val">¥${Number(s.price).toLocaleString()}</div><div class="price-unit">グラス</div>`:'<div class="price-tbd">価格未定</div>'}</div>
+        </div>
+        <div class="tags">
+          ${s.kuchi?`<span class="tag tk-${s.kuchi}">${s.kuchi}</span>`:''}
+          ${s.ntan?`<span class="tag tk-ntan">${s.ntan}</span>`:''}
+          ${s.mai?`<span class="tag tk-mai">🌾 ${s.mai}</span>`:''}
+          ${!s.stock?'<span class="tag tk-nostock">在庫なし</span>':''}
+        </div>
+        ${(s.kuchi||s.ntan)?`<div class="taste-row">
+          ${s.kuchi?`<div><div class="taste-lbl">飲み口</div><div class="bar-bg"><div class="bar-fill" style="width:${kp}%;background:${kb}"></div></div></div>`:'<div></div>'}
+          ${s.ntan?`<div><div class="taste-lbl">濃淡</div><div class="bar-bg"><div class="bar-fill" style="width:${np}%;background:${nb}"></div></div></div>`:'<div></div>'}
+        </div>`:''}
+        ${sd?`<div class="card-desc">${sd}</div>`:''}
+        ${s.place?`<div class="card-place">📍 ${s.place}</div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+function switchTab(tab){
+  document.getElementById('view-menu').style.display=tab==='menu'?'':'none';
+  document.getElementById('view-admin').style.display=tab==='admin'?'':'none';
+  document.getElementById('tab-menu').classList.toggle('on',tab==='menu');
+  document.getElementById('tab-admin').classList.toggle('on',tab==='admin');
+}
+function tryLogin(){
+  if(document.getElementById('pw-inp').value===ADMIN_PW){
+    document.getElementById('admin-lock').style.display='none';
+    document.getElementById('admin-main').style.display='';
+  }else{document.getElementById('pw-err').textContent='パスワードが違います';}
+}
+function adminLogout(){
+  document.getElementById('admin-lock').style.display='';
+  document.getElementById('admin-main').style.display='none';
+  document.getElementById('pw-inp').value='';
+  document.getElementById('pw-err').textContent='';
+}
+function saveGasUrl(){const v=(document.getElementById('gas-url-inp').value||'').trim();localStorage.setItem('gasUrl',v);setGasMsg(v?'✓ URLを保存しました。「テスト」で接続確認できます。':'URLをクリアしました。','ok');}
+function setGasMsg(txt,type){const el=document.getElementById('gas-msg');if(el){el.textContent=txt;el.className='gas-msg gas-'+type;}}
+function renderAdminList(){
+  document.getElementById('admin-count').textContent=`全 ${allData.length} 銘柄`;
+  document.getElementById('admin-list').innerHTML=allData.map((s,i)=>{
+    const kc=kuraColorMap[s.kura]||'#ccc';
+    return `<div class="row-card">
+      <div class="row-strip" style="background:${kc}"></div>
+      <div class="row-left"><div class="row-name">${s.name}</div><div class="row-sub">${s.kura}${s.mai?' · '+s.mai:''}${s.kuchi?' · '+s.kuchi:''}</div></div>
+      <div class="row-right"><div class="row-price">${s.price?'¥'+Number(s.price).toLocaleString():'価格未定'}</div><div class="${s.stock?'stock-ok':'stock-no'}">${s.stock?'● 在庫あり':'○ 在庫なし'}</div></div>
+      <div class="row-actions"><button class="btn-sm" onclick="showForm(${i})">✏️ 編集</button><button class="btn-sm btn-danger" onclick="deleteItem(${i})">🗑</button></div>
+    </div>`;
+  }).join('');
+}
+function showForm(idx){
+  editingIdx=idx;
+  document.getElementById('admin-list-view').style.display='none';
+  document.getElementById('admin-form-view').style.display='';
+  document.getElementById('form-title').textContent=idx===null?'新規追加':'銘柄を編集';
+  const s=idx===null?{}:allData[idx];
+  ['name','kura','mai','kuchi','ntan','place','detail','desc'].forEach(k=>document.getElementById('f-'+k).value=s[k]||'');
+  document.getElementById('f-price').value=s.price||'';
+  document.getElementById('f-stock').checked=s.stock!==false;
+}
+function showAdminList(){document.getElementById('admin-list-view').style.display='';document.getElementById('admin-form-view').style.display='none';}
+function saveForm(){
+  const name=document.getElementById('f-name').value.trim();
+  if(!name){alert('銘柄名を入力してください');return;}
+  const d={name,kura:document.getElementById('f-kura').value.trim(),mai:document.getElementById('f-mai').value.trim(),kuchi:document.getElementById('f-kuchi').value,ntan:document.getElementById('f-ntan').value,price:parseInt(document.getElementById('f-price').value)||null,place:document.getElementById('f-place').value.trim(),detail:document.getElementById('f-detail').value.trim(),desc:document.getElementById('f-desc').value.trim(),stock:document.getElementById('f-stock').checked};
+  if(editingIdx===null)allData.push(d);else allData[editingIdx]=d;
+  buildColors();applyFilters();renderAdminList();showAdminList();
+}
+function deleteItem(i){if(!confirm('この銘柄を削除しますか？'))return;allData.splice(i,1);buildColors();applyFilters();renderAdminList();}
+loadData();
+</script>
+</body>
+</html>
