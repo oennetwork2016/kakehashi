@@ -39,8 +39,8 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
 .gas-banner{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px;}
 .gas-title{font-size:14px;font-weight:600;margin-bottom:6px;}
 .gas-sub{font-size:12px;color:var(--text3);line-height:1.7;margin-bottom:14px;}
-.gas-row{display:flex;gap:8px;margin-bottom:8px;}
-.gas-inp{flex:1;padding:9px 12px;font-size:12px;border:1px solid var(--border2);border-radius:8px;background:#FAF9F7;outline:none;font-family:monospace;}
+.gas-row{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+.gas-inp{flex:1;min-width:200px;padding:9px 12px;font-size:12px;border:1px solid var(--border2);border-radius:8px;background:#FAF9F7;outline:none;font-family:monospace;}
 .gas-inp:focus{border-color:var(--gold);background:var(--white);}
 .gas-msg{font-size:12px;margin-top:6px;}
 .gas-ok{color:var(--teal-dark);}.gas-err{color:var(--red);}
@@ -61,12 +61,12 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
 .chip{font-size:12px;padding:5px 12px;border:1px solid var(--border2);border-radius:99px;cursor:pointer;background:var(--white);color:var(--text2);transition:all 0.12s;white-space:nowrap;user-select:none;}
 .chip:hover{border-color:var(--gold);color:#7A5010;}
 .chip.on{background:var(--gold-light);color:#7A5010;border-color:var(--gold);font-weight:500;}
-.chip.ck-甘口.on{background:var(--pink-bg);color:var(--pink-dark);border-color:var(--pink);}
-.chip.ck-やや甘口.on{background:#FCEAF0;color:#7A2048;border-color:#E07090;}
-.chip.ck-中口.on{background:var(--pur-bg);color:var(--pur-dark);border-color:var(--pur);}
-.chip.ck-やや辛口.on{background:var(--teal-bg);color:var(--teal-dark);border-color:var(--teal);}
-.chip.ck-辛口.on{background:var(--blue-bg);color:var(--blue-dark);border-color:var(--blue);}
-.chip.stock-on.on{background:#E8F5EE;color:var(--teal-dark);border-color:var(--teal);}
+.ck-on-甘口{background:var(--pink-bg)!important;color:var(--pink-dark)!important;border-color:var(--pink)!important;}
+.ck-on-やや甘口{background:#FCEAF0!important;color:#7A2048!important;border-color:#E07090!important;}
+.ck-on-中口{background:var(--pur-bg)!important;color:var(--pur-dark)!important;border-color:var(--pur)!important;}
+.ck-on-やや辛口{background:var(--teal-bg)!important;color:var(--teal-dark)!important;border-color:var(--teal)!important;}
+.ck-on-辛口{background:var(--blue-bg)!important;color:var(--blue-dark)!important;border-color:var(--blue)!important;}
+.stock-chip.on{background:#E8F5EE!important;color:var(--teal-dark)!important;border-color:var(--teal)!important;}
 .kura-legend{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:14px 16px;margin-bottom:14px;}
 .kura-legend-title{font-size:11px;font-weight:600;color:var(--text3);margin-bottom:10px;}
 .kura-chips{display:flex;gap:6px;flex-wrap:wrap;}
@@ -103,6 +103,7 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
 .bar-bg{height:4px;background:#F0EDE8;border-radius:99px;overflow:hidden;}
 .bar-fill{height:100%;border-radius:99px;}
 .card-desc{font-size:12px;color:var(--text2);line-height:1.7;flex:1;}
+.card-detail{font-size:11px;color:#7A6A5A;background:#FAF6F0;border-left:3px solid var(--gold);padding:6px 10px;border-radius:0 8px 8px 0;line-height:1.5;}
 .card-place{font-size:11px;color:var(--text3);display:flex;align-items:center;gap:3px;margin-top:auto;padding-top:4px;}
 .empty{padding:60px 20px;text-align:center;color:var(--text3);}
 .empty-icon{font-size:36px;margin-bottom:10px;}
@@ -170,7 +171,6 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
 </div>
 
 <div class="body">
-  <!-- MENU -->
   <div id="view-menu">
     <div id="loading" class="loading">
       <div class="spinner"></div>
@@ -201,7 +201,7 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
         <div class="filter-section" style="margin-bottom:0">
           <div class="filter-label">在庫</div>
           <div class="chip-row">
-            <span class="chip stock-on" id="chip-stock" onclick="toggleStock()">在庫あり</span>
+            <span class="chip stock-chip" id="chip-stock" onclick="toggleStock()">在庫あり</span>
           </div>
         </div>
       </div>
@@ -220,7 +220,6 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
     </div>
   </div>
 
-  <!-- ADMIN -->
   <div id="view-admin" style="display:none">
     <div id="admin-lock">
       <div class="lock-wrap">
@@ -245,11 +244,11 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
         </div>
         <div class="gas-msg" id="gas-msg"></div>
         <div class="steps-box">
-          <div class="steps-title">Google Apps Script 設定手順</div>
+          <div class="steps-title">Apps Script 設定手順</div>
           <div class="step"><div class="step-n">1</div><div class="step-t">スプレッドシートを開き「拡張機能」→「Apps Script」をクリック</div></div>
-          <div class="step"><div class="step-n">2</div><div class="step-t">一緒にダウンロードした <code>gas_script.gs</code> の内容を貼り付けて保存（💾）</div></div>
+          <div class="step"><div class="step-n">2</div><div class="step-t">一緒にダウンロードした <code>gas_script.gs</code> の内容を貼り付けて保存</div></div>
           <div class="step"><div class="step-n">3</div><div class="step-t">「デプロイ」→「新しいデプロイ」→ 種類「ウェブアプリ」・アクセス「全員」で公開</div></div>
-          <div class="step"><div class="step-n">4</div><div class="step-t">表示されたURLをコピーして上のフィールドに貼り付け「保存」→「テスト」で確認</div></div>
+          <div class="step"><div class="step-n">4</div><div class="step-t">表示されたURLをコピーして上に貼り付け「保存」→「テスト」で確認</div></div>
         </div>
       </div>
       <div id="admin-list-view">
@@ -295,38 +294,44 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
 const ADMIN_PW='sake2024';
 const KUCHI_ORDER=['甘口','やや甘口','中口','やや辛口','辛口'];
 const NTAN_ORDER=['スッキリ','ややスッキリ','やや濃厚','濃厚'];
-const KURA_COLORS=['#E8608A','#7C6FD4','#2BAE82','#E09040','#5BB8D4','#C05090','#4488CC','#88AA44','#CC7733','#7755BB','#44AAAA','#DD5555'];
+const KURA_COLORS=['#E8608A','#7C6FD4','#2BAE82','#E09040','#5BB8D4','#C05090','#4488CC','#88AA44','#CC7733','#7755BB','#44AAAA','#DD5555','#AA6633','#558844'];
 const KUCHI_BAR={甘口:'#D4537E',やや甘口:'#E07090',中口:'#7C6FD4',やや辛口:'#2BAE82',辛口:'#3A8CCA'};
 const NTAN_BAR={スッキリ:'#5BB8D4',ややスッキリ:'#7EC8A0',やや濃厚:'#D4A055',濃厚:'#C07040'};
 
+// ===== 最新スプレッドシートデータ（2025年6月版）=====
 const FALLBACK=[
-  {kura:'三光正宗',name:'三光政宗 純米吟醸',mai:'雄町',place:'新見市哲西町',kuchi:'辛口',ntan:'濃厚',detail:'',price:850,desc:'最高の雄町米を全量使用した純米吟醸。雄町米の旨み・深みのある味わいに吟醸酒の上品さと香りを併せ持つ。',stock:true},
-  {kura:'三光正宗',name:'三光政宗 吟醸酒',mai:'山田錦',place:'新見市哲西町',kuchi:'辛口',ntan:'ややスッキリ',detail:'',price:750,desc:'地元産契約栽培の山田錦を全量使用。山田錦の甘み・深みある味わいに上品さと香りを持つ吟醸酒。',stock:false},
+  {kura:'三光正宗',name:'三光政宗 純米吟醸',mai:'雄町',place:'新見市哲西町',kuchi:'辛口',ntan:'濃厚',detail:'',price:850,desc:'最高の雄町米を全量使用し、「米」「水」「技」の三つの光を集めた純米吟醸。氷温貯蔵で熟成を行い、雄町米の旨み・深みのある味わいに吟醸酒としての上品さと香りを併せ持つ。',stock:true},
+  {kura:'三光正宗',name:'三光政宗 吟醸酒',mai:'山田錦',place:'新見市哲西町',kuchi:'辛口',ntan:'ややスッキリ',detail:'',price:750,desc:'地元産契約栽培の山田錦を全量使用。山田錦の甘み・深みある味わいに上品さと香りを持つ吟醸酒。氷温貯蔵で熟成。',stock:false},
   {kura:'三光正宗',name:'蔵訪問者限定 本醸原酒',mai:'',place:'新見市哲西町',kuchi:'やや辛口',ntan:'やや濃厚',detail:'',price:850,desc:'',stock:true},
-  {kura:'白菊酒造',name:'大典白菊 白菊米',mai:'白菊',place:'高梁市成羽町',kuchi:'やや辛口',ntan:'やや濃厚',detail:'',price:650,desc:'五十五粒の種籾から蘇った酒米「白菊」で醸した純米酒。IWC2017ブロンズメダル受賞。',stock:true},
-  {kura:'白菊酒造',name:'大典白菊 造酒錦',mai:'造酒錦',place:'高梁市成羽町',kuchi:'やや辛口',ntan:'やや濃厚',detail:'',price:650,desc:'世界唯一の酒米「造酒錦」で醸した純米酒。IWC2017シルバーメダル受賞。',stock:true},
-  {kura:'白菊酒造',name:'大典白菊 純米トリプルA',mai:'朝日・あけぼの・アキヒカリ',place:'高梁市成羽町',kuchi:'中口',ntan:'濃厚',detail:'',price:650,desc:'岡山特産の朝日・アケボノ・アキヒカリの3種で仕込んだ純米酒。',stock:true},
-  {kura:'白菊酒造',name:'大典白菊 きもと純米雄町七十',mai:'雄町',place:'高梁市成羽町',kuchi:'やや辛口',ntan:'ややスッキリ',detail:'',price:650,desc:'伝統の「生もと」で仕込んだ純米酒。自然の乳酸菌や蔵付き酵母により醸された深みのある味わい。',stock:true},
+  {kura:'落酒造',name:'（近日入荷予定）',mai:'',place:'真庭市下呰部',kuchi:'中口',ntan:'',detail:'',price:null,desc:'',stock:false},
+  {kura:'白菊酒造',name:'大典白菊 白菊米',mai:'白菊',place:'高梁市成羽町',kuchi:'やや辛口',ntan:'やや濃厚',detail:'',price:650,desc:'五十五粒の種籾から蘇った酒銘と同じ酒米「白菊」で醸した純米酒。おだやかな香りにコクとお米の旨み、甘味と酸のバランスが良い。IWC2017ブロンズメダル受賞。',stock:true},
+  {kura:'白菊酒造',name:'大典白菊 造酒錦',mai:'造酒錦',place:'高梁市成羽町',kuchi:'やや辛口',ntan:'やや濃厚',detail:'',price:650,desc:'五十年の時を超えて蘇えった世界唯一の酒米「造酒錦」で醸した純米酒。きれいな香りとお米の甘味・旨みにキレのあるバランスの良い飲み口。IWC2017シルバーメダル受賞。',stock:true},
+  {kura:'白菊酒造',name:'大典白菊 純米トリプルA',mai:'朝日・あけぼの・アキヒカリ',place:'高梁市成羽町',kuchi:'中口',ntan:'濃厚',detail:'',price:650,desc:'岡山特産の朝日・アケボノ・アキヒカリの3種で仕込んだ純米酒。米の持ち味を生かした旨味ある酒を蔵内でゆっくり熟成。トリプルAは使用米の頭文字から命名。',stock:true},
+  {kura:'白菊酒造',name:'大典白菊 きもと純米雄町七十',mai:'雄町',place:'高梁市成羽町',kuchi:'やや辛口',ntan:'ややスッキリ',detail:'',price:650,desc:'岡山特産酒米「雄町」を伝統の「生もと」で仕込んだ純米酒。自然の乳酸菌や蔵付き酵母により醸された深みのある味わい。',stock:true},
   {kura:'白菊酒造',name:'大典白菊 純米大吟醸 雄町',mai:'雄町',place:'高梁市成羽町',kuchi:'中口',ntan:'スッキリ',detail:'',price:1100,desc:'幻の酒米「雄町」を50%磨き上げた純米大吟醸。フランス クラマスター2025・オーストラリア酒アワード2025 ゴールドメダル受賞。',stock:true},
-  {kura:'白菊酒造',name:'大典白菊 きもと純米酒 雄町七十 プロトタイプ',mai:'雄町',place:'高梁市成羽町',kuchi:'やや辛口',ntan:'スッキリ',detail:'',price:750,desc:'伝統の「生酛」製法で雄町を全量使用した試験醸造品。しっかりとした酸が後口のキレを演出。',stock:true},
+  {kura:'白菊酒造',name:'大典白菊 きもと純米酒 雄町七十 プロトタイプ',mai:'雄町',place:'高梁市成羽町',kuchi:'やや辛口',ntan:'スッキリ',detail:'ひや（常温）または燗酒がおすすめ',price:750,desc:'伝統の「生酛」製法で雄町を全量使用した試験醸造品。しっかりとした酸が後口のキレを演出。',stock:true},
   {kura:'芳烈酒造',name:'備中松山城',mai:'アケボノ',place:'高梁市有漢町',kuchi:'やや辛口',ntan:'スッキリ',detail:'',price:650,desc:'現存する日本一高い山城をPRするために造った辛口のお酒。',stock:true},
-  {kura:'芳烈酒造',name:'櫻芳烈 有漢 生原酒',mai:'',place:'高梁市有漢町',kuchi:'やや甘口',ntan:'やや濃厚',detail:'',price:750,desc:'しぼりたての生の原酒。できる前から予約の入るお酒。',stock:true},
-  {kura:'山成酒造',name:'蘭の誉 純米酒',mai:'アケボノ',place:'井原市芳井町',kuchi:'やや辛口',ntan:'やや濃厚',detail:'',price:650,desc:'【2023年 備中杜氏自醸清酒品評会 第1位受賞・2年連続入賞】冷やですっきり、熱燗では旨味がふくらむ。',stock:true},
-  {kura:'山成酒造',name:'蘭の誉 桜渓',mai:'雄町',place:'井原市芳井町',kuchi:'やや辛口',ntan:'ややスッキリ',detail:'',price:750,desc:'【令和6年 備中杜氏品評会 第3位受賞】井原市産雄町を使った完全地元産の純米吟醸酒。',stock:true},
-  {kura:'山成酒造',name:'蘭の誉 大吟醸原酒 朗蘆の里',mai:'山田錦',place:'井原市芳井町',kuchi:'中口',ntan:'濃厚',detail:'',price:850,desc:'山田錦を50%高精白した大吟醸の原酒。原酒ならではの力強さと華やかな吟醸香。',stock:true},
-  {kura:'山成酒造',name:'大吟醸40％磨き「蘭の誉」',mai:'山田錦',place:'井原市芳井町',kuchi:'やや甘口',ntan:'',detail:'',price:1100,desc:'山田錦を40%まで磨き上げた限定酒。令和6年 全国新酒鑑評会入賞酒。',stock:false},
-  {kura:'山成酒造',name:'蘭の誉 原酒えんぺい',mai:'アケボノ',place:'井原市芳井町',kuchi:'やや甘口',ntan:'濃厚',detail:'',price:650,desc:'四段仕込みで醸した蔵出し原酒。備中地方らしい濃醇で力強い旨さ。',stock:false},
+  {kura:'芳烈酒造',name:'櫻芳烈 有漢 生原酒',mai:'',place:'高梁市有漢町',kuchi:'やや甘口',ntan:'やや濃厚',detail:'',price:750,desc:'しぼりたての生の原酒。やや甘口。できる前から予約の入るお酒。',stock:true},
+  {kura:'山成酒造',name:'蘭の誉 純米酒',mai:'アケボノ',place:'井原市芳井町',kuchi:'やや辛口',ntan:'やや濃厚',detail:'',price:650,desc:'【2023年 備中杜氏自醸清酒品評会 第1位受賞・2年連続入賞】冷やではすっきり、熱燗では旨味がふくらむ。',stock:true},
+  {kura:'山成酒造',name:'蘭の誉 桜渓',mai:'雄町',place:'井原市芳井町',kuchi:'やや辛口',ntan:'ややスッキリ',detail:'',price:750,desc:'【令和6年 備中杜氏品評会 第3位受賞】井原市産雄町を使った完全地元産の純米吟醸酒。井原テロワールの酒。',stock:true},
+  {kura:'山成酒造',name:'蘭の誉 大吟醸原酒 朗蘆の里',mai:'山田錦',place:'井原市芳井町',kuchi:'中口',ntan:'濃厚',detail:'冷やまたはロックで',price:850,desc:'岡山県産山田錦を50%高精白した大吟醸の原酒。原酒ならではの力強さと華やかな吟醸香。',stock:true},
+  {kura:'山成酒造',name:'大吟醸40％磨き「蘭の誉」',mai:'山田錦',place:'井原市芳井町',kuchi:'やや甘口',ntan:'',detail:'ワイングラスもおすすめ',price:1100,desc:'山田錦を40%まで磨き上げた限定酒。令和6年 全国新酒鑑評会入賞酒。',stock:false},
+  {kura:'山成酒造',name:'蘭の誉 原酒えんぺい',mai:'アケボノ',place:'井原市芳井町',kuchi:'やや甘口',ntan:'濃厚',detail:'ロックまたは冷やして',price:650,desc:'四段仕込みで醸した蔵出し原酒。備中地方らしい濃醇で力強い旨さと深みのある味わい。',stock:false},
   {kura:'三宅酒造',name:'粋府 特別純米酒 媛',mai:'都',place:'総社市宿',kuchi:'やや辛口',ntan:'濃厚',detail:'',price:750,desc:'幻の米「都」でつくった純米酒。味わい深い食中酒。',stock:true},
   {kura:'三宅酒造',name:'粋府 原酒',mai:'',place:'総社市宿',kuchi:'やや辛口',ntan:'濃厚',detail:'',price:650,desc:'まろやかでありながらぐっとくる味わい。',stock:true},
-  {kura:'丸本酒造',name:'竹林 寒星',mai:'山田錦（自社栽培）',place:'浅口市鴨方町',kuchi:'中口',ntan:'やや濃厚',detail:'',price:null,desc:'天文の聖地で星空が一番綺麗な時期に搾った限定酒。精米歩合50%。',stock:true},
-  {kura:'丸本酒造',name:'竹林 ふかまり',mai:'山田錦（自社栽培）',place:'浅口市鴨方町',kuchi:'やや辛口',ntan:'やや濃厚',detail:'',price:null,desc:'熟成酒を何層にも掛け合わせたブレンディング。蜂蜜・バニラのニュアンス。醤油を使った甘辛味や肉料理、燻製に合う。',stock:false},
+  {kura:'三宅酒造',name:'都',mai:'',place:'総社市宿',kuchi:'やや辛口',ntan:'ややスッキリ',detail:'',price:null,desc:'',stock:false},
+  {kura:'丸本酒造',name:'かもみどり うま口冷酒',mai:'アケボノ',place:'浅口市鴨方町',kuchi:'やや甘口',ntan:'スッキリ',detail:'春〜夏限定。キリッと冷やして',price:null,desc:'地元岡山県産のアケボノ米の旨みとコクをのど越しの良い冷酒仕立てに仕上げた限定冷酒。',stock:false},
+  {kura:'丸本酒造',name:'竹林 寒星',mai:'山田錦（自社栽培）',place:'浅口市鴨方町',kuchi:'中口',ntan:'やや濃厚',detail:'',price:null,desc:'天文の聖地・浅口市で、星空が一番綺麗な時期に搾った限定酒。精米歩合50%。',stock:true},
+  {kura:'丸本酒造',name:'竹林 ふかまり',mai:'山田錦（自社栽培）',place:'浅口市鴨方町',kuchi:'やや辛口',ntan:'やや濃厚',detail:'常温・ぬる燗・燗酒がおすすめ',price:null,desc:'熟成酒を何層にも掛け合わせたブレンディング。蜂蜜・バニラのニュアンス。醤油を使った甘辛味や肉料理、燻製に合う。',stock:false},
   {kura:'丸本酒造',name:'丸本屋',mai:'雄町',place:'浅口市鴨方町',kuchi:'中口',ntan:'やや濃厚',detail:'酒蔵イベント限定酒',price:null,desc:'酒蔵イベント限定酒。',stock:true},
   {kura:'丸本酒造',name:'矢掛本陣',mai:'',place:'浅口市鴨方町',kuchi:'中口',ntan:'やや濃厚',detail:'',price:null,desc:'',stock:true},
-  {kura:'嘉美心酒造',name:'備中流大吟醸',mai:'岡山県産米',place:'浅口市寄島町',kuchi:'やや辛口',ntan:'スッキリ',detail:'',price:650,desc:'ワイングラスでおいしい日本酒アワード2022金賞・2015〜2017三年連続最高金賞受賞。端麗で上品な飲み口。',stock:true},
-  {kura:'嘉美心酒造',name:'純米 eme',mai:'岡山県産米',place:'浅口市寄島町',kuchi:'やや甘口',ntan:'スッキリ',detail:'',price:750,desc:'Kura Master2025プラチナ賞受賞。マスカット・オブ・アレキサンドリア酵母使用。フルーティーで飲みやすい。',stock:true},
-  {kura:'嘉美心酒造',name:'木陰の魚',mai:'岡山県産米',place:'浅口市寄島町',kuchi:'甘口',ntan:'スッキリ',detail:'',price:650,desc:'ワイングラスでおいしい日本酒アワード2025金賞受賞。アルコール8%。白ワインのような味わい。',stock:true},
+  {kura:'平喜酒造',name:'（近日入荷予定）',mai:'',place:'浅口市',kuchi:'',ntan:'',detail:'',price:null,desc:'',stock:true},
+  {kura:'嘉美心酒造',name:'備中流大吟醸',mai:'岡山県産米',place:'浅口市寄島町',kuchi:'やや辛口',ntan:'スッキリ',detail:'',price:650,desc:'ワイングラスでおいしい日本酒アワード2022金賞・2015〜2017三年連続最高金賞受賞。端麗で上品な飲み口。精米歩合50%。',stock:true},
+  {kura:'嘉美心酒造',name:'純米 eme',mai:'岡山県産米',place:'浅口市寄島町',kuchi:'やや甘口',ntan:'スッキリ',detail:'',price:750,desc:'Kura Master2025プラチナ賞・決勝進出銘柄。マスカット・オブ・アレキサンドリア酵母使用。アルコール13%。フルーティーで飲みやすい。',stock:true},
+  {kura:'嘉美心酒造',name:'木陰の魚',mai:'岡山県産米',place:'浅口市寄島町',kuchi:'甘口',ntan:'スッキリ',detail:'食前酒にもおすすめ',price:650,desc:'ワイングラスでおいしい日本酒アワード2025金賞受賞。アルコール8%。白ワインのような味わい。あんず・梅・イチゴを連想させる爽やかな酸味。',stock:true},
   {kura:'嘉美心酒造',name:'神心 自耕自醸',mai:'雄町',place:'浅口市寄島町',kuchi:'中口',ntan:'ややスッキリ',detail:'',price:null,desc:'矢掛町の「旬家ファーム様」と共同栽培した雄町米を使用。',stock:true},
-  {kura:'嘉美心酒造',name:'神心 オーバーフロー',mai:'雄町',place:'浅口市寄島町',kuchi:'やや甘口',ntan:'ややスッキリ',detail:'',price:null,desc:'もろみ発酵由来の炭酸ガスを極力残した活性にごり酒。爽快なガス感とミルキーなコク。',stock:true},
+  {kura:'嘉美心酒造',name:'神心 オーバーフロー',mai:'雄町',place:'浅口市寄島町',kuchi:'やや甘口',ntan:'ややスッキリ',detail:'',price:null,desc:'もろみ発酵由来の炭酸ガスを極力残した活性にごり酒。爽快なガス感とミルキーなコクと綺麗な米の旨味。',stock:true},
+  {kura:'熊屋酒造',name:'伊七 純米大吟醸 雄町',mai:'雄町',place:'倉敷市林',kuchi:'',ntan:'',detail:'',price:null,desc:'',stock:true},
   {kura:'熊屋酒造',name:'倉敷吟醸 伊七',mai:'山田錦',place:'倉敷市林',kuchi:'やや辛口',ntan:'スッキリ',detail:'',price:null,desc:'',stock:true},
   {kura:'熊屋酒造',name:'伊七 純米吟醸 雄町 ピンクラベル',mai:'雄町',place:'倉敷市林',kuchi:'中口',ntan:'スッキリ',detail:'甘ったるくはないがフルーティ',price:null,desc:'甘ったるくはないがフルーティな純米吟醸。',stock:true},
   {kura:'熊屋酒造',name:'伊七 雄町特別純米 青ラベル',mai:'雄町',place:'倉敷市林',kuchi:'やや辛口',ntan:'スッキリ',detail:'',price:null,desc:'',stock:true},
@@ -334,23 +339,24 @@ const FALLBACK=[
   {kura:'熊屋酒造',name:'郷内',mai:'朝日米',place:'倉敷市林',kuchi:'やや辛口',ntan:'ややスッキリ',detail:'',price:null,desc:'',stock:true},
   {kura:'熊屋酒造',name:'寒しぼり',mai:'',place:'倉敷市林',kuchi:'やや辛口',ntan:'スッキリ',detail:'',price:null,desc:'',stock:true},
   {kura:'菊池酒造',name:'燦然 純米吟醸 山田錦',mai:'山田錦',place:'倉敷市玉島',kuchi:'中口',ntan:'スッキリ',detail:'',price:null,desc:'',stock:true},
+  {kura:'菊池酒造',name:'燦然 純米大吟醸 雄町 50磨',mai:'雄町',place:'倉敷市玉島',kuchi:'やや甘口',ntan:'スッキリ',detail:'',price:null,desc:'',stock:false},
   {kura:'菊池酒造',name:'木村式奇跡のお酒 純米吟醸 雄町',mai:'雄町',place:'倉敷市玉島',kuchi:'甘口',ntan:'スッキリ',detail:'',price:850,desc:'',stock:true},
   {kura:'菊池酒造',name:'燦然 純米大吟醸 蔵リズム',mai:'雄町',place:'倉敷市玉島',kuchi:'やや甘口',ntan:'スッキリ',detail:'',price:1100,desc:'',stock:true},
   {kura:'菊池酒造',name:'燦然 新酒祭り 純米吟醸 雄町 生原酒',mai:'雄町',place:'倉敷市玉島',kuchi:'やや甘口',ntan:'ややスッキリ',detail:'',price:null,desc:'',stock:true},
-  {kura:'森田酒造',name:'萬年雪 荒にごり生酒 森田の白',mai:'',place:'倉敷市本町',kuchi:'やや辛口',ntan:'やや濃厚',detail:'にごりだが甘くない。にごり苦手な辛口好みの方にもおすすめ。',price:null,desc:'にごりだが甘くない。にごり苦手な辛口好みの方にもおすすめ。',stock:true},
-  {kura:'森田酒造',name:'萬年雪 純米吟醸 荒走り',mai:'',place:'倉敷市本町',kuchi:'辛口',ntan:'ややスッキリ',detail:'深い旨み、キレの良さと香り高さも抜群。',price:null,desc:'深い旨み、キレの良さと香り高さも抜群。',stock:true},
-  {kura:'森田酒造',name:'萬年雪 激辛荒走り',mai:'',place:'倉敷市本町',kuchi:'辛口',ntan:'やや濃厚',detail:'辛いだけではない、旨口の辛口。',price:null,desc:'辛いだけではない、旨口の辛口。',stock:true},
-  {kura:'十八盛酒造',name:'十八盛 雄町純米',mai:'雄町',place:'倉敷市児島',kuchi:'中口',ntan:'ややスッキリ',detail:'海のものにはベスト。',price:null,desc:'海のものにはベスト。',stock:true},
-  {kura:'十八盛酒造',name:'多賀治 純米雄町',mai:'',place:'倉敷市児島',kuchi:'中口',ntan:'ややスッキリ',detail:'フレッシュ感が持ち味。微発砲。',price:null,desc:'フレッシュ感が持ち味。微発砲。',stock:true},
-  {kura:'十八盛酒造',name:'多賀治 純米大吟醸雄町',mai:'',place:'倉敷市児島',kuchi:'中口',ntan:'スッキリ',detail:'贅沢な逸品。洗練された味。',price:null,desc:'贅沢な逸品。洗練された味。',stock:true},
-  {kura:'十八盛酒造',name:'裏多賀治 純米大吟醸 朝日',mai:'朝日米',place:'倉敷市児島',kuchi:'中口',ntan:'やや濃厚',detail:'縛り終わりに加圧したもの。濃口。',price:750,desc:'縛り終わりに加圧したもの。濃口。',stock:true},
-  {kura:'十八盛酒造',name:'ことのわ',mai:'吟のさと',place:'倉敷市児島',kuchi:'甘口',ntan:'スッキリ',detail:'口当たりよく、飲みやすい。',price:null,desc:'口当たりよく、飲みやすい。',stock:true},
-  {kura:'三冠酒造',name:'三冠 朝日純米 にごり生酒',mai:'朝日米',place:'倉敷市児島',kuchi:'やや辛口',ntan:'ややスッキリ',detail:'くどくなく、暑い日にぴったり。',price:null,desc:'くどくなく、暑い日にぴったり。',stock:true},
-  {kura:'三冠酒造',name:'生酛 和井田 一回火入',mai:'雄町',place:'倉敷市児島',kuchi:'やや辛口',ntan:'ややスッキリ',detail:'2024年雄町米の酒コンテスト熱燗部門最優秀。',price:null,desc:'2024年雄町米の酒コンテスト熱燗部門最優秀。気もとだが酸味は抑え目、冷も美味しい。',stock:true},
+  {kura:'森田酒造',name:'萬年雪 荒にごり生酒 森田の白',mai:'',place:'倉敷市本町',kuchi:'やや辛口',ntan:'やや濃厚',detail:'にごりだが甘くない。にごり苦手な辛口好みの方にもおすすめ',price:null,desc:'にごりだが甘くない。にごり苦手な辛口好みの方にもおすすめ。',stock:true},
+  {kura:'森田酒造',name:'萬年雪 純米吟醸 荒走り',mai:'',place:'倉敷市本町',kuchi:'辛口',ntan:'ややスッキリ',detail:'深い旨み、キレの良さと香り高さも抜群',price:null,desc:'深い旨み、キレの良さと香り高さも抜群。',stock:true},
+  {kura:'森田酒造',name:'萬年雪 激辛荒走り',mai:'',place:'倉敷市本町',kuchi:'辛口',ntan:'やや濃厚',detail:'辛いだけではない、旨口の辛口',price:null,desc:'辛いだけではない、旨口の辛口。',stock:true},
+  {kura:'十八盛酒造',name:'十八盛 雄町純米',mai:'雄町',place:'倉敷市児島',kuchi:'中口',ntan:'ややスッキリ',detail:'海のものにはベスト',price:null,desc:'海のものにはベスト。',stock:true},
+  {kura:'十八盛酒造',name:'多賀治 純米雄町',mai:'',place:'倉敷市児島',kuchi:'中口',ntan:'ややスッキリ',detail:'フレッシュ感が持ち味。微発砲',price:null,desc:'フレッシュ感が持ち味。微発砲。',stock:true},
+  {kura:'十八盛酒造',name:'多賀治 純米大吟醸雄町',mai:'',place:'倉敷市児島',kuchi:'中口',ntan:'スッキリ',detail:'贅沢な逸品。洗練された味',price:null,desc:'贅沢な逸品。洗練された味。',stock:true},
+  {kura:'十八盛酒造',name:'裏多賀治 純米大吟醸 朝日',mai:'朝日米',place:'倉敷市児島',kuchi:'中口',ntan:'やや濃厚',detail:'縛り終わりに加圧したもの。濃口',price:750,desc:'縛り終わりに加圧したもの。濃口。',stock:true},
+  {kura:'十八盛酒造',name:'ことのわ',mai:'吟のさと',place:'倉敷市児島',kuchi:'甘口',ntan:'スッキリ',detail:'口当たりよく、飲みやすい',price:null,desc:'口当たりよく、飲みやすい。',stock:true},
+  {kura:'三冠酒造',name:'三冠 朝日純米 にごり生酒',mai:'朝日米',place:'倉敷市児島',kuchi:'やや辛口',ntan:'ややスッキリ',detail:'くどくなく、暑い日にぴったり',price:null,desc:'くどくなく、暑い日にぴったり。',stock:true},
+  {kura:'三冠酒造',name:'生酛 和井田 一回火入',mai:'雄町',place:'倉敷市児島',kuchi:'やや辛口',ntan:'ややスッキリ',detail:'2024年雄町米の酒コンテスト熱燗部門最優秀',price:null,desc:'2024年雄町米の酒コンテスト熱燗部門最優秀。気もとだが酸味は抑え目、冷も美味しい。',stock:true},
   {kura:'三冠酒造',name:'三冠 朝日純米 無濾過生原酒',mai:'朝日米',place:'倉敷市児島',kuchi:'辛口',ntan:'スッキリ',detail:'',price:null,desc:'',stock:true},
-  {kura:'渡邊酒造本店',name:'嶺の誉 特別純米 雄町',mai:'雄町',place:'倉敷市連島',kuchi:'やや辛口',ntan:'やや濃厚',detail:'直火和釜蒸し、槽搾り。',price:null,desc:'直火和釜蒸し、槽搾り。',stock:true},
-  {kura:'渡邊酒造本店',name:'桃幻仙花',mai:'雄町',place:'倉敷市連島',kuchi:'やや辛口',ntan:'やや濃厚',detail:'直火和釜蒸し、槽搾り。麹米は山田錦、掛米は雄町。',price:null,desc:'直火和釜蒸し、槽搾り。麹米は山田錦、掛米は雄町。',stock:true},
-];
+  {kura:'渡邊酒造本店',name:'嶺の誉 特別純米 雄町',mai:'雄町',place:'倉敷市連島',kuchi:'やや辛口',ntan:'やや濃厚',detail:'直火和釜蒸し、槽搾り',price:null,desc:'直火和釜蒸し、槽搾り。',stock:true},
+  {kura:'渡邊酒造本店',name:'桃幻仙花',mai:'雄町',place:'倉敷市連島',kuchi:'やや辛口',ntan:'やや濃厚',detail:'直火和釜蒸し、槽搾り。麹米は山田錦、掛米は雄町',price:null,desc:'直火和釜蒸し、槽搾り。麹米は山田錦、掛米は雄町。',stock:true},
+].filter(d=>d.name&&d.name!=='（近日入荷予定）');
 
 let allData=[],kuraColorMap={},fKuchi='',fNtan='',fKura='',fStock=false,editingIdx=null;
 
@@ -369,7 +375,7 @@ async function loadData(){
     setGasMsg('✓ スプレッドシートからデータを取得しました','ok');
   }catch(e){useFallback();}
 }
-function useFallback(){allData=FALLBACK.filter(d=>d.name);buildColors();showContent();}
+function useFallback(){allData=[...FALLBACK];buildColors();showContent();}
 function buildColors(){const ks=[...new Set(allData.map(d=>d.kura))];kuraColorMap={};ks.forEach((k,i)=>kuraColorMap[k]=KURA_COLORS[i%KURA_COLORS.length]);}
 function showContent(){
   document.getElementById('loading').style.display='none';
@@ -380,15 +386,32 @@ function showContent(){
 function buildChips(){
   const ks=[...new Set(allData.map(d=>d.kuchi).filter(Boolean))].sort((a,b)=>KUCHI_ORDER.indexOf(a)-KUCHI_ORDER.indexOf(b));
   const ns=[...new Set(allData.map(d=>d.ntan).filter(Boolean))].sort((a,b)=>NTAN_ORDER.indexOf(a)-NTAN_ORDER.indexOf(b));
-  document.getElementById('chips-kuchi').innerHTML=['<span class="chip on" onclick="setKuchi(\'\')">すべて</span>',...ks.map(k=>`<span class="chip ck-${k}" onclick="setKuchi('${k}')">${k}</span>`)].join('');
+  document.getElementById('chips-kuchi').innerHTML=['<span class="chip on" onclick="setKuchi(\'\')">すべて</span>',...ks.map(k=>`<span class="chip" onclick="setKuchi('${k}')">${k}</span>`)].join('');
   document.getElementById('chips-ntan').innerHTML=['<span class="chip on" onclick="setNtan(\'\')">すべて</span>',...ns.map(n=>`<span class="chip" onclick="setNtan('${n}')">${n}</span>`)].join('');
 }
 function buildKuraChips(){
   const ks=[...new Set(allData.map(d=>d.kura))];
-  document.getElementById('kura-chips').innerHTML=[`<span class="kura-chip all-on" id="kc-all" onclick="setKura('')"><span class="kura-dot" style="background:#fff"></span>すべて</span>`,...ks.map(k=>`<span class="kura-chip" id="kc-${encodeURIComponent(k)}" onclick="setKura('${k.replace(/'/g,"\\'")}')"><span class="kura-dot" style="background:${kuraColorMap[k]}"></span>${k}</span>`)].join('');
+  document.getElementById('kura-chips').innerHTML=[`<span class="kura-chip all-on" id="kc-all" onclick="setKura('')"><span class="kura-dot" style="background:#fff"></span>すべて</span>`,...ks.map(k=>`<span class="kura-chip" id="kc-${encodeURIComponent(k)}" onclick="setKura('${k.replace(/'/g,"\\'").replace(/\\/g,'\\\\')}')" ><span class="kura-dot" style="background:${kuraColorMap[k]}"></span>${k}</span>`)].join('');
 }
-function setKuchi(v){fKuchi=v;document.querySelectorAll('#chips-kuchi .chip').forEach(c=>{const isAll=c.textContent==='すべて';c.classList.toggle('on',v===''?isAll:c.textContent===v);});applyFilters();}
-function setNtan(v){fNtan=v;document.querySelectorAll('#chips-ntan .chip').forEach(c=>{const isAll=c.textContent==='すべて';c.classList.toggle('on',v===''?isAll:c.textContent===v);});applyFilters();}
+function setKuchi(v){
+  fKuchi=v;
+  document.querySelectorAll('#chips-kuchi .chip').forEach(c=>{
+    c.classList.remove('on');
+    Object.keys(KUCHI_BAR).forEach(k=>c.classList.remove('ck-on-'+k));
+    const isAll=c.textContent==='すべて';
+    if(v===''?isAll:c.textContent===v){c.classList.add('on');if(v)c.classList.add('ck-on-'+v);}
+  });
+  applyFilters();
+}
+function setNtan(v){
+  fNtan=v;
+  document.querySelectorAll('#chips-ntan .chip').forEach(c=>{
+    c.classList.remove('on');
+    const isAll=c.textContent==='すべて';
+    if(v===''?isAll:c.textContent===v)c.classList.add('on');
+  });
+  applyFilters();
+}
 function setKura(v){
   fKura=v;
   document.querySelectorAll('.kura-chip').forEach(c=>{c.classList.remove('on','all-on');c.style.background='';c.style.borderColor='';c.style.color='';});
@@ -396,7 +419,12 @@ function setKura(v){
   else{const el=document.getElementById('kc-'+encodeURIComponent(v));if(el){el.classList.add('on');el.style.background=kuraColorMap[v];el.style.borderColor=kuraColorMap[v];el.style.color='#fff';}}
   applyFilters();
 }
-function toggleStock(){fStock=!fStock;const el=document.getElementById('chip-stock');el.classList.toggle('on',fStock);applyFilters();}
+function toggleStock(){
+  fStock=!fStock;
+  const el=document.getElementById('chip-stock');
+  el.classList.toggle('on',fStock);
+  applyFilters();
+}
 function applyFilters(){
   const q=document.getElementById('search-inp').value;
   const sort=document.getElementById('sort-sel').value;
@@ -429,8 +457,8 @@ function renderGrid(list){
     const kp=ki>=0?Math.round(ki/(KUCHI_ORDER.length-1)*100):0;
     const np=ni>=0?Math.round(ni/(NTAN_ORDER.length-1)*100):0;
     const kb=KUCHI_BAR[s.kuchi]||'#ccc',nb=NTAN_BAR[s.ntan]||'#ccc';
-    const txt=(s.desc||s.detail||'');
-    const sd=txt.length>120?txt.slice(0,120)+'…':txt;
+    const fullDesc=s.desc||'';
+    const sd=fullDesc.length>130?fullDesc.slice(0,130)+'…':fullDesc;
     return `<div class="sake-card">
       <div class="card-strip" style="background:${kc}"></div>
       <div class="card-body">
@@ -448,6 +476,7 @@ function renderGrid(list){
           ${s.kuchi?`<div><div class="taste-lbl">飲み口</div><div class="bar-bg"><div class="bar-fill" style="width:${kp}%;background:${kb}"></div></div></div>`:'<div></div>'}
           ${s.ntan?`<div><div class="taste-lbl">濃淡</div><div class="bar-bg"><div class="bar-fill" style="width:${np}%;background:${nb}"></div></div></div>`:'<div></div>'}
         </div>`:''}
+        ${s.detail?`<div class="card-detail">💬 ${s.detail}</div>`:''}
         ${sd?`<div class="card-desc">${sd}</div>`:''}
         ${s.place?`<div class="card-place">📍 ${s.place}</div>`:''}
       </div>
@@ -466,12 +495,7 @@ function tryLogin(){
     document.getElementById('admin-main').style.display='';
   }else{document.getElementById('pw-err').textContent='パスワードが違います';}
 }
-function adminLogout(){
-  document.getElementById('admin-lock').style.display='';
-  document.getElementById('admin-main').style.display='none';
-  document.getElementById('pw-inp').value='';
-  document.getElementById('pw-err').textContent='';
-}
+function adminLogout(){document.getElementById('admin-lock').style.display='';document.getElementById('admin-main').style.display='none';document.getElementById('pw-inp').value='';document.getElementById('pw-err').textContent='';}
 function saveGasUrl(){const v=(document.getElementById('gas-url-inp').value||'').trim();localStorage.setItem('gasUrl',v);setGasMsg(v?'✓ URLを保存しました。「テスト」で接続確認できます。':'URLをクリアしました。','ok');}
 function setGasMsg(txt,type){const el=document.getElementById('gas-msg');if(el){el.textContent=txt;el.className='gas-msg gas-'+type;}}
 function renderAdminList(){
