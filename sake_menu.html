@@ -241,7 +241,7 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
   </div>
   <div class="topbar-right">
     <span class="count-badge" id="count-badge">読み込み中…</span>
-    <button class="reload-btn" onclick="loadData()">🔄 更新</button>
+    <button class="reload-btn" onclick="loadDataFromGas()">🔄 更新</button>
   </div>
 </div>
 
@@ -428,7 +428,7 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
           <div class="gas-row">
             <input class="gas-inp" id="gas-url-inp" placeholder="https://script.google.com/macros/s/...">
             <button class="btn-sm" onclick="saveGasUrl()">💾 保存</button>
-            <button class="btn-sm" onclick="loadData()">🔄 取得テスト</button>
+            <button class="btn-sm" onclick="loadDataFromGas()">🔄 取得テスト</button>
           </div>
           <div class="gas-msg" id="gas-msg"></div>
           <div class="steps-box">
@@ -592,27 +592,29 @@ let editingIdx=null;
 let bulkSelected=new Set();
 
 // ===== DATA =====
-async function loadData(){
+function loadData(){
+  useFallback();
+}
+async function loadDataFromGas(){
   const url=localStorage.getItem('gasUrl')||'';
-  if(!url){useFallback();return;}
-  document.getElementById('loading').style.display='flex';
-  document.getElementById('menu-content').style.display='none';
+  if(!url){setMsg('gas-msg','GASのURLが設定されていません','err');return;}
+  setMsg('gas-msg','取得中…','');
   try{
     const controller=new AbortController();
-    const timer=setTimeout(()=>controller.abort(),8000);
-    const res=await fetch(url+'?action=get',{signal:controller.signal});
-    clearTimeout(timer);
-    if(!res.ok)throw new Error();
+    setTimeout(()=>controller.abort(),8000);
+    const res=await fetch(url,{signal:controller.signal});
+    if(!res.ok)throw new Error('HTTP '+res.status);
     const json=await res.json();
-    if(!Array.isArray(json)||!json.length)throw new Error();
+    if(!Array.isArray(json)||!json.length)throw new Error('データが空です');
     const saved=getSavedExtra();
     allData=json.filter(d=>d.name).map(d=>{
       const ex=saved[d.name]||{};
-      return {...d, img:ex.img||d.img||'', date:ex.date||d.date||''};
+      return {...d,img:ex.img||d.img||'',date:ex.date||d.date||''};
     });
-    buildColors();showContent();
+    buildColors();applyFilters();renderAdminList();renderBulkList();
+    document.getElementById('gas-url-inp').value=url;
     setMsg('gas-msg','✓ スプレッドシートからデータを取得しました','ok');
-  }catch(e){useFallback();}
+  }catch(e){setMsg('gas-msg','❌ 取得失敗: '+e.message,'err');}
 }
 
 function getSavedExtra(){
@@ -637,13 +639,14 @@ function showContent(){
   document.getElementById('loading').style.display='none';
   document.getElementById('menu-content').style.display='';
   buildChips();buildKuraChips();applyFilters();renderAdminList();renderBulkList();
-  document.getElementById('gas-url-inp').value=localStorage.getItem('gasUrl')||'';
+  const gasInp=document.getElementById('gas-url-inp');
+  if(gasInp)gasInp.value=localStorage.getItem('gasUrl')||'';
 }
 
 // ===== EXPORT TO SHEET =====
 async function exportToSheet(){
   const url=localStorage.getItem('gasUrl')||'';
-  if(!url){alert('先に連携設定タブでApps ScriptのURLを設定してください');return;}
+  if(!url){alert('先に「連携設定」タブでApps ScriptのURLを設定してください');switchAdminTab('sync');return;}
   setMsg('export-msg','書き出し中…','');
   try{
     const res=await fetch(url,{
@@ -694,12 +697,19 @@ function setAroma(v){
 }
 function setCat(v){
   fCat=v;
-  document.querySelectorAll('.kura-chip[id^="cat-"],.kura-chip#cat-all').forEach(c=>{c.classList.remove('on','all-on');c.style.background='';c.style.color='';c.style.borderColor='';});
-  if(v===''){const el=document.getElementById('cat-all');if(el)el.classList.add('all-on');}
-  else{const el=document.getElementById('cat-'+v);if(el){el.classList.add('on');el.style.background=var_gold();el.style.color='#fff';el.style.borderColor=var_gold();}}
+  document.querySelectorAll('#cat-chips .kura-chip').forEach(c=>{
+    c.classList.remove('on','all-on');
+    c.style.background='';c.style.color='';c.style.borderColor='';
+  });
+  if(v===''){
+    const el=document.getElementById('cat-all');
+    if(el)el.classList.add('all-on');
+  }else{
+    const el=document.getElementById('cat-'+v);
+    if(el){el.classList.add('on');el.style.background='#D4A055';el.style.color='#fff';el.style.borderColor='#D4A055';}
+  }
   applyFilters();
 }
-function var_gold(){return '#D4A055';}
 function toggleKan(){fKan=!fKan;document.getElementById('chip-kan').classList.toggle('on',fKan);applyFilters();}
   fKura=v;
   document.querySelectorAll('.kura-chip').forEach(c=>{c.classList.remove('on','all-on');c.style.background='';c.style.borderColor='';c.style.color='';});
@@ -709,9 +719,17 @@ function toggleKan(){fKan=!fKan;document.getElementById('chip-kan').classList.to
 }
 function setKura(v){
   fKura=v;
-  document.querySelectorAll('.kura-chip:not([id^="cat-"])').forEach(c=>{c.classList.remove('on','all-on');c.style.background='';c.style.borderColor='';c.style.color='';});
-  if(v===''){document.getElementById('kc-all').classList.add('all-on');}
-  else{const el=document.getElementById('kc-'+encodeURIComponent(v));if(el){el.classList.add('on');el.style.background=kuraColorMap[v];el.style.borderColor=kuraColorMap[v];el.style.color='#fff';}}
+  document.querySelectorAll('#kura-chips .kura-chip').forEach(c=>{
+    c.classList.remove('on','all-on');
+    c.style.background='';c.style.borderColor='';c.style.color='';
+  });
+  if(v===''){
+    const el=document.getElementById('kc-all');
+    if(el)el.classList.add('all-on');
+  }else{
+    const el=document.getElementById('kc-'+encodeURIComponent(v));
+    if(el){el.classList.add('on');el.style.background=kuraColorMap[v];el.style.borderColor=kuraColorMap[v];el.style.color='#fff';}
+  }
   applyFilters();
 }
 function toggleStock(){fStock=!fStock;document.getElementById('chip-stock').classList.toggle('on',fStock);applyFilters();}
@@ -830,7 +848,7 @@ function setMsg(id,txt,type){const el=document.getElementById(id);if(el){el.text
 
 // ===== ADMIN LIST =====
 function renderAdminList(){
-  document.getElementById('admin-count').textContent=`全 ${allData.length} 銘柄`;
+  const ac=document.getElementById('admin-count');if(ac)ac.textContent=`全 ${allData.length} 銘柄`;
   document.getElementById('admin-list').innerHTML=allData.map((s,i)=>{
     const kc=kuraColorMap[s.kura]||'#ccc';
     const thumb=s.img?`<div class="row-thumb"><img src="${s.img}" onerror="this.parentNode.innerHTML='🍶'"></div>`:`<div class="row-thumb">🍶</div>`;
