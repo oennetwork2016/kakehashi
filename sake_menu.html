@@ -108,6 +108,11 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
 .card-desc{font-size:12px;color:var(--text2);line-height:1.65;flex:1;}
 .card-detail{font-size:11px;color:#7A6A5A;background:#FAF6F0;border-left:3px solid var(--gold);padding:5px 10px;border-radius:0 8px 8px 0;line-height:1.5;}
 .card-footer{display:flex;justify-content:space-between;align-items:center;padding-top:4px;margin-top:auto;}
+.stock-badge-yes{font-size:10px;font-weight:600;padding:3px 8px;border-radius:99px;background:#1D9E75;color:#fff;display:inline-block;}
+.stock-badge-no{font-size:10px;font-weight:600;padding:3px 8px;border-radius:99px;background:#B03030;color:#fff;display:inline-block;}
+.img-badge-wrap{position:absolute;top:8px;left:8px;z-index:2;}
+.nostock-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.35);z-index:1;}
+.no-img-stock-wrap{padding:6px 14px 0;display:flex;}
 .card-place{font-size:11px;color:var(--text3);display:flex;align-items:center;gap:3px;}
 .card-date{font-size:10px;color:var(--text3);}
 
@@ -275,12 +280,29 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
           <div class="filter-label">濃淡</div>
           <div class="chip-row" id="chips-ntan"></div>
         </div>
-        <div class="filter-section" style="margin-bottom:0">
-          <div class="filter-label">在庫</div>
-          <div class="chip-row">
-            <span class="chip stock-chip" id="chip-stock" onclick="toggleStock()">在庫あり</span>
+        <div class="filter-section">
+          <div class="filter-label">香り</div>
+          <div class="chip-row" id="chips-aroma"></div>
+        </div>
+        <div class="filter-section" style="margin-bottom:0;display:flex;gap:20px;flex-wrap:wrap;">
+          <div>
+            <div class="filter-label">在庫</div>
+            <div class="chip-row">
+              <span class="chip stock-chip" id="chip-stock" onclick="toggleStock()">在庫あり</span>
+            </div>
+          </div>
+          <div>
+            <div class="filter-label">提供方法</div>
+            <div class="chip-row">
+              <span class="chip" id="chip-kan" onclick="toggleKan()">🔥 熱燗あり</span>
+            </div>
           </div>
         </div>
+      </div>
+      <!-- カテゴリフィルター -->
+      <div class="kura-legend">
+        <div class="kura-legend-title">カテゴリで絞り込む</div>
+        <div class="kura-chips" id="cat-chips"></div>
       </div>
       <div class="kura-legend">
         <div class="kura-legend-title">酒蔵で絞り込む</div>
@@ -467,13 +489,29 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
             <div class="fg"><label>濃淡</label>
               <select id="f-ntan"><option value="">—</option><option>スッキリ</option><option>ややスッキリ</option><option>やや濃厚</option><option>濃厚</option></select>
             </div>
+            <div class="fg"><label>香り</label>
+              <select id="f-aroma"><option value="">—</option><option>フルーティ</option><option>さわやか</option><option>フルーティ・さわやか</option><option>穏やか</option><option>芳醇</option></select>
+            </div>
             <div class="fg"><label>グラス価格（円）</label><input type="number" id="f-price" placeholder="850"></div>
             <div class="fg"><label>仕入れ日</label><input type="date" id="f-date"></div>
             <div class="fg"><label>産地</label><input id="f-place" placeholder="例：岡山市"></div>
+            <div class="fg full"><label>カテゴリ（複数選択可）</label>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;padding:8px 0;">
+                <label style="display:flex;align-items:center;gap:5px;font-size:13px;font-weight:400;cursor:pointer;"><input type="checkbox" id="fc-junmai" style="width:15px;height:15px;accent-color:var(--gold)"> 純米酒</label>
+                <label style="display:flex;align-items:center;gap:5px;font-size:13px;font-weight:400;cursor:pointer;"><input type="checkbox" id="fc-daiginjo" style="width:15px;height:15px;accent-color:var(--gold)"> 大吟醸</label>
+                <label style="display:flex;align-items:center;gap:5px;font-size:13px;font-weight:400;cursor:pointer;"><input type="checkbox" id="fc-genshu" style="width:15px;height:15px;accent-color:var(--gold)"> 原酒</label>
+                <label style="display:flex;align-items:center;gap:5px;font-size:13px;font-weight:400;cursor:pointer;"><input type="checkbox" id="fc-nigori" style="width:15px;height:15px;accent-color:var(--gold)"> にごり</label>
+                <label style="display:flex;align-items:center;gap:5px;font-size:13px;font-weight:400;cursor:pointer;"><input type="checkbox" id="fc-ginjo" style="width:15px;height:15px;accent-color:var(--gold)"> 吟醸</label>
+                <label style="display:flex;align-items:center;gap:5px;font-size:13px;font-weight:400;cursor:pointer;"><input type="checkbox" id="fc-nama" style="width:15px;height:15px;accent-color:var(--gold)"> 生酒</label>
+              </div>
+            </div>
             <div class="fg full"><label>スタッフメモ</label><input id="f-detail" placeholder="おすすめポイント、ペアリングなど"></div>
             <div class="fg full"><label>説明文</label><textarea id="f-desc"></textarea></div>
           </div>
-          <div class="cb-row"><input type="checkbox" id="f-stock" checked><label for="f-stock">在庫あり</label></div>
+          <div style="display:flex;gap:20px;margin-bottom:14px;flex-wrap:wrap;">
+            <div class="cb-row" style="margin-bottom:0"><input type="checkbox" id="f-stock" checked><label for="f-stock">在庫あり</label></div>
+            <div class="cb-row" style="margin-bottom:0"><input type="checkbox" id="f-kan"><label for="f-kan">🔥 熱燗で提供可能</label></div>
+          </div>
           <button class="btn-primary" onclick="saveForm()">💾 保存する</button>
         </div>
       </div>
@@ -483,9 +521,11 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
 
 <script>
 const ADMIN_PW='sake2024';
+const CLOUD_NAME='YOUR_CLOUD_NAME'; // ← Cloudinary設定後にここを書き換える
 const GITHUB_BASE='https://oennetwork2016.github.io/kakehashi/';
 const KUCHI_ORDER=['甘口','やや甘口','中口','やや辛口','辛口'];
 const NTAN_ORDER=['スッキリ','ややスッキリ','やや濃厚','濃厚'];
+const CATEGORIES=['純米酒','大吟醸','吟醸','原酒','にごり','生酒'];
 const KURA_COLORS=['#E8608A','#7C6FD4','#2BAE82','#E09040','#5BB8D4','#C05090','#4488CC','#88AA44','#CC7733','#7755BB','#44AAAA','#DD5555','#AA6633','#558844'];
 const KUCHI_BAR={甘口:'#D4537E',やや甘口:'#E07090',中口:'#7C6FD4',やや辛口:'#2BAE82',辛口:'#3A8CCA'};
 const NTAN_BAR={スッキリ:'#5BB8D4',ややスッキリ:'#7EC8A0',やや濃厚:'#D4A055',濃厚:'#C07040'};
@@ -540,7 +580,8 @@ const FALLBACK=[
 ];
 
 let allData=[],kuraColorMap={};
-let fKuchi='',fNtan='',fKura='',fStock=false,editingIdx=null;
+let fKuchi='',fNtan='',fKura='',fStock=false,fKan=false,fAroma='',fCat='';
+let editingIdx=null;
 let bulkSelected=new Set();
 
 // ===== DATA =====
@@ -612,8 +653,15 @@ async function exportToSheet(){
 function buildChips(){
   const ks=[...new Set(allData.map(d=>d.kuchi).filter(Boolean))].sort((a,b)=>KUCHI_ORDER.indexOf(a)-KUCHI_ORDER.indexOf(b));
   const ns=[...new Set(allData.map(d=>d.ntan).filter(Boolean))].sort((a,b)=>NTAN_ORDER.indexOf(a)-NTAN_ORDER.indexOf(b));
+  const as=[...new Set(allData.map(d=>d.aroma).filter(Boolean))];
   document.getElementById('chips-kuchi').innerHTML=['<span class="chip on" onclick="setKuchi(\'\')">すべて</span>',...ks.map(k=>`<span class="chip" onclick="setKuchi('${k}')">${k}</span>`)].join('');
   document.getElementById('chips-ntan').innerHTML=['<span class="chip on" onclick="setNtan(\'\')">すべて</span>',...ns.map(n=>`<span class="chip" onclick="setNtan('${n}')">${n}</span>`)].join('');
+  document.getElementById('chips-aroma').innerHTML=['<span class="chip on" onclick="setAroma(\'\')">すべて</span>',...as.map(a=>`<span class="chip" onclick="setAroma('${a}')">🌸 ${a}</span>`)].join('');
+  // カテゴリチップ
+  document.getElementById('cat-chips').innerHTML=[
+    `<span class="kura-chip all-on" id="cat-all" onclick="setCat('')"><span class="kura-dot" style="background:#D4A055"></span>すべて</span>`,
+    ...CATEGORIES.map(c=>`<span class="kura-chip" id="cat-${c}" onclick="setCat('${c}')"><span class="kura-dot" style="background:#D4A055"></span>${c}</span>`)
+  ].join('');
 }
 function buildKuraChips(){
   const ks=[...new Set(allData.map(d=>d.kura))];
@@ -631,9 +679,28 @@ function setNtan(v){
   fNtan=v;
   document.querySelectorAll('#chips-ntan .chip').forEach(c=>{c.classList.remove('on');const isAll=c.textContent==='すべて';if(v===''?isAll:c.textContent===v)c.classList.add('on');});applyFilters();
 }
-function setKura(v){
+function setAroma(v){
+  fAroma=v;
+  document.querySelectorAll('#chips-aroma .chip').forEach(c=>{c.classList.remove('on');const isAll=c.textContent==='すべて';if(v===''?isAll:c.textContent.includes(v)&&v!=='')c.classList.add('on');if(v===''&&isAll)c.classList.add('on');});applyFilters();
+}
+function setCat(v){
+  fCat=v;
+  document.querySelectorAll('.kura-chip[id^="cat-"],.kura-chip#cat-all').forEach(c=>{c.classList.remove('on','all-on');c.style.background='';c.style.color='';c.style.borderColor='';});
+  if(v===''){const el=document.getElementById('cat-all');if(el)el.classList.add('all-on');}
+  else{const el=document.getElementById('cat-'+v);if(el){el.classList.add('on');el.style.background=var_gold();el.style.color='#fff';el.style.borderColor=var_gold();}}
+  applyFilters();
+}
+function var_gold(){return '#D4A055';}
+function toggleKan(){fKan=!fKan;document.getElementById('chip-kan').classList.toggle('on',fKan);applyFilters();}
   fKura=v;
   document.querySelectorAll('.kura-chip').forEach(c=>{c.classList.remove('on','all-on');c.style.background='';c.style.borderColor='';c.style.color='';});
+  if(v===''){document.getElementById('kc-all').classList.add('all-on');}
+  else{const el=document.getElementById('kc-'+encodeURIComponent(v));if(el){el.classList.add('on');el.style.background=kuraColorMap[v];el.style.borderColor=kuraColorMap[v];el.style.color='#fff';}}
+  applyFilters();
+}
+function setKura(v){
+  fKura=v;
+  document.querySelectorAll('.kura-chip:not([id^="cat-"])').forEach(c=>{c.classList.remove('on','all-on');c.style.background='';c.style.borderColor='';c.style.color='';});
   if(v===''){document.getElementById('kc-all').classList.add('all-on');}
   else{const el=document.getElementById('kc-'+encodeURIComponent(v));if(el){el.classList.add('on');el.style.background=kuraColorMap[v];el.style.borderColor=kuraColorMap[v];el.style.color='#fff';}}
   applyFilters();
@@ -645,9 +712,12 @@ function applyFilters(){
   const sort=document.getElementById('sort-sel').value;
   let list=allData.filter(s=>{
     if(fStock&&!s.stock)return false;
+    if(fKan&&!s.kan)return false;
     if(fKuchi&&s.kuchi!==fKuchi)return false;
     if(fNtan&&s.ntan!==fNtan)return false;
     if(fKura&&s.kura!==fKura)return false;
+    if(fAroma&&s.aroma!==fAroma)return false;
+    if(fCat&&!(s.categories||[]).includes(fCat))return false;
     if(q&&![s.name,s.kura,s.mai,s.place,s.desc,s.detail].some(f=>(f||'').includes(q)))return false;
     return true;
   });
@@ -678,10 +748,13 @@ function renderGrid(list){
     const np=ni>=0?Math.round(ni/(NTAN_ORDER.length-1)*100):0;
     const kb=KUCHI_BAR[s.kuchi]||'#ccc',nb=NTAN_BAR[s.ntan]||'#ccc';
     const txt=s.desc||'';
-    const sd=txt.length>120?txt.slice(0,120)+'…':txt;
+    const sd=txt.length>60?txt.slice(0,60)+'…':txt;
+    const stockBadge=s.stock
+      ?`<span class="stock-badge-yes">在庫あり</span>`
+      :`<span class="stock-badge-no">在庫なし</span>`;
     const imgHtml=s.img
-      ?`<div class="card-img-wrap"><img class="card-img" src="${s.img}" alt="${s.name}" onerror="this.parentNode.innerHTML='<div class=card-img-placeholder>🍶</div>'"></div>`
-      :'';
+      ?`<div class="card-img-wrap"><img class="card-img" src="${s.img}" alt="${s.name}" onerror="this.parentNode.innerHTML='<div class=card-img-placeholder>🍶</div>'"><div class="img-badge-wrap">${stockBadge}</div>${!s.stock?'<div class="nostock-overlay"></div>':''}</div>`
+      :`<div class="no-img-stock-wrap">${stockBadge}</div>`;
     const dateStr=s.date?`<span class="card-date">仕入 ${s.date}</span>`:'';
     return `<div class="sake-card">
       ${imgHtml}
@@ -694,9 +767,12 @@ function renderGrid(list){
         <div class="tags">
           ${s.kuchi?`<span class="tag tk-${s.kuchi}">${s.kuchi}</span>`:''}
           ${s.ntan?`<span class="tag tk-ntan">${s.ntan}</span>`:''}
+          ${s.aroma?`<span class="tag" style="background:#FEF3DC;color:#7A5010;">🌸 ${s.aroma}</span>`:''}
+          ${s.kan?`<span class="tag" style="background:#FEE8E8;color:#8B1A1A;">🔥 熱燗</span>`:''}
           ${s.mai?`<span class="tag tk-mai">🌾 ${s.mai}</span>`:''}
-          ${!s.stock?'<span class="tag tk-nostock">在庫なし</span>':''}
+
         </div>
+        ${(s.categories&&s.categories.length)?`<div style="display:flex;gap:4px;flex-wrap:wrap;">${s.categories.map(c=>`<span style="font-size:10px;padding:2px 7px;border-radius:4px;background:#F0EDE8;color:#5A4A3A;font-weight:500;">${c}</span>`).join('')}</div>`:''}
         ${(s.kuchi||s.ntan)?`<div class="taste-row">
           ${s.kuchi?`<div><div class="taste-lbl">飲み口</div><div class="bar-bg"><div class="bar-fill" style="width:${kp}%;background:${kb}"></div></div></div>`:'<div></div>'}
           ${s.ntan?`<div><div class="taste-lbl">濃淡</div><div class="bar-bg"><div class="bar-fill" style="width:${np}%;background:${nb}"></div></div></div>`:'<div></div>'}
@@ -861,10 +937,14 @@ function showForm(idx){
   document.getElementById('admin-form-view').style.display='';
   document.getElementById('form-title').textContent=idx===null?'新規追加':'銘柄を編集';
   const s=idx===null?{}:allData[idx];
-  ['name','kura','mai','kuchi','ntan','place','detail','desc'].forEach(k=>document.getElementById('f-'+k).value=s[k]||'');
+  ['name','kura','mai','kuchi','ntan','aroma','place','detail','desc'].forEach(k=>document.getElementById('f-'+k).value=s[k]||'');
   document.getElementById('f-price').value=s.price||'';
   document.getElementById('f-date').value=s.date||'';
   document.getElementById('f-stock').checked=s.stock!==false;
+  document.getElementById('f-kan').checked=!!s.kan;
+  const cats=s.categories||[];
+  const catMap={junmai:'純米酒',daiginjo:'大吟醸',genshu:'原酒',nigori:'にごり',ginjo:'吟醸',nama:'生酒'};
+  Object.entries(catMap).forEach(([id,label])=>{document.getElementById('fc-'+id).checked=cats.includes(label);});
   const imgVal=s.img||'';
   document.getElementById('f-img').value=imgVal;
   previewImg(imgVal);
@@ -882,17 +962,22 @@ function previewImg(url){
 function saveForm(){
   const name=document.getElementById('f-name').value.trim();
   if(!name){alert('銘柄名を入力してください');return;}
+  const catMap={junmai:'純米酒',daiginjo:'大吟醸',genshu:'原酒',nigori:'にごり',ginjo:'吟醸',nama:'生酒'};
+  const categories=Object.entries(catMap).filter(([id])=>document.getElementById('fc-'+id).checked).map(([,v])=>v);
   const d={
     name,kura:document.getElementById('f-kura').value.trim(),
     mai:document.getElementById('f-mai').value.trim(),
     kuchi:document.getElementById('f-kuchi').value,
     ntan:document.getElementById('f-ntan').value,
+    aroma:document.getElementById('f-aroma').value,
     price:parseInt(document.getElementById('f-price').value)||null,
     date:document.getElementById('f-date').value,
     place:document.getElementById('f-place').value.trim(),
     detail:document.getElementById('f-detail').value.trim(),
     desc:document.getElementById('f-desc').value.trim(),
     stock:document.getElementById('f-stock').checked,
+    kan:document.getElementById('f-kan').checked,
+    categories,
     img:document.getElementById('f-img').value.trim(),
   };
   if(editingIdx===null)allData.push(d);else allData[editingIdx]=d;
