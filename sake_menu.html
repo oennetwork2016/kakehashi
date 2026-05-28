@@ -446,14 +446,17 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
           <div class="gas-msg" id="export-msg" style="margin-top:8px"></div>
         </div>
         <div class="panel">
-          <div class="panel-title">🖼️ 画像のGitHub管理について</div>
-          <div class="panel-sub">画像はGitHubリポジトリにアップロードして管理します。</div>
+          <div class="panel-title">🖼️ 画像アップロード（Cloudinary連携済み）</div>
+          <div class="panel-sub">銘柄の編集画面から「📷 タップして端末から画像を選択」を押すだけで自動アップロードされます。</div>
           <div class="steps-box">
-            <div class="steps-title">画像アップロード手順</div>
-            <div class="step"><div class="step-n">1</div><div class="step-t">GitHubの <code>kakehashi</code> リポジトリを開く</div></div>
-            <div class="step"><div class="step-n">2</div><div class="step-t">「Add file」→「Upload files」をクリック</div></div>
-            <div class="step"><div class="step-n">3</div><div class="step-t">画像ファイルをアップロード（例：<code>dassai.jpg</code>）</div></div>
-            <div class="step"><div class="step-n">4</div><div class="step-t">銘柄編集画面の「画像URL」に <code>https://oennetwork2016.github.io/kakehashi/画像ファイル名</code> を入力</div></div>
+            <div class="steps-title">画像登録の手順</div>
+            <div class="step"><div class="step-n">1</div><div class="step-t">管理画面で銘柄を「✏️ 編集」</div></div>
+            <div class="step"><div class="step-n">2</div><div class="step-t">「📷 タップして端末から画像を選択」をクリック</div></div>
+            <div class="step"><div class="step-n">3</div><div class="step-t">端末の写真やカメラから画像を選ぶ</div></div>
+            <div class="step"><div class="step-n">4</div><div class="step-t">自動でCloudinaryにアップロードされて画像が登録完了！</div></div>
+          </div>
+          <div style="margin-top:10px;font-size:11px;color:var(--text3);">
+            Cloud name: <code>dh1igbzzc</code> / Preset: <code>sakemenu_kakehashi</code>
           </div>
         </div>
       </div>
@@ -468,15 +471,18 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
           <!-- 画像 -->
           <div style="margin-bottom:16px">
             <div style="font-size:11px;color:var(--text3);font-weight:600;margin-bottom:8px;">🖼️ 商品画像</div>
-            <div id="img-preview-wrap" style="display:none;margin-bottom:10px">
+            <div id="img-preview-wrap" style="display:none;margin-bottom:10px;position:relative;">
               <img id="img-preview" class="img-preview" src="" alt="">
+              <button onclick="clearImg()" style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.5);color:#fff;border:none;border-radius:50%;width:26px;height:26px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;">✕</button>
             </div>
-            <div style="font-size:11px;color:var(--text3);margin-bottom:6px;">GitHubにアップした画像のURLを入力：</div>
-            <input class="github-url-inp" id="f-img" placeholder="https://oennetwork2016.github.io/kakehashi/画像ファイル名.jpg" oninput="previewImg(this.value)">
-            <div class="img-hint">
-              💡 画像はGitHubの <strong>kakehashi</strong> リポジトリにアップロードしてください。<br>
-              アップ後のURL例：<code>https://oennetwork2016.github.io/kakehashi/dassai.jpg</code>
+            <div id="img-upload-area" class="img-upload-area" onclick="document.getElementById('img-file-input').click()">
+              <div style="font-size:28px;margin-bottom:6px;">📷</div>
+              <div class="img-upload-txt">タップして端末から画像を選択</div>
+              <div class="img-upload-sub">JPG・PNG・WEBP対応 / Cloudinaryに自動アップロード</div>
             </div>
+            <input type="file" id="img-file-input" accept="image/*" style="display:none" onchange="uploadToCloudinary(this)">
+            <div id="img-upload-msg" style="font-size:12px;margin-top:6px;display:none;"></div>
+            <input type="hidden" id="f-img">
           </div>
 
           <div class="form-grid">
@@ -521,7 +527,8 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
 
 <script>
 const ADMIN_PW='sake2024';
-const CLOUD_NAME='YOUR_CLOUD_NAME'; // ← Cloudinary設定後にここを書き換える
+const CLOUD_NAME='dh1igbzzc';
+const UPLOAD_PRESET='sakemenu_kakehashi';
 const GITHUB_BASE='https://oennetwork2016.github.io/kakehashi/';
 const KUCHI_ORDER=['甘口','やや甘口','中口','やや辛口','辛口'];
 const NTAN_ORDER=['スッキリ','ややスッキリ','やや濃厚','濃厚'];
@@ -955,9 +962,46 @@ function showAdminList(){
 }
 function previewImg(url){
   const wrap=document.getElementById('img-preview-wrap');
+  const area=document.getElementById('img-upload-area');
   const img=document.getElementById('img-preview');
-  if(url&&url.trim()){wrap.style.display='';img.src=url;}
-  else{wrap.style.display='none';img.src='';}
+  if(url&&url.trim()){
+    wrap.style.display='';img.src=url;
+    if(area)area.style.display='none';
+  }else{
+    wrap.style.display='none';img.src='';
+    if(area)area.style.display='';
+  }
+}
+function clearImg(){
+  document.getElementById('f-img').value='';
+  previewImg('');
+  document.getElementById('img-file-input').value='';
+}
+async function uploadToCloudinary(input){
+  const file=input.files[0];
+  if(!file)return;
+  const msg=document.getElementById('img-upload-msg');
+  const area=document.getElementById('img-upload-area');
+  msg.style.display='';msg.style.color='#8A8680';msg.textContent='📤 アップロード中…';
+  area.style.opacity='0.5';area.style.pointerEvents='none';
+  try{
+    const fd=new FormData();
+    fd.append('file',file);
+    fd.append('upload_preset',UPLOAD_PRESET);
+    const res=await fetch('https://api.cloudinary.com/v1_1/'+CLOUD_NAME+'/image/upload',{method:'POST',body:fd});
+    const data=await res.json();
+    if(data.secure_url){
+      document.getElementById('f-img').value=data.secure_url;
+      previewImg(data.secure_url);
+      msg.style.color='#1A5C3A';msg.textContent='✓ アップロード完了！';
+      setTimeout(()=>{msg.style.display='none';},2000);
+    }else{
+      throw new Error(data.error?.message||'Upload failed');
+    }
+  }catch(e){
+    msg.style.color='#B03030';msg.textContent='❌ エラー: '+e.message;
+    area.style.opacity='1';area.style.pointerEvents='';
+  }
 }
 function saveForm(){
   const name=document.getElementById('f-name').value.trim();
