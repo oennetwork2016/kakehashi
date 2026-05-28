@@ -19,6 +19,8 @@
 }
 body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 ::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-thumb{background:#D0CCCA;border-radius:2px;}
+
+/* TOPBAR */
 .topbar{background:var(--black);color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
 .logo{display:flex;align-items:center;gap:12px;}
 .logo-mark{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;font-size:20px;}
@@ -26,33 +28,26 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
 .logo-en{font-size:10px;color:rgba(255,255,255,0.45);letter-spacing:0.15em;margin-top:2px;}
 .topbar-right{display:flex;align-items:center;gap:8px;}
 .count-badge{font-size:11px;padding:4px 10px;border-radius:99px;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.8);}
-.reload-btn{font-size:11px;padding:4px 10px;border-radius:99px;cursor:pointer;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.6);border:0.5px solid rgba(255,255,255,0.2);display:flex;align-items:center;gap:4px;}
+.reload-btn{font-size:11px;padding:5px 12px;border-radius:99px;cursor:pointer;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.6);border:0.5px solid rgba(255,255,255,0.2);display:flex;align-items:center;gap:4px;}
 .reload-btn:hover{background:rgba(255,255,255,0.18);}
+
+/* TABS */
 .tabs{background:var(--black);border-bottom:1px solid rgba(255,255,255,0.08);display:flex;padding:0 20px;}
 .tab{padding:10px 18px;font-size:13px;cursor:pointer;border-bottom:2px solid transparent;color:rgba(255,255,255,0.4);display:flex;align-items:center;gap:5px;transition:color 0.15s;}
 .tab.on{color:rgba(255,255,255,0.95);border-bottom-color:var(--gold);}
+
 .body{padding:18px 20px 60px;}
+
+/* LOADING */
 .loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;gap:16px;}
 .spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
 .loading-txt{font-size:13px;color:var(--text3);}
-.gas-banner{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px;}
-.gas-title{font-size:14px;font-weight:600;margin-bottom:6px;}
-.gas-sub{font-size:12px;color:var(--text3);line-height:1.7;margin-bottom:14px;}
-.gas-row{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
-.gas-inp{flex:1;min-width:200px;padding:9px 12px;font-size:12px;border:1px solid var(--border2);border-radius:8px;background:#FAF9F7;outline:none;font-family:monospace;}
-.gas-inp:focus{border-color:var(--gold);background:var(--white);}
-.gas-msg{font-size:12px;margin-top:6px;}
-.gas-ok{color:var(--teal-dark);}.gas-err{color:var(--red);}
-.steps-box{background:#FAF9F7;border-radius:10px;padding:12px 14px;margin-top:12px;}
-.steps-title{font-size:11px;font-weight:600;color:var(--text3);margin-bottom:8px;}
-.step{display:flex;gap:8px;align-items:flex-start;padding:4px 0;}
-.step-n{width:20px;height:20px;border-radius:50%;flex-shrink:0;background:var(--gold-light);color:#7A5010;font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;}
-.step-t{font-size:12px;color:var(--text3);line-height:1.6;}
-.step-t code{background:#EDE9E0;padding:1px 5px;border-radius:4px;font-size:11px;}
+
+/* FILTER */
 .filter-wrap{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:14px;}
 .search-row{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
-.search-inp{flex:1;min-width:200px;padding:9px 14px;font-size:14px;border:1px solid var(--border2);border-radius:10px;background:#FAF9F7;outline:none;}
+.search-inp{flex:1;min-width:180px;padding:9px 14px;font-size:14px;border:1px solid var(--border2);border-radius:10px;background:#FAF9F7;outline:none;}
 .search-inp:focus{border-color:var(--gold);background:var(--white);}
 .sort-sel{padding:9px 12px;font-size:13px;border:1px solid var(--border2);border-radius:10px;background:#FAF9F7;outline:none;cursor:pointer;}
 .filter-section{margin-bottom:10px;}
@@ -67,21 +62,29 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
 .ck-on-やや辛口{background:var(--teal-bg)!important;color:var(--teal-dark)!important;border-color:var(--teal)!important;}
 .ck-on-辛口{background:var(--blue-bg)!important;color:var(--blue-dark)!important;border-color:var(--blue)!important;}
 .stock-chip.on{background:#E8F5EE!important;color:var(--teal-dark)!important;border-color:var(--teal)!important;}
+
+/* KURA LEGEND */
 .kura-legend{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:14px 16px;margin-bottom:14px;}
 .kura-legend-title{font-size:11px;font-weight:600;color:var(--text3);margin-bottom:10px;}
 .kura-chips{display:flex;gap:6px;flex-wrap:wrap;}
 .kura-chip{font-size:12px;padding:5px 12px;border-radius:99px;cursor:pointer;display:flex;align-items:center;gap:5px;border:1px solid var(--border);background:#FAF9F7;color:var(--text);transition:all 0.12s;user-select:none;}
 .kura-chip.all-on{background:var(--black);color:#fff;border-color:var(--black);}
 .kura-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+
 .shd{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
 .slbl{font-size:13px;color:var(--text3);}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px;}
+
+/* GRID - 画像対応カード */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
 .sake-card{background:var(--white);border:1px solid var(--border);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;transition:border-color 0.15s,transform 0.15s;}
 .sake-card:hover{border-color:var(--gold);transform:translateY(-1px);}
+.card-img-wrap{position:relative;width:100%;padding-top:56%;background:#F5F2EE;overflow:hidden;}
+.card-img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;}
+.card-img-placeholder{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:40px;color:#D0CCCA;}
 .card-strip{height:4px;}
-.card-body{padding:16px;flex:1;display:flex;flex-direction:column;gap:10px;}
+.card-body{padding:14px;flex:1;display:flex;flex-direction:column;gap:8px;}
 .card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
-.card-name{font-size:15px;font-weight:600;color:var(--text);line-height:1.4;margin-bottom:4px;}
+.card-name{font-size:15px;font-weight:600;color:var(--text);line-height:1.35;margin-bottom:3px;}
 .card-kura{font-size:11px;color:var(--text3);display:flex;align-items:center;gap:4px;}
 .kura-dot-sm{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
 .price-wrap{text-align:right;flex-shrink:0;}
@@ -98,22 +101,32 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
 .tk-ntan{background:#F2F0EC;color:var(--text2);}
 .tk-mai{background:#EEF0EC;color:#3A5030;}
 .tk-nostock{background:#F5F0EC;color:#9A8A78;}
-.taste-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.taste-row{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
 .taste-lbl{font-size:10px;color:var(--text3);margin-bottom:3px;}
 .bar-bg{height:4px;background:#F0EDE8;border-radius:99px;overflow:hidden;}
 .bar-fill{height:100%;border-radius:99px;}
-.card-desc{font-size:12px;color:var(--text2);line-height:1.7;flex:1;}
-.card-detail{font-size:11px;color:#7A6A5A;background:#FAF6F0;border-left:3px solid var(--gold);padding:6px 10px;border-radius:0 8px 8px 0;line-height:1.5;}
-.card-place{font-size:11px;color:var(--text3);display:flex;align-items:center;gap:3px;margin-top:auto;padding-top:4px;}
+.card-desc{font-size:12px;color:var(--text2);line-height:1.65;flex:1;}
+.card-detail{font-size:11px;color:#7A6A5A;background:#FAF6F0;border-left:3px solid var(--gold);padding:5px 10px;border-radius:0 8px 8px 0;line-height:1.5;}
+.card-footer{display:flex;justify-content:space-between;align-items:center;padding-top:4px;margin-top:auto;}
+.card-place{font-size:11px;color:var(--text3);display:flex;align-items:center;gap:3px;}
+.card-date{font-size:10px;color:var(--text3);}
+
 .empty{padding:60px 20px;text-align:center;color:var(--text3);}
 .empty-icon{font-size:36px;margin-bottom:10px;}
-.btn-primary{background:var(--gold);color:#fff;border:none;border-radius:8px;padding:9px 18px;font-size:13px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:background 0.15s;}
+
+/* BUTTONS */
+.btn-primary{background:var(--gold);color:#fff;border:none;border-radius:8px;padding:9px 16px;font-size:13px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:background 0.15s;}
 .btn-primary:hover{background:var(--gold-dark);}
+.btn-success{background:#1D9E75;color:#fff;border:none;border-radius:8px;padding:9px 16px;font-size:13px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:5px;}
+.btn-success:hover{background:#0F6E56;}
+.btn-danger-solid{background:var(--red);color:#fff;border:none;border-radius:8px;padding:9px 16px;font-size:13px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:5px;}
 .btn-sm{font-size:12px;padding:6px 12px;border-radius:8px;cursor:pointer;border:1px solid var(--border2);background:var(--white);color:var(--text2);display:inline-flex;align-items:center;gap:4px;transition:all 0.12s;white-space:nowrap;}
 .btn-sm:hover{background:#F5F2EE;}
 .btn-danger{color:var(--red);border-color:#EABFBF;}
 .btn-danger:hover{background:var(--red-bg);}
 .btn-full{width:100%;justify-content:center;}
+
+/* LOCK */
 .lock-wrap{display:flex;flex-direction:column;align-items:center;padding:60px 20px;}
 .lock-card{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:32px;max-width:320px;width:100%;display:flex;flex-direction:column;gap:14px;align-items:center;}
 .lock-icon{font-size:32px;}
@@ -122,17 +135,62 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
 .lock-inp{width:100%;padding:10px 14px;font-size:14px;border:1px solid var(--border2);border-radius:10px;background:#FAF9F7;outline:none;}
 .lock-inp:focus{border-color:var(--gold);background:var(--white);}
 .err-txt{font-size:12px;color:var(--red);}
-.admin-list{display:flex;flex-direction:column;gap:8px;}
-.row-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:12px;}
+
+/* ADMIN TABS */
+.admin-tabs{display:flex;gap:2px;background:var(--border);border-radius:10px;padding:2px;margin-bottom:16px;}
+.admin-tab{flex:1;padding:8px;font-size:13px;text-align:center;cursor:pointer;border-radius:8px;color:var(--text3);transition:all 0.15s;}
+.admin-tab.on{background:var(--white);color:var(--text);font-weight:500;}
+
+/* GAS PANEL */
+.panel{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:14px;}
+.panel-title{font-size:14px;font-weight:600;margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+.panel-sub{font-size:12px;color:var(--text3);line-height:1.7;margin-bottom:12px;}
+.gas-row{display:flex;gap:8px;flex-wrap:wrap;}
+.gas-inp{flex:1;min-width:180px;padding:9px 12px;font-size:12px;border:1px solid var(--border2);border-radius:8px;background:#FAF9F7;outline:none;font-family:monospace;}
+.gas-inp:focus{border-color:var(--gold);background:var(--white);}
+.gas-msg{font-size:12px;margin-top:8px;}
+.gas-ok{color:var(--teal-dark);}.gas-err{color:var(--red);}
+.steps-box{background:#FAF9F7;border-radius:10px;padding:12px 14px;margin-top:12px;}
+.steps-title{font-size:11px;font-weight:600;color:var(--text3);margin-bottom:8px;}
+.step{display:flex;gap:8px;align-items:flex-start;padding:4px 0;}
+.step-n{width:20px;height:20px;border-radius:50%;flex-shrink:0;background:var(--gold-light);color:#7A5010;font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;}
+.step-t{font-size:12px;color:var(--text3);line-height:1.6;}
+.step-t code{background:#EDE9E0;padding:1px 5px;border-radius:4px;font-size:11px;}
+
+/* BULK EDIT */
+.bulk-bar{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.bulk-label{font-size:13px;font-weight:500;flex-shrink:0;}
+.bulk-sel-count{font-size:12px;color:var(--text3);}
+.bulk-actions{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto;}
+.bulk-panel{background:#FFF8E8;border:1px solid #F0D890;border-radius:16px;padding:16px;margin-bottom:14px;}
+.bulk-panel-title{font-size:13px;font-weight:600;margin-bottom:12px;}
+.bulk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:14px;}
+.bulk-fg{display:flex;flex-direction:column;gap:4px;}
+.bulk-fg label{font-size:11px;color:var(--text3);font-weight:600;}
+.bulk-fg input,.bulk-fg select{padding:7px 10px;font-size:13px;border:1px solid var(--border2);border-radius:8px;background:var(--white);outline:none;font-family:inherit;}
+.bulk-fg input:focus,.bulk-fg select:focus{border-color:var(--gold);}
+.bulk-check-col{display:flex;align-items:center;gap:8px;}
+.bulk-check-col input{width:16px;height:16px;accent-color:var(--gold);}
+
+/* ADMIN LIST */
+.admin-list-wrap{display:flex;flex-direction:column;gap:8px;}
+.row-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:10px;}
+.row-card.selected{border-color:var(--gold);background:#FFFDF5;}
+.row-check{width:18px;height:18px;accent-color:var(--gold);cursor:pointer;flex-shrink:0;}
+.row-thumb{width:48px;height:48px;border-radius:8px;object-fit:cover;flex-shrink:0;background:#F5F2EE;display:flex;align-items:center;justify-content:center;font-size:20px;overflow:hidden;}
+.row-thumb img{width:100%;height:100%;object-fit:cover;}
 .row-strip{width:4px;height:44px;border-radius:2px;flex-shrink:0;}
 .row-left{flex:1;min-width:0;}
 .row-name{font-size:14px;font-weight:500;}
 .row-sub{font-size:11px;color:var(--text3);margin-top:2px;}
+.row-date{font-size:10px;color:var(--text3);margin-top:2px;}
 .row-right{text-align:right;flex-shrink:0;}
 .row-price{font-size:13px;font-weight:500;}
 .stock-ok{font-size:11px;color:var(--teal-dark);margin-top:2px;}
 .stock-no{font-size:11px;color:var(--red);margin-top:2px;}
 .row-actions{display:flex;gap:6px;flex-shrink:0;}
+
+/* FORM */
 .form-card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:20px;}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
 .fg{display:flex;flex-direction:column;gap:4px;}
@@ -145,8 +203,25 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
 .cb-row input{width:16px;height:16px;accent-color:var(--gold);}
 .cb-row label{font-size:13px;cursor:pointer;}
 .back-row{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
-.section-btn-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
-@media(max-width:600px){.grid{grid-template-columns:1fr;}.form-grid{grid-template-columns:1fr;}.fg.full{grid-column:1;}.search-row{flex-direction:column;}}
+.section-btn-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
+
+/* IMAGE UPLOAD */
+.img-upload-area{border:2px dashed var(--border2);border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:all 0.15s;margin-bottom:12px;}
+.img-upload-area:hover{border-color:var(--gold);background:var(--gold-light);}
+.img-upload-area.has-img{border-style:solid;border-color:var(--gold);}
+.img-preview{width:100%;max-height:200px;object-fit:cover;border-radius:8px;margin-bottom:8px;}
+.img-upload-txt{font-size:13px;color:var(--text3);}
+.img-upload-sub{font-size:11px;color:var(--text3);margin-top:4px;}
+.github-url-inp{width:100%;padding:8px 10px;font-size:12px;border:1px solid var(--border2);border-radius:8px;background:#FAF9F7;outline:none;font-family:monospace;margin-top:8px;}
+.github-url-inp:focus{border-color:var(--gold);background:var(--white);}
+.img-hint{font-size:11px;color:var(--text3);line-height:1.6;margin-top:6px;}
+
+@media(max-width:600px){
+  .grid{grid-template-columns:1fr;}
+  .form-grid{grid-template-columns:1fr;}
+  .fg.full{grid-column:1;}
+  .search-row{flex-direction:column;}
+}
 </style>
 </head>
 <body>
@@ -171,6 +246,7 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
 </div>
 
 <div class="body">
+  <!-- MENU VIEW -->
   <div id="view-menu">
     <div id="loading" class="loading">
       <div class="spinner"></div>
@@ -181,7 +257,8 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
         <div class="search-row">
           <input class="search-inp" id="search-inp" placeholder="🔍 銘柄名・酒蔵・酒米・産地で検索…" oninput="applyFilters()">
           <select class="sort-sel" id="sort-sel" onchange="applyFilters()">
-            <option value="default">並び替え：デフォルト</option>
+            <option value="date_asc">仕入れ日：古い順（デフォルト）</option>
+            <option value="date_desc">仕入れ日：新しい順</option>
             <option value="kuchi_asc">飲み口：甘口 → 辛口</option>
             <option value="kuchi_desc">飲み口：辛口 → 甘口</option>
             <option value="ntan_asc">濃淡：スッキリ → 濃厚</option>
@@ -220,6 +297,7 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
     </div>
   </div>
 
+  <!-- ADMIN VIEW -->
   <div id="view-admin" style="display:none">
     <div id="admin-lock">
       <div class="lock-wrap">
@@ -233,42 +311,154 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
         </div>
       </div>
     </div>
+
     <div id="admin-main" style="display:none">
-      <div class="gas-banner">
-        <div class="gas-title">🔗 スプレッドシート自動連携</div>
-        <div class="gas-sub">Google Apps ScriptのURLを設定すると、スプレッドシートを更新して「🔄 更新」を押すだけでアプリのデータが反映されます。</div>
-        <div class="gas-row">
-          <input class="gas-inp" id="gas-url-inp" placeholder="https://script.google.com/macros/s/...">
-          <button class="btn-sm" onclick="saveGasUrl()">💾 保存</button>
-          <button class="btn-sm" onclick="loadData()">🔄 テスト</button>
-        </div>
-        <div class="gas-msg" id="gas-msg"></div>
-        <div class="steps-box">
-          <div class="steps-title">Apps Script 設定手順</div>
-          <div class="step"><div class="step-n">1</div><div class="step-t">スプレッドシートを開き「拡張機能」→「Apps Script」をクリック</div></div>
-          <div class="step"><div class="step-n">2</div><div class="step-t">一緒にダウンロードした <code>gas_script.gs</code> の内容を貼り付けて保存</div></div>
-          <div class="step"><div class="step-n">3</div><div class="step-t">「デプロイ」→「新しいデプロイ」→ 種類「ウェブアプリ」・アクセス「全員」で公開</div></div>
-          <div class="step"><div class="step-n">4</div><div class="step-t">表示されたURLをコピーして上に貼り付け「保存」→「テスト」で確認</div></div>
-        </div>
+      <!-- ADMIN TABS -->
+      <div class="admin-tabs">
+        <div class="admin-tab on" id="atab-list" onclick="switchAdminTab('list')">📋 銘柄一覧</div>
+        <div class="admin-tab" id="atab-bulk" onclick="switchAdminTab('bulk')">✏️ 一括編集</div>
+        <div class="admin-tab" id="atab-sync" onclick="switchAdminTab('sync')">🔗 連携設定</div>
       </div>
-      <div id="admin-list-view">
+
+      <!-- LIST TAB -->
+      <div id="atab-list-view">
         <div class="section-btn-row">
           <span class="slbl" id="admin-count"></span>
-          <div style="display:flex;gap:8px">
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
             <button class="btn-sm" onclick="adminLogout()">ログアウト</button>
+            <button class="btn-success" onclick="exportToSheet()">📤 シートに書き出し</button>
             <button class="btn-primary" onclick="showForm(null)">＋ 新規追加</button>
           </div>
         </div>
-        <div class="admin-list" id="admin-list"></div>
+        <div class="admin-list-wrap" id="admin-list"></div>
       </div>
+
+      <!-- BULK EDIT TAB -->
+      <div id="atab-bulk-view" style="display:none">
+        <div class="panel">
+          <div class="panel-title">✏️ 一括編集</div>
+          <div class="panel-sub">変更したい銘柄にチェックを入れて、まとめて編集できます。</div>
+          <!-- 一括編集フォーム -->
+          <div class="bulk-panel" id="bulk-edit-panel" style="display:none">
+            <div class="bulk-panel-title" id="bulk-panel-title">選択した銘柄を一括編集</div>
+            <div class="bulk-grid">
+              <div class="bulk-fg">
+                <label>在庫</label>
+                <select id="bulk-stock">
+                  <option value="">— 変更しない —</option>
+                  <option value="true">有</option>
+                  <option value="false">無</option>
+                </select>
+              </div>
+              <div class="bulk-fg">
+                <label>グラス価格（円）</label>
+                <input type="number" id="bulk-price" placeholder="空欄=変更なし">
+              </div>
+              <div class="bulk-fg">
+                <label>価格を一括変更（%）</label>
+                <input type="number" id="bulk-price-pct" placeholder="例：10 → 10%値上げ">
+              </div>
+              <div class="bulk-fg">
+                <label>仕入れ日</label>
+                <input type="date" id="bulk-date">
+              </div>
+              <div class="bulk-fg">
+                <label>飲み口</label>
+                <select id="bulk-kuchi">
+                  <option value="">— 変更しない —</option>
+                  <option>甘口</option><option>やや甘口</option><option>中口</option><option>やや辛口</option><option>辛口</option>
+                </select>
+              </div>
+              <div class="bulk-fg">
+                <label>濃淡</label>
+                <select id="bulk-ntan">
+                  <option value="">— 変更しない —</option>
+                  <option>スッキリ</option><option>ややスッキリ</option><option>やや濃厚</option><option>濃厚</option>
+                </select>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px">
+              <button class="btn-primary" onclick="applyBulkEdit()">✅ 選択した銘柄に適用</button>
+              <button class="btn-sm" onclick="clearBulkSelection()">キャンセル</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 一括編集用リスト -->
+        <div class="bulk-bar">
+          <span class="bulk-label">銘柄を選択</span>
+          <span class="bulk-sel-count" id="bulk-sel-count">0件選択中</span>
+          <div class="bulk-actions">
+            <button class="btn-sm" onclick="selectAll()">全選択</button>
+            <button class="btn-sm" onclick="selectNone()">全解除</button>
+            <button class="btn-sm" onclick="selectInStock()">在庫あり全選択</button>
+            <button class="btn-primary" id="bulk-edit-btn" onclick="openBulkPanel()" disabled>選択して編集</button>
+          </div>
+        </div>
+        <div class="admin-list-wrap" id="bulk-list"></div>
+      </div>
+
+      <!-- SYNC TAB -->
+      <div id="atab-sync-view" style="display:none">
+        <div class="panel">
+          <div class="panel-title">🔗 スプレッドシート連携</div>
+          <div class="panel-sub">Apps ScriptのURLを設定するとスプレッドシートとの連携が可能になります。</div>
+          <div class="gas-row">
+            <input class="gas-inp" id="gas-url-inp" placeholder="https://script.google.com/macros/s/...">
+            <button class="btn-sm" onclick="saveGasUrl()">💾 保存</button>
+            <button class="btn-sm" onclick="loadData()">🔄 取得テスト</button>
+          </div>
+          <div class="gas-msg" id="gas-msg"></div>
+          <div class="steps-box">
+            <div class="steps-title">Apps Script 設定手順</div>
+            <div class="step"><div class="step-n">1</div><div class="step-t">スプレッドシートを開き「拡張機能」→「Apps Script」をクリック</div></div>
+            <div class="step"><div class="step-n">2</div><div class="step-t">ダウンロードした <code>gas_script.gs</code> を貼り付けて保存</div></div>
+            <div class="step"><div class="step-n">3</div><div class="step-t">「デプロイ」→「新しいデプロイ」→ 種類「ウェブアプリ」・アクセス「全員」で公開</div></div>
+            <div class="step"><div class="step-n">4</div><div class="step-t">表示されたURLをコピーして上に貼り付け「保存」</div></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">📤 スプレッドシートへ書き出し</div>
+          <div class="panel-sub">現在のアプリのデータをスプレッドシートに書き出します。GASのURLが設定されている必要があります。</div>
+          <button class="btn-success" onclick="exportToSheet()" style="width:100%;justify-content:center;">📤 スプレッドシートに書き出す</button>
+          <div class="gas-msg" id="export-msg" style="margin-top:8px"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">🖼️ 画像のGitHub管理について</div>
+          <div class="panel-sub">画像はGitHubリポジトリにアップロードして管理します。</div>
+          <div class="steps-box">
+            <div class="steps-title">画像アップロード手順</div>
+            <div class="step"><div class="step-n">1</div><div class="step-t">GitHubの <code>kakehashi</code> リポジトリを開く</div></div>
+            <div class="step"><div class="step-n">2</div><div class="step-t">「Add file」→「Upload files」をクリック</div></div>
+            <div class="step"><div class="step-n">3</div><div class="step-t">画像ファイルをアップロード（例：<code>dassai.jpg</code>）</div></div>
+            <div class="step"><div class="step-n">4</div><div class="step-t">銘柄編集画面の「画像URL」に <code>https://oennetwork2016.github.io/kakehashi/画像ファイル名</code> を入力</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FORM VIEW -->
       <div id="admin-form-view" style="display:none">
         <div class="back-row">
           <button class="btn-sm" onclick="showAdminList()">← 戻る</button>
           <span style="font-size:15px;font-weight:500" id="form-title">新規追加</span>
         </div>
         <div class="form-card">
+          <!-- 画像 -->
+          <div style="margin-bottom:16px">
+            <div style="font-size:11px;color:var(--text3);font-weight:600;margin-bottom:8px;">🖼️ 商品画像</div>
+            <div id="img-preview-wrap" style="display:none;margin-bottom:10px">
+              <img id="img-preview" class="img-preview" src="" alt="">
+            </div>
+            <div style="font-size:11px;color:var(--text3);margin-bottom:6px;">GitHubにアップした画像のURLを入力：</div>
+            <input class="github-url-inp" id="f-img" placeholder="https://oennetwork2016.github.io/kakehashi/画像ファイル名.jpg" oninput="previewImg(this.value)">
+            <div class="img-hint">
+              💡 画像はGitHubの <strong>kakehashi</strong> リポジトリにアップロードしてください。<br>
+              アップ後のURL例：<code>https://oennetwork2016.github.io/kakehashi/dassai.jpg</code>
+            </div>
+          </div>
+
           <div class="form-grid">
-            <div class="fg full"><label>銘柄名</label><input id="f-name" placeholder="例：獺祭 三割九分"></div>
+            <div class="fg full"><label>銘柄名 *</label><input id="f-name" placeholder="例：獺祭 三割九分"></div>
             <div class="fg"><label>酒蔵</label><input id="f-kura" placeholder="例：旭酒造"></div>
             <div class="fg"><label>酒米</label><input id="f-mai" placeholder="例：雄町"></div>
             <div class="fg"><label>飲み口</label>
@@ -278,6 +468,7 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
               <select id="f-ntan"><option value="">—</option><option>スッキリ</option><option>ややスッキリ</option><option>やや濃厚</option><option>濃厚</option></select>
             </div>
             <div class="fg"><label>グラス価格（円）</label><input type="number" id="f-price" placeholder="850"></div>
+            <div class="fg"><label>仕入れ日</label><input type="date" id="f-date"></div>
             <div class="fg"><label>産地</label><input id="f-place" placeholder="例：岡山市"></div>
             <div class="fg full"><label>スタッフメモ</label><input id="f-detail" placeholder="おすすめポイント、ペアリングなど"></div>
             <div class="fg full"><label>説明文</label><textarea id="f-desc"></textarea></div>
@@ -292,97 +483,132 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
 
 <script>
 const ADMIN_PW='sake2024';
+const GITHUB_BASE='https://oennetwork2016.github.io/kakehashi/';
 const KUCHI_ORDER=['甘口','やや甘口','中口','やや辛口','辛口'];
 const NTAN_ORDER=['スッキリ','ややスッキリ','やや濃厚','濃厚'];
 const KURA_COLORS=['#E8608A','#7C6FD4','#2BAE82','#E09040','#5BB8D4','#C05090','#4488CC','#88AA44','#CC7733','#7755BB','#44AAAA','#DD5555','#AA6633','#558844'];
 const KUCHI_BAR={甘口:'#D4537E',やや甘口:'#E07090',中口:'#7C6FD4',やや辛口:'#2BAE82',辛口:'#3A8CCA'};
 const NTAN_BAR={スッキリ:'#5BB8D4',ややスッキリ:'#7EC8A0',やや濃厚:'#D4A055',濃厚:'#C07040'};
 
-// ===== 最新スプレッドシートデータ（2025年6月版）=====
 const FALLBACK=[
-  {kura:'三光正宗',name:'三光政宗 純米吟醸',mai:'雄町',place:'新見市哲西町',kuchi:'辛口',ntan:'濃厚',detail:'',price:850,desc:'最高の雄町米を全量使用し、「米」「水」「技」の三つの光を集めた純米吟醸。氷温貯蔵で熟成を行い、雄町米の旨み・深みのある味わいに吟醸酒としての上品さと香りを併せ持つ。',stock:true},
-  {kura:'三光正宗',name:'三光政宗 吟醸酒',mai:'山田錦',place:'新見市哲西町',kuchi:'辛口',ntan:'ややスッキリ',detail:'',price:750,desc:'地元産契約栽培の山田錦を全量使用。山田錦の甘み・深みある味わいに上品さと香りを持つ吟醸酒。氷温貯蔵で熟成。',stock:false},
-  {kura:'三光正宗',name:'蔵訪問者限定 本醸原酒',mai:'',place:'新見市哲西町',kuchi:'やや辛口',ntan:'やや濃厚',detail:'',price:850,desc:'',stock:true},
-  {kura:'落酒造',name:'（近日入荷予定）',mai:'',place:'真庭市下呰部',kuchi:'中口',ntan:'',detail:'',price:null,desc:'',stock:false},
-  {kura:'白菊酒造',name:'大典白菊 白菊米',mai:'白菊',place:'高梁市成羽町',kuchi:'やや辛口',ntan:'やや濃厚',detail:'',price:650,desc:'五十五粒の種籾から蘇った酒銘と同じ酒米「白菊」で醸した純米酒。おだやかな香りにコクとお米の旨み、甘味と酸のバランスが良い。IWC2017ブロンズメダル受賞。',stock:true},
-  {kura:'白菊酒造',name:'大典白菊 造酒錦',mai:'造酒錦',place:'高梁市成羽町',kuchi:'やや辛口',ntan:'やや濃厚',detail:'',price:650,desc:'五十年の時を超えて蘇えった世界唯一の酒米「造酒錦」で醸した純米酒。きれいな香りとお米の甘味・旨みにキレのあるバランスの良い飲み口。IWC2017シルバーメダル受賞。',stock:true},
-  {kura:'白菊酒造',name:'大典白菊 純米トリプルA',mai:'朝日・あけぼの・アキヒカリ',place:'高梁市成羽町',kuchi:'中口',ntan:'濃厚',detail:'',price:650,desc:'岡山特産の朝日・アケボノ・アキヒカリの3種で仕込んだ純米酒。米の持ち味を生かした旨味ある酒を蔵内でゆっくり熟成。トリプルAは使用米の頭文字から命名。',stock:true},
-  {kura:'白菊酒造',name:'大典白菊 きもと純米雄町七十',mai:'雄町',place:'高梁市成羽町',kuchi:'やや辛口',ntan:'ややスッキリ',detail:'',price:650,desc:'岡山特産酒米「雄町」を伝統の「生もと」で仕込んだ純米酒。自然の乳酸菌や蔵付き酵母により醸された深みのある味わい。',stock:true},
-  {kura:'白菊酒造',name:'大典白菊 純米大吟醸 雄町',mai:'雄町',place:'高梁市成羽町',kuchi:'中口',ntan:'スッキリ',detail:'',price:1100,desc:'幻の酒米「雄町」を50%磨き上げた純米大吟醸。フランス クラマスター2025・オーストラリア酒アワード2025 ゴールドメダル受賞。',stock:true},
-  {kura:'白菊酒造',name:'大典白菊 きもと純米酒 雄町七十 プロトタイプ',mai:'雄町',place:'高梁市成羽町',kuchi:'やや辛口',ntan:'スッキリ',detail:'ひや（常温）または燗酒がおすすめ',price:750,desc:'伝統の「生酛」製法で雄町を全量使用した試験醸造品。しっかりとした酸が後口のキレを演出。',stock:true},
-  {kura:'芳烈酒造',name:'備中松山城',mai:'アケボノ',place:'高梁市有漢町',kuchi:'やや辛口',ntan:'スッキリ',detail:'',price:650,desc:'現存する日本一高い山城をPRするために造った辛口のお酒。',stock:true},
-  {kura:'芳烈酒造',name:'櫻芳烈 有漢 生原酒',mai:'',place:'高梁市有漢町',kuchi:'やや甘口',ntan:'やや濃厚',detail:'',price:750,desc:'しぼりたての生の原酒。やや甘口。できる前から予約の入るお酒。',stock:true},
-  {kura:'山成酒造',name:'蘭の誉 純米酒',mai:'アケボノ',place:'井原市芳井町',kuchi:'やや辛口',ntan:'やや濃厚',detail:'',price:650,desc:'【2023年 備中杜氏自醸清酒品評会 第1位受賞・2年連続入賞】冷やではすっきり、熱燗では旨味がふくらむ。',stock:true},
-  {kura:'山成酒造',name:'蘭の誉 桜渓',mai:'雄町',place:'井原市芳井町',kuchi:'やや辛口',ntan:'ややスッキリ',detail:'',price:750,desc:'【令和6年 備中杜氏品評会 第3位受賞】井原市産雄町を使った完全地元産の純米吟醸酒。井原テロワールの酒。',stock:true},
-  {kura:'山成酒造',name:'蘭の誉 大吟醸原酒 朗蘆の里',mai:'山田錦',place:'井原市芳井町',kuchi:'中口',ntan:'濃厚',detail:'冷やまたはロックで',price:850,desc:'岡山県産山田錦を50%高精白した大吟醸の原酒。原酒ならではの力強さと華やかな吟醸香。',stock:true},
-  {kura:'山成酒造',name:'大吟醸40％磨き「蘭の誉」',mai:'山田錦',place:'井原市芳井町',kuchi:'やや甘口',ntan:'',detail:'ワイングラスもおすすめ',price:1100,desc:'山田錦を40%まで磨き上げた限定酒。令和6年 全国新酒鑑評会入賞酒。',stock:false},
-  {kura:'山成酒造',name:'蘭の誉 原酒えんぺい',mai:'アケボノ',place:'井原市芳井町',kuchi:'やや甘口',ntan:'濃厚',detail:'ロックまたは冷やして',price:650,desc:'四段仕込みで醸した蔵出し原酒。備中地方らしい濃醇で力強い旨さと深みのある味わい。',stock:false},
-  {kura:'三宅酒造',name:'粋府 特別純米酒 媛',mai:'都',place:'総社市宿',kuchi:'やや辛口',ntan:'濃厚',detail:'',price:750,desc:'幻の米「都」でつくった純米酒。味わい深い食中酒。',stock:true},
-  {kura:'三宅酒造',name:'粋府 原酒',mai:'',place:'総社市宿',kuchi:'やや辛口',ntan:'濃厚',detail:'',price:650,desc:'まろやかでありながらぐっとくる味わい。',stock:true},
-  {kura:'三宅酒造',name:'都',mai:'',place:'総社市宿',kuchi:'やや辛口',ntan:'ややスッキリ',detail:'',price:null,desc:'',stock:false},
-  {kura:'丸本酒造',name:'かもみどり うま口冷酒',mai:'アケボノ',place:'浅口市鴨方町',kuchi:'やや甘口',ntan:'スッキリ',detail:'春〜夏限定。キリッと冷やして',price:null,desc:'地元岡山県産のアケボノ米の旨みとコクをのど越しの良い冷酒仕立てに仕上げた限定冷酒。',stock:false},
-  {kura:'丸本酒造',name:'竹林 寒星',mai:'山田錦（自社栽培）',place:'浅口市鴨方町',kuchi:'中口',ntan:'やや濃厚',detail:'',price:null,desc:'天文の聖地・浅口市で、星空が一番綺麗な時期に搾った限定酒。精米歩合50%。',stock:true},
-  {kura:'丸本酒造',name:'竹林 ふかまり',mai:'山田錦（自社栽培）',place:'浅口市鴨方町',kuchi:'やや辛口',ntan:'やや濃厚',detail:'常温・ぬる燗・燗酒がおすすめ',price:null,desc:'熟成酒を何層にも掛け合わせたブレンディング。蜂蜜・バニラのニュアンス。醤油を使った甘辛味や肉料理、燻製に合う。',stock:false},
-  {kura:'丸本酒造',name:'丸本屋',mai:'雄町',place:'浅口市鴨方町',kuchi:'中口',ntan:'やや濃厚',detail:'酒蔵イベント限定酒',price:null,desc:'酒蔵イベント限定酒。',stock:true},
-  {kura:'丸本酒造',name:'矢掛本陣',mai:'',place:'浅口市鴨方町',kuchi:'中口',ntan:'やや濃厚',detail:'',price:null,desc:'',stock:true},
-  {kura:'平喜酒造',name:'（近日入荷予定）',mai:'',place:'浅口市',kuchi:'',ntan:'',detail:'',price:null,desc:'',stock:true},
-  {kura:'嘉美心酒造',name:'備中流大吟醸',mai:'岡山県産米',place:'浅口市寄島町',kuchi:'やや辛口',ntan:'スッキリ',detail:'',price:650,desc:'ワイングラスでおいしい日本酒アワード2022金賞・2015〜2017三年連続最高金賞受賞。端麗で上品な飲み口。精米歩合50%。',stock:true},
-  {kura:'嘉美心酒造',name:'純米 eme',mai:'岡山県産米',place:'浅口市寄島町',kuchi:'やや甘口',ntan:'スッキリ',detail:'',price:750,desc:'Kura Master2025プラチナ賞・決勝進出銘柄。マスカット・オブ・アレキサンドリア酵母使用。アルコール13%。フルーティーで飲みやすい。',stock:true},
-  {kura:'嘉美心酒造',name:'木陰の魚',mai:'岡山県産米',place:'浅口市寄島町',kuchi:'甘口',ntan:'スッキリ',detail:'食前酒にもおすすめ',price:650,desc:'ワイングラスでおいしい日本酒アワード2025金賞受賞。アルコール8%。白ワインのような味わい。あんず・梅・イチゴを連想させる爽やかな酸味。',stock:true},
-  {kura:'嘉美心酒造',name:'神心 自耕自醸',mai:'雄町',place:'浅口市寄島町',kuchi:'中口',ntan:'ややスッキリ',detail:'',price:null,desc:'矢掛町の「旬家ファーム様」と共同栽培した雄町米を使用。',stock:true},
-  {kura:'嘉美心酒造',name:'神心 オーバーフロー',mai:'雄町',place:'浅口市寄島町',kuchi:'やや甘口',ntan:'ややスッキリ',detail:'',price:null,desc:'もろみ発酵由来の炭酸ガスを極力残した活性にごり酒。爽快なガス感とミルキーなコクと綺麗な米の旨味。',stock:true},
-  {kura:'熊屋酒造',name:'伊七 純米大吟醸 雄町',mai:'雄町',place:'倉敷市林',kuchi:'',ntan:'',detail:'',price:null,desc:'',stock:true},
-  {kura:'熊屋酒造',name:'倉敷吟醸 伊七',mai:'山田錦',place:'倉敷市林',kuchi:'やや辛口',ntan:'スッキリ',detail:'',price:null,desc:'',stock:true},
-  {kura:'熊屋酒造',name:'伊七 純米吟醸 雄町 ピンクラベル',mai:'雄町',place:'倉敷市林',kuchi:'中口',ntan:'スッキリ',detail:'甘ったるくはないがフルーティ',price:null,desc:'甘ったるくはないがフルーティな純米吟醸。',stock:true},
-  {kura:'熊屋酒造',name:'伊七 雄町特別純米 青ラベル',mai:'雄町',place:'倉敷市林',kuchi:'やや辛口',ntan:'スッキリ',detail:'',price:null,desc:'',stock:true},
-  {kura:'熊屋酒造',name:'伊七 朝日純米吟醸 レッドラベル',mai:'朝日米',place:'倉敷市林',kuchi:'',ntan:'',detail:'',price:null,desc:'',stock:true},
-  {kura:'熊屋酒造',name:'郷内',mai:'朝日米',place:'倉敷市林',kuchi:'やや辛口',ntan:'ややスッキリ',detail:'',price:null,desc:'',stock:true},
-  {kura:'熊屋酒造',name:'寒しぼり',mai:'',place:'倉敷市林',kuchi:'やや辛口',ntan:'スッキリ',detail:'',price:null,desc:'',stock:true},
-  {kura:'菊池酒造',name:'燦然 純米吟醸 山田錦',mai:'山田錦',place:'倉敷市玉島',kuchi:'中口',ntan:'スッキリ',detail:'',price:null,desc:'',stock:true},
-  {kura:'菊池酒造',name:'燦然 純米大吟醸 雄町 50磨',mai:'雄町',place:'倉敷市玉島',kuchi:'やや甘口',ntan:'スッキリ',detail:'',price:null,desc:'',stock:false},
-  {kura:'菊池酒造',name:'木村式奇跡のお酒 純米吟醸 雄町',mai:'雄町',place:'倉敷市玉島',kuchi:'甘口',ntan:'スッキリ',detail:'',price:850,desc:'',stock:true},
-  {kura:'菊池酒造',name:'燦然 純米大吟醸 蔵リズム',mai:'雄町',place:'倉敷市玉島',kuchi:'やや甘口',ntan:'スッキリ',detail:'',price:1100,desc:'',stock:true},
-  {kura:'菊池酒造',name:'燦然 新酒祭り 純米吟醸 雄町 生原酒',mai:'雄町',place:'倉敷市玉島',kuchi:'やや甘口',ntan:'ややスッキリ',detail:'',price:null,desc:'',stock:true},
-  {kura:'森田酒造',name:'萬年雪 荒にごり生酒 森田の白',mai:'',place:'倉敷市本町',kuchi:'やや辛口',ntan:'やや濃厚',detail:'にごりだが甘くない。にごり苦手な辛口好みの方にもおすすめ',price:null,desc:'にごりだが甘くない。にごり苦手な辛口好みの方にもおすすめ。',stock:true},
-  {kura:'森田酒造',name:'萬年雪 純米吟醸 荒走り',mai:'',place:'倉敷市本町',kuchi:'辛口',ntan:'ややスッキリ',detail:'深い旨み、キレの良さと香り高さも抜群',price:null,desc:'深い旨み、キレの良さと香り高さも抜群。',stock:true},
-  {kura:'森田酒造',name:'萬年雪 激辛荒走り',mai:'',place:'倉敷市本町',kuchi:'辛口',ntan:'やや濃厚',detail:'辛いだけではない、旨口の辛口',price:null,desc:'辛いだけではない、旨口の辛口。',stock:true},
-  {kura:'十八盛酒造',name:'十八盛 雄町純米',mai:'雄町',place:'倉敷市児島',kuchi:'中口',ntan:'ややスッキリ',detail:'海のものにはベスト',price:null,desc:'海のものにはベスト。',stock:true},
-  {kura:'十八盛酒造',name:'多賀治 純米雄町',mai:'',place:'倉敷市児島',kuchi:'中口',ntan:'ややスッキリ',detail:'フレッシュ感が持ち味。微発砲',price:null,desc:'フレッシュ感が持ち味。微発砲。',stock:true},
-  {kura:'十八盛酒造',name:'多賀治 純米大吟醸雄町',mai:'',place:'倉敷市児島',kuchi:'中口',ntan:'スッキリ',detail:'贅沢な逸品。洗練された味',price:null,desc:'贅沢な逸品。洗練された味。',stock:true},
-  {kura:'十八盛酒造',name:'裏多賀治 純米大吟醸 朝日',mai:'朝日米',place:'倉敷市児島',kuchi:'中口',ntan:'やや濃厚',detail:'縛り終わりに加圧したもの。濃口',price:750,desc:'縛り終わりに加圧したもの。濃口。',stock:true},
-  {kura:'十八盛酒造',name:'ことのわ',mai:'吟のさと',place:'倉敷市児島',kuchi:'甘口',ntan:'スッキリ',detail:'口当たりよく、飲みやすい',price:null,desc:'口当たりよく、飲みやすい。',stock:true},
-  {kura:'三冠酒造',name:'三冠 朝日純米 にごり生酒',mai:'朝日米',place:'倉敷市児島',kuchi:'やや辛口',ntan:'ややスッキリ',detail:'くどくなく、暑い日にぴったり',price:null,desc:'くどくなく、暑い日にぴったり。',stock:true},
-  {kura:'三冠酒造',name:'生酛 和井田 一回火入',mai:'雄町',place:'倉敷市児島',kuchi:'やや辛口',ntan:'ややスッキリ',detail:'2024年雄町米の酒コンテスト熱燗部門最優秀',price:null,desc:'2024年雄町米の酒コンテスト熱燗部門最優秀。気もとだが酸味は抑え目、冷も美味しい。',stock:true},
-  {kura:'三冠酒造',name:'三冠 朝日純米 無濾過生原酒',mai:'朝日米',place:'倉敷市児島',kuchi:'辛口',ntan:'スッキリ',detail:'',price:null,desc:'',stock:true},
-  {kura:'渡邊酒造本店',name:'嶺の誉 特別純米 雄町',mai:'雄町',place:'倉敷市連島',kuchi:'やや辛口',ntan:'やや濃厚',detail:'直火和釜蒸し、槽搾り',price:null,desc:'直火和釜蒸し、槽搾り。',stock:true},
-  {kura:'渡邊酒造本店',name:'桃幻仙花',mai:'雄町',place:'倉敷市連島',kuchi:'やや辛口',ntan:'やや濃厚',detail:'直火和釜蒸し、槽搾り。麹米は山田錦、掛米は雄町',price:null,desc:'直火和釜蒸し、槽搾り。麹米は山田錦、掛米は雄町。',stock:true},
-].filter(d=>d.name&&d.name!=='（近日入荷予定）');
+  {kura:'三光正宗',name:'三光政宗 純米吟醸',mai:'雄町',place:'新見市哲西町',kuchi:'辛口',ntan:'濃厚',detail:'',price:850,desc:'最高の雄町米を全量使用した純米吟醸。雄町米の旨み・深みのある味わいに吟醸酒の上品さと香りを併せ持つ。',stock:true,img:'',date:'2025-01-01'},
+  {kura:'三光正宗',name:'三光政宗 吟醸酒',mai:'山田錦',place:'新見市哲西町',kuchi:'辛口',ntan:'ややスッキリ',detail:'',price:750,desc:'地元産契約栽培の山田錦を全量使用。山田錦の甘み・深みある味わいに上品さと香りを持つ吟醸酒。',stock:false,img:'',date:'2025-01-02'},
+  {kura:'三光正宗',name:'蔵訪問者限定 本醸原酒',mai:'',place:'新見市哲西町',kuchi:'やや辛口',ntan:'やや濃厚',detail:'',price:850,desc:'',stock:true,img:'',date:'2025-01-03'},
+  {kura:'白菊酒造',name:'大典白菊 白菊米',mai:'白菊',place:'高梁市成羽町',kuchi:'やや辛口',ntan:'やや濃厚',detail:'',price:650,desc:'五十五粒の種籾から蘇った酒米「白菊」で醸した純米酒。IWC2017ブロンズメダル受賞。',stock:true,img:'',date:'2025-01-04'},
+  {kura:'白菊酒造',name:'大典白菊 造酒錦',mai:'造酒錦',place:'高梁市成羽町',kuchi:'やや辛口',ntan:'やや濃厚',detail:'',price:650,desc:'世界唯一の酒米「造酒錦」で醸した純米酒。IWC2017シルバーメダル受賞。',stock:true,img:'',date:'2025-01-05'},
+  {kura:'白菊酒造',name:'大典白菊 純米トリプルA',mai:'朝日・あけぼの・アキヒカリ',place:'高梁市成羽町',kuchi:'中口',ntan:'濃厚',detail:'',price:650,desc:'岡山特産の朝日・アケボノ・アキヒカリの3種で仕込んだ純米酒。',stock:true,img:'',date:'2025-01-06'},
+  {kura:'白菊酒造',name:'大典白菊 きもと純米雄町七十',mai:'雄町',place:'高梁市成羽町',kuchi:'やや辛口',ntan:'ややスッキリ',detail:'',price:650,desc:'伝統の「生もと」で仕込んだ純米酒。自然の乳酸菌や蔵付き酵母により醸された深みのある味わい。',stock:true,img:'',date:'2025-01-07'},
+  {kura:'白菊酒造',name:'大典白菊 純米大吟醸 雄町',mai:'雄町',place:'高梁市成羽町',kuchi:'中口',ntan:'スッキリ',detail:'',price:1100,desc:'幻の酒米「雄町」を50%磨き上げた純米大吟醸。フランス クラマスター2025・オーストラリア酒アワード2025 ゴールドメダル受賞。',stock:true,img:'',date:'2025-01-08'},
+  {kura:'白菊酒造',name:'大典白菊 きもと純米酒 雄町七十 プロトタイプ',mai:'雄町',place:'高梁市成羽町',kuchi:'やや辛口',ntan:'スッキリ',detail:'ひやまたは燗酒がおすすめ',price:750,desc:'伝統の「生酛」製法で雄町を全量使用した試験醸造品。しっかりとした酸が後口のキレを演出。',stock:true,img:'',date:'2025-01-09'},
+  {kura:'芳烈酒造',name:'備中松山城',mai:'アケボノ',place:'高梁市有漢町',kuchi:'やや辛口',ntan:'スッキリ',detail:'',price:650,desc:'現存する日本一高い山城をPRするために造った辛口のお酒。',stock:true,img:'',date:'2025-01-10'},
+  {kura:'芳烈酒造',name:'櫻芳烈 有漢 生原酒',mai:'',place:'高梁市有漢町',kuchi:'やや甘口',ntan:'やや濃厚',detail:'',price:750,desc:'しぼりたての生の原酒。やや甘口。できる前から予約の入るお酒。',stock:true,img:'',date:'2025-01-11'},
+  {kura:'山成酒造',name:'蘭の誉 純米酒',mai:'アケボノ',place:'井原市芳井町',kuchi:'やや辛口',ntan:'やや濃厚',detail:'',price:650,desc:'【2023年 備中杜氏自醸清酒品評会 第1位受賞】冷やではすっきり、熱燗では旨味がふくらむ。',stock:true,img:'',date:'2025-01-12'},
+  {kura:'山成酒造',name:'蘭の誉 桜渓',mai:'雄町',place:'井原市芳井町',kuchi:'やや辛口',ntan:'ややスッキリ',detail:'',price:750,desc:'【令和6年 備中杜氏品評会 第3位受賞】井原市産雄町を使った完全地元産の純米吟醸酒。',stock:true,img:'',date:'2025-01-13'},
+  {kura:'山成酒造',name:'蘭の誉 大吟醸原酒 朗蘆の里',mai:'山田錦',place:'井原市芳井町',kuchi:'中口',ntan:'濃厚',detail:'冷やまたはロックで',price:850,desc:'岡山県産山田錦を50%高精白した大吟醸の原酒。原酒ならではの力強さと華やかな吟醸香。',stock:true,img:'',date:'2025-01-14'},
+  {kura:'山成酒造',name:'大吟醸40％磨き「蘭の誉」',mai:'山田錦',place:'井原市芳井町',kuchi:'やや甘口',ntan:'',detail:'ワイングラスもおすすめ',price:1100,desc:'山田錦を40%まで磨き上げた限定酒。令和6年 全国新酒鑑評会入賞酒。',stock:false,img:'',date:'2025-01-15'},
+  {kura:'山成酒造',name:'蘭の誉 原酒えんぺい',mai:'アケボノ',place:'井原市芳井町',kuchi:'やや甘口',ntan:'濃厚',detail:'ロックまたは冷やして',price:650,desc:'四段仕込みで醸した蔵出し原酒。備中地方らしい濃醇で力強い旨さ。',stock:false,img:'',date:'2025-01-16'},
+  {kura:'三宅酒造',name:'粋府 特別純米酒 媛',mai:'都',place:'総社市宿',kuchi:'やや辛口',ntan:'濃厚',detail:'',price:750,desc:'幻の米「都」でつくった純米酒。味わい深い食中酒。',stock:true,img:'',date:'2025-01-17'},
+  {kura:'三宅酒造',name:'粋府 原酒',mai:'',place:'総社市宿',kuchi:'やや辛口',ntan:'濃厚',detail:'',price:650,desc:'まろやかでありながらぐっとくる味わい。',stock:true,img:'',date:'2025-01-18'},
+  {kura:'丸本酒造',name:'竹林 寒星',mai:'山田錦（自社栽培）',place:'浅口市鴨方町',kuchi:'中口',ntan:'やや濃厚',detail:'',price:null,desc:'天文の聖地で星空が一番綺麗な時期に搾った限定酒。精米歩合50%。',stock:true,img:'',date:'2025-01-19'},
+  {kura:'丸本酒造',name:'丸本屋',mai:'雄町',place:'浅口市鴨方町',kuchi:'中口',ntan:'やや濃厚',detail:'酒蔵イベント限定酒',price:null,desc:'酒蔵イベント限定酒。',stock:true,img:'',date:'2025-01-20'},
+  {kura:'嘉美心酒造',name:'備中流大吟醸',mai:'岡山県産米',place:'浅口市寄島町',kuchi:'やや辛口',ntan:'スッキリ',detail:'',price:650,desc:'ワイングラスでおいしい日本酒アワード2022金賞・2015〜2017三年連続最高金賞受賞。端麗で上品な飲み口。',stock:true,img:'',date:'2025-01-21'},
+  {kura:'嘉美心酒造',name:'純米 eme',mai:'岡山県産米',place:'浅口市寄島町',kuchi:'やや甘口',ntan:'スッキリ',detail:'',price:750,desc:'Kura Master2025プラチナ賞受賞。マスカット・オブ・アレキサンドリア酵母使用。フルーティーで飲みやすい。',stock:true,img:'',date:'2025-01-22'},
+  {kura:'嘉美心酒造',name:'木陰の魚',mai:'岡山県産米',place:'浅口市寄島町',kuchi:'甘口',ntan:'スッキリ',detail:'食前酒にもおすすめ',price:650,desc:'ワイングラスでおいしい日本酒アワード2025金賞受賞。アルコール8%。白ワインのような味わい。',stock:true,img:'',date:'2025-01-23'},
+  {kura:'嘉美心酒造',name:'神心 自耕自醸',mai:'雄町',place:'浅口市寄島町',kuchi:'中口',ntan:'ややスッキリ',detail:'',price:null,desc:'矢掛町の「旬家ファーム様」と共同栽培した雄町米を使用。',stock:true,img:'',date:'2025-01-24'},
+  {kura:'嘉美心酒造',name:'神心 オーバーフロー',mai:'雄町',place:'浅口市寄島町',kuchi:'やや甘口',ntan:'ややスッキリ',detail:'',price:null,desc:'もろみ発酵由来の炭酸ガスを極力残した活性にごり酒。爽快なガス感とミルキーなコク。',stock:true,img:'',date:'2025-01-25'},
+  {kura:'熊屋酒造',name:'倉敷吟醸 伊七',mai:'山田錦',place:'倉敷市林',kuchi:'やや辛口',ntan:'スッキリ',detail:'',price:null,desc:'',stock:true,img:'',date:'2025-01-26'},
+  {kura:'熊屋酒造',name:'伊七 純米吟醸 雄町 ピンクラベル',mai:'雄町',place:'倉敷市林',kuchi:'中口',ntan:'スッキリ',detail:'甘ったるくはないがフルーティ',price:null,desc:'甘ったるくはないがフルーティな純米吟醸。',stock:true,img:'',date:'2025-01-27'},
+  {kura:'熊屋酒造',name:'伊七 雄町特別純米 青ラベル',mai:'雄町',place:'倉敷市林',kuchi:'やや辛口',ntan:'スッキリ',detail:'',price:null,desc:'',stock:true,img:'',date:'2025-01-28'},
+  {kura:'熊屋酒造',name:'伊七 朝日純米吟醸 レッドラベル',mai:'朝日米',place:'倉敷市林',kuchi:'',ntan:'',detail:'',price:null,desc:'',stock:true,img:'',date:'2025-01-29'},
+  {kura:'熊屋酒造',name:'郷内',mai:'朝日米',place:'倉敷市林',kuchi:'やや辛口',ntan:'ややスッキリ',detail:'',price:null,desc:'',stock:true,img:'',date:'2025-01-30'},
+  {kura:'菊池酒造',name:'木村式奇跡のお酒 純米吟醸 雄町',mai:'雄町',place:'倉敷市玉島',kuchi:'甘口',ntan:'スッキリ',detail:'',price:850,desc:'',stock:true,img:'',date:'2025-02-01'},
+  {kura:'菊池酒造',name:'燦然 純米大吟醸 蔵リズム',mai:'雄町',place:'倉敷市玉島',kuchi:'やや甘口',ntan:'スッキリ',detail:'',price:1100,desc:'',stock:true,img:'',date:'2025-02-02'},
+  {kura:'菊池酒造',name:'燦然 新酒祭り 純米吟醸 雄町 生原酒',mai:'雄町',place:'倉敷市玉島',kuchi:'やや甘口',ntan:'ややスッキリ',detail:'',price:null,desc:'',stock:true,img:'',date:'2025-02-03'},
+  {kura:'森田酒造',name:'萬年雪 荒にごり生酒 森田の白',mai:'',place:'倉敷市本町',kuchi:'やや辛口',ntan:'やや濃厚',detail:'にごりだが甘くない。にごり苦手な辛口好みの方にもおすすめ',price:null,desc:'にごりだが甘くない。にごり苦手な辛口好みの方にもおすすめ。',stock:true,img:'',date:'2025-02-04'},
+  {kura:'森田酒造',name:'萬年雪 純米吟醸 荒走り',mai:'',place:'倉敷市本町',kuchi:'辛口',ntan:'ややスッキリ',detail:'深い旨み、キレの良さと香り高さも抜群',price:null,desc:'深い旨み、キレの良さと香り高さも抜群。',stock:true,img:'',date:'2025-02-05'},
+  {kura:'森田酒造',name:'萬年雪 激辛荒走り',mai:'',place:'倉敷市本町',kuchi:'辛口',ntan:'やや濃厚',detail:'辛いだけではない、旨口の辛口',price:null,desc:'辛いだけではない、旨口の辛口。',stock:true,img:'',date:'2025-02-06'},
+  {kura:'十八盛酒造',name:'十八盛 雄町純米',mai:'雄町',place:'倉敷市児島',kuchi:'中口',ntan:'ややスッキリ',detail:'海のものにはベスト',price:null,desc:'海のものにはベスト。',stock:true,img:'',date:'2025-02-07'},
+  {kura:'十八盛酒造',name:'多賀治 純米雄町',mai:'',place:'倉敷市児島',kuchi:'中口',ntan:'ややスッキリ',detail:'フレッシュ感が持ち味。微発砲',price:null,desc:'フレッシュ感が持ち味。微発砲。',stock:true,img:'',date:'2025-02-08'},
+  {kura:'十八盛酒造',name:'多賀治 純米大吟醸雄町',mai:'',place:'倉敷市児島',kuchi:'中口',ntan:'スッキリ',detail:'贅沢な逸品。洗練された味',price:null,desc:'贅沢な逸品。洗練された味。',stock:true,img:'',date:'2025-02-09'},
+  {kura:'十八盛酒造',name:'裏多賀治 純米大吟醸 朝日',mai:'朝日米',place:'倉敷市児島',kuchi:'中口',ntan:'やや濃厚',detail:'縛り終わりに加圧したもの。濃口',price:750,desc:'縛り終わりに加圧したもの。濃口。',stock:true,img:'',date:'2025-02-10'},
+  {kura:'十八盛酒造',name:'ことのわ',mai:'吟のさと',place:'倉敷市児島',kuchi:'甘口',ntan:'スッキリ',detail:'口当たりよく、飲みやすい',price:null,desc:'口当たりよく、飲みやすい。',stock:true,img:'',date:'2025-02-11'},
+  {kura:'三冠酒造',name:'三冠 朝日純米 にごり生酒',mai:'朝日米',place:'倉敷市児島',kuchi:'やや辛口',ntan:'ややスッキリ',detail:'くどくなく、暑い日にぴったり',price:null,desc:'くどくなく、暑い日にぴったり。',stock:true,img:'',date:'2025-02-12'},
+  {kura:'三冠酒造',name:'生酛 和井田 一回火入',mai:'雄町',place:'倉敷市児島',kuchi:'やや辛口',ntan:'ややスッキリ',detail:'2024年雄町米の酒コンテスト熱燗部門最優秀',price:null,desc:'2024年雄町米の酒コンテスト熱燗部門最優秀。気もとだが酸味は抑え目、冷も美味しい。',stock:true,img:'',date:'2025-02-13'},
+  {kura:'三冠酒造',name:'三冠 朝日純米 無濾過生原酒',mai:'朝日米',place:'倉敷市児島',kuchi:'辛口',ntan:'スッキリ',detail:'',price:null,desc:'',stock:true,img:'',date:'2025-02-14'},
+  {kura:'渡邊酒造本店',name:'嶺の誉 特別純米 雄町',mai:'雄町',place:'倉敷市連島',kuchi:'やや辛口',ntan:'やや濃厚',detail:'直火和釜蒸し、槽搾り',price:null,desc:'直火和釜蒸し、槽搾り。',stock:true,img:'',date:'2025-02-15'},
+  {kura:'渡邊酒造本店',name:'桃幻仙花',mai:'雄町',place:'倉敷市連島',kuchi:'やや辛口',ntan:'やや濃厚',detail:'直火和釜蒸し、槽搾り。麹米は山田錦、掛米は雄町',price:null,desc:'直火和釜蒸し、槽搾り。麹米は山田錦、掛米は雄町。',stock:true,img:'',date:'2025-02-16'},
+];
 
-let allData=[],kuraColorMap={},fKuchi='',fNtan='',fKura='',fStock=false,editingIdx=null;
+let allData=[],kuraColorMap={};
+let fKuchi='',fNtan='',fKura='',fStock=false,editingIdx=null;
+let bulkSelected=new Set();
 
+// ===== DATA =====
 async function loadData(){
   const url=localStorage.getItem('gasUrl')||'';
   if(!url){useFallback();return;}
   document.getElementById('loading').style.display='flex';
   document.getElementById('menu-content').style.display='none';
   try{
-    const res=await fetch(url);
+    const res=await fetch(url+'?action=get');
     if(!res.ok)throw new Error();
     const json=await res.json();
-    if(!Array.isArray(json)||json.length===0)throw new Error();
-    allData=json.filter(d=>d.name);
+    if(!Array.isArray(json)||!json.length)throw new Error();
+    // 既存の画像・仕入れ日データをマージ
+    const saved=getSavedExtra();
+    allData=json.filter(d=>d.name).map(d=>{
+      const ex=saved[d.name]||{};
+      return {...d, img:ex.img||d.img||'', date:ex.date||d.date||''};
+    });
     buildColors();showContent();
-    setGasMsg('✓ スプレッドシートからデータを取得しました','ok');
+    setMsg('gas-msg','✓ スプレッドシートからデータを取得しました','ok');
   }catch(e){useFallback();}
 }
-function useFallback(){allData=[...FALLBACK];buildColors();showContent();}
+
+function getSavedExtra(){
+  try{return JSON.parse(localStorage.getItem('sakeExtra')||'{}');}catch{return {};}
+}
+function saveExtra(){
+  const ex={};
+  allData.forEach(d=>{ex[d.name]={img:d.img||'',date:d.date||''};});
+  localStorage.setItem('sakeExtra',JSON.stringify(ex));
+}
+
+function useFallback(){
+  const saved=getSavedExtra();
+  allData=FALLBACK.map(d=>{
+    const ex=saved[d.name]||{};
+    return {...d,img:ex.img||d.img||'',date:ex.date||d.date||''};
+  });
+  buildColors();showContent();
+}
 function buildColors(){const ks=[...new Set(allData.map(d=>d.kura))];kuraColorMap={};ks.forEach((k,i)=>kuraColorMap[k]=KURA_COLORS[i%KURA_COLORS.length]);}
 function showContent(){
   document.getElementById('loading').style.display='none';
   document.getElementById('menu-content').style.display='';
-  buildChips();buildKuraChips();applyFilters();renderAdminList();
+  buildChips();buildKuraChips();applyFilters();renderAdminList();renderBulkList();
   document.getElementById('gas-url-inp').value=localStorage.getItem('gasUrl')||'';
 }
+
+// ===== EXPORT TO SHEET =====
+async function exportToSheet(){
+  const url=localStorage.getItem('gasUrl')||'';
+  if(!url){alert('先に連携設定タブでApps ScriptのURLを設定してください');return;}
+  setMsg('export-msg','書き出し中…','');
+  try{
+    const res=await fetch(url,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'write',data:allData})
+    });
+    const json=await res.json();
+    setMsg('export-msg','✓ スプレッドシートへの書き出しが完了しました','ok');
+  }catch(e){
+    setMsg('export-msg','❌ 書き出しに失敗しました。GASのURLを確認してください。','err');
+  }
+}
+
+// ===== FILTERS =====
 function buildChips(){
   const ks=[...new Set(allData.map(d=>d.kuchi).filter(Boolean))].sort((a,b)=>KUCHI_ORDER.indexOf(a)-KUCHI_ORDER.indexOf(b));
   const ns=[...new Set(allData.map(d=>d.ntan).filter(Boolean))].sort((a,b)=>NTAN_ORDER.indexOf(a)-NTAN_ORDER.indexOf(b));
@@ -391,26 +617,19 @@ function buildChips(){
 }
 function buildKuraChips(){
   const ks=[...new Set(allData.map(d=>d.kura))];
-  document.getElementById('kura-chips').innerHTML=[`<span class="kura-chip all-on" id="kc-all" onclick="setKura('')"><span class="kura-dot" style="background:#fff"></span>すべて</span>`,...ks.map(k=>`<span class="kura-chip" id="kc-${encodeURIComponent(k)}" onclick="setKura('${k.replace(/'/g,"\\'").replace(/\\/g,'\\\\')}')" ><span class="kura-dot" style="background:${kuraColorMap[k]}"></span>${k}</span>`)].join('');
+  document.getElementById('kura-chips').innerHTML=[`<span class="kura-chip all-on" id="kc-all" onclick="setKura('')"><span class="kura-dot" style="background:#fff"></span>すべて</span>`,...ks.map(k=>`<span class="kura-chip" id="kc-${encodeURIComponent(k)}" onclick="setKura(decodeURIComponent('${encodeURIComponent(k)}'))"><span class="kura-dot" style="background:${kuraColorMap[k]}"></span>${k}</span>`)].join('');
 }
 function setKuchi(v){
   fKuchi=v;
   document.querySelectorAll('#chips-kuchi .chip').forEach(c=>{
-    c.classList.remove('on');
-    Object.keys(KUCHI_BAR).forEach(k=>c.classList.remove('ck-on-'+k));
+    c.classList.remove('on');Object.keys(KUCHI_BAR).forEach(k=>c.classList.remove('ck-on-'+k));
     const isAll=c.textContent==='すべて';
     if(v===''?isAll:c.textContent===v){c.classList.add('on');if(v)c.classList.add('ck-on-'+v);}
-  });
-  applyFilters();
+  });applyFilters();
 }
 function setNtan(v){
   fNtan=v;
-  document.querySelectorAll('#chips-ntan .chip').forEach(c=>{
-    c.classList.remove('on');
-    const isAll=c.textContent==='すべて';
-    if(v===''?isAll:c.textContent===v)c.classList.add('on');
-  });
-  applyFilters();
+  document.querySelectorAll('#chips-ntan .chip').forEach(c=>{c.classList.remove('on');const isAll=c.textContent==='すべて';if(v===''?isAll:c.textContent===v)c.classList.add('on');});applyFilters();
 }
 function setKura(v){
   fKura=v;
@@ -419,12 +638,8 @@ function setKura(v){
   else{const el=document.getElementById('kc-'+encodeURIComponent(v));if(el){el.classList.add('on');el.style.background=kuraColorMap[v];el.style.borderColor=kuraColorMap[v];el.style.color='#fff';}}
   applyFilters();
 }
-function toggleStock(){
-  fStock=!fStock;
-  const el=document.getElementById('chip-stock');
-  el.classList.toggle('on',fStock);
-  applyFilters();
-}
+function toggleStock(){fStock=!fStock;document.getElementById('chip-stock').classList.toggle('on',fStock);applyFilters();}
+
 function applyFilters(){
   const q=document.getElementById('search-inp').value;
   const sort=document.getElementById('sort-sel').value;
@@ -436,17 +651,22 @@ function applyFilters(){
     if(q&&![s.name,s.kura,s.mai,s.place,s.desc,s.detail].some(f=>(f||'').includes(q)))return false;
     return true;
   });
-  if(sort==='kuchi_asc')list.sort((a,b)=>KUCHI_ORDER.indexOf(a.kuchi)-KUCHI_ORDER.indexOf(b.kuchi));
-  if(sort==='kuchi_desc')list.sort((a,b)=>KUCHI_ORDER.indexOf(b.kuchi)-KUCHI_ORDER.indexOf(a.kuchi));
-  if(sort==='ntan_asc')list.sort((a,b)=>NTAN_ORDER.indexOf(a.ntan)-NTAN_ORDER.indexOf(b.ntan));
-  if(sort==='ntan_desc')list.sort((a,b)=>NTAN_ORDER.indexOf(b.ntan)-NTAN_ORDER.indexOf(a.ntan));
-  if(sort==='price_asc')list.sort((a,b)=>(a.price||9999)-(b.price||9999));
-  if(sort==='price_desc')list.sort((a,b)=>(b.price||0)-(a.price||0));
+  // デフォルトは仕入れ日の古い順
+  if(sort==='date_asc'||sort==='default')list.sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+  else if(sort==='date_desc')list.sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  else if(sort==='kuchi_asc')list.sort((a,b)=>KUCHI_ORDER.indexOf(a.kuchi)-KUCHI_ORDER.indexOf(b.kuchi));
+  else if(sort==='kuchi_desc')list.sort((a,b)=>KUCHI_ORDER.indexOf(b.kuchi)-KUCHI_ORDER.indexOf(a.kuchi));
+  else if(sort==='ntan_asc')list.sort((a,b)=>NTAN_ORDER.indexOf(a.ntan)-NTAN_ORDER.indexOf(b.ntan));
+  else if(sort==='ntan_desc')list.sort((a,b)=>NTAN_ORDER.indexOf(b.ntan)-NTAN_ORDER.indexOf(a.ntan));
+  else if(sort==='price_asc')list.sort((a,b)=>(a.price||9999)-(b.price||9999));
+  else if(sort==='price_desc')list.sort((a,b)=>(b.price||0)-(a.price||0));
   renderGrid(list);
   const sc=allData.filter(d=>d.stock).length;
   document.getElementById('count-badge').textContent=`在庫 ${sc} / 全 ${allData.length} 銘柄`;
   document.getElementById('result-count').textContent=`${list.length} 銘柄を表示中`;
 }
+
+// ===== RENDER MENU GRID =====
 function renderGrid(list){
   const grid=document.getElementById('sake-grid'),empty=document.getElementById('empty-msg');
   if(!list.length){grid.innerHTML='';empty.style.display='';return;}
@@ -457,9 +677,14 @@ function renderGrid(list){
     const kp=ki>=0?Math.round(ki/(KUCHI_ORDER.length-1)*100):0;
     const np=ni>=0?Math.round(ni/(NTAN_ORDER.length-1)*100):0;
     const kb=KUCHI_BAR[s.kuchi]||'#ccc',nb=NTAN_BAR[s.ntan]||'#ccc';
-    const fullDesc=s.desc||'';
-    const sd=fullDesc.length>130?fullDesc.slice(0,130)+'…':fullDesc;
+    const txt=s.desc||'';
+    const sd=txt.length>120?txt.slice(0,120)+'…':txt;
+    const imgHtml=s.img
+      ?`<div class="card-img-wrap"><img class="card-img" src="${s.img}" alt="${s.name}" onerror="this.parentNode.innerHTML='<div class=card-img-placeholder>🍶</div>'"></div>`
+      :'';
+    const dateStr=s.date?`<span class="card-date">仕入 ${s.date}</span>`:'';
     return `<div class="sake-card">
+      ${imgHtml}
       <div class="card-strip" style="background:${kc}"></div>
       <div class="card-body">
         <div class="card-top">
@@ -478,57 +703,208 @@ function renderGrid(list){
         </div>`:''}
         ${s.detail?`<div class="card-detail">💬 ${s.detail}</div>`:''}
         ${sd?`<div class="card-desc">${sd}</div>`:''}
-        ${s.place?`<div class="card-place">📍 ${s.place}</div>`:''}
+        <div class="card-footer">
+          ${s.place?`<div class="card-place">📍 ${s.place}</div>`:'<div></div>'}
+          ${dateStr}
+        </div>
       </div>
     </div>`;
   }).join('');
 }
+
+// ===== TABS =====
 function switchTab(tab){
   document.getElementById('view-menu').style.display=tab==='menu'?'':'none';
   document.getElementById('view-admin').style.display=tab==='admin'?'':'none';
   document.getElementById('tab-menu').classList.toggle('on',tab==='menu');
   document.getElementById('tab-admin').classList.toggle('on',tab==='admin');
 }
+function switchAdminTab(tab){
+  ['list','bulk','sync'].forEach(t=>{
+    document.getElementById('atab-'+t+'-view').style.display=t===tab?'':'none';
+    document.getElementById('atab-'+t).classList.toggle('on',t===tab);
+  });
+}
+
+// ===== AUTH =====
 function tryLogin(){
   if(document.getElementById('pw-inp').value===ADMIN_PW){
     document.getElementById('admin-lock').style.display='none';
     document.getElementById('admin-main').style.display='';
   }else{document.getElementById('pw-err').textContent='パスワードが違います';}
 }
-function adminLogout(){document.getElementById('admin-lock').style.display='';document.getElementById('admin-main').style.display='none';document.getElementById('pw-inp').value='';document.getElementById('pw-err').textContent='';}
-function saveGasUrl(){const v=(document.getElementById('gas-url-inp').value||'').trim();localStorage.setItem('gasUrl',v);setGasMsg(v?'✓ URLを保存しました。「テスト」で接続確認できます。':'URLをクリアしました。','ok');}
-function setGasMsg(txt,type){const el=document.getElementById('gas-msg');if(el){el.textContent=txt;el.className='gas-msg gas-'+type;}}
+function adminLogout(){
+  document.getElementById('admin-lock').style.display='';
+  document.getElementById('admin-main').style.display='none';
+  document.getElementById('pw-inp').value='';document.getElementById('pw-err').textContent='';
+}
+
+// ===== GAS =====
+function saveGasUrl(){const v=(document.getElementById('gas-url-inp').value||'').trim();localStorage.setItem('gasUrl',v);setMsg('gas-msg',v?'✓ URLを保存しました':'URLをクリアしました','ok');}
+function setMsg(id,txt,type){const el=document.getElementById(id);if(el){el.textContent=txt;el.className='gas-msg'+(type?' gas-'+type:'');}}
+
+// ===== ADMIN LIST =====
 function renderAdminList(){
   document.getElementById('admin-count').textContent=`全 ${allData.length} 銘柄`;
   document.getElementById('admin-list').innerHTML=allData.map((s,i)=>{
     const kc=kuraColorMap[s.kura]||'#ccc';
+    const thumb=s.img?`<div class="row-thumb"><img src="${s.img}" onerror="this.parentNode.innerHTML='🍶'"></div>`:`<div class="row-thumb">🍶</div>`;
     return `<div class="row-card">
+      ${thumb}
       <div class="row-strip" style="background:${kc}"></div>
-      <div class="row-left"><div class="row-name">${s.name}</div><div class="row-sub">${s.kura}${s.mai?' · '+s.mai:''}${s.kuchi?' · '+s.kuchi:''}</div></div>
-      <div class="row-right"><div class="row-price">${s.price?'¥'+Number(s.price).toLocaleString():'価格未定'}</div><div class="${s.stock?'stock-ok':'stock-no'}">${s.stock?'● 在庫あり':'○ 在庫なし'}</div></div>
-      <div class="row-actions"><button class="btn-sm" onclick="showForm(${i})">✏️ 編集</button><button class="btn-sm btn-danger" onclick="deleteItem(${i})">🗑</button></div>
+      <div class="row-left">
+        <div class="row-name">${s.name}</div>
+        <div class="row-sub">${s.kura}${s.mai?' · '+s.mai:''}${s.kuchi?' · '+s.kuchi:''}</div>
+        ${s.date?`<div class="row-date">仕入 ${s.date}</div>`:''}
+      </div>
+      <div class="row-right">
+        <div class="row-price">${s.price?'¥'+Number(s.price).toLocaleString():'価格未定'}</div>
+        <div class="${s.stock?'stock-ok':'stock-no'}">${s.stock?'● 在庫あり':'○ 在庫なし'}</div>
+      </div>
+      <div class="row-actions">
+        <button class="btn-sm" onclick="showForm(${i})">✏️ 編集</button>
+        <button class="btn-sm btn-danger" onclick="deleteItem(${i})">🗑</button>
+      </div>
     </div>`;
   }).join('');
 }
+
+// ===== BULK EDIT =====
+function renderBulkList(){
+  document.getElementById('bulk-list').innerHTML=allData.map((s,i)=>{
+    const kc=kuraColorMap[s.kura]||'#ccc';
+    const checked=bulkSelected.has(i)?'checked':'';
+    const selClass=bulkSelected.has(i)?'selected':'';
+    return `<div class="row-card ${selClass}" id="brow-${i}">
+      <input type="checkbox" class="row-check" ${checked} onchange="toggleBulkSel(${i},this.checked)">
+      <div class="row-strip" style="background:${kc}"></div>
+      <div class="row-left">
+        <div class="row-name">${s.name}</div>
+        <div class="row-sub">${s.kura}${s.mai?' · '+s.mai:''}${s.kuchi?' · '+s.kuchi:''}</div>
+        ${s.date?`<div class="row-date">仕入 ${s.date}</div>`:''}
+      </div>
+      <div class="row-right">
+        <div class="row-price">${s.price?'¥'+Number(s.price).toLocaleString():'価格未定'}</div>
+        <div class="${s.stock?'stock-ok':'stock-no'}">${s.stock?'● 在庫あり':'○ 在庫なし'}</div>
+      </div>
+    </div>`;
+  }).join('');
+  updateBulkCount();
+}
+function toggleBulkSel(i,checked){
+  if(checked)bulkSelected.add(i);else bulkSelected.delete(i);
+  const row=document.getElementById('brow-'+i);
+  if(row)row.classList.toggle('selected',checked);
+  updateBulkCount();
+}
+function updateBulkCount(){
+  const n=bulkSelected.size;
+  document.getElementById('bulk-sel-count').textContent=`${n}件選択中`;
+  const btn=document.getElementById('bulk-edit-btn');
+  if(btn)btn.disabled=n===0;
+}
+function selectAll(){bulkSelected=new Set(allData.map((_,i)=>i));renderBulkList();}
+function selectNone(){bulkSelected=new Set();renderBulkList();}
+function selectInStock(){bulkSelected=new Set(allData.map((s,i)=>s.stock?i:null).filter(i=>i!==null));renderBulkList();}
+function openBulkPanel(){
+  const panel=document.getElementById('bulk-edit-panel');
+  panel.style.display='';
+  document.getElementById('bulk-panel-title').textContent=`${bulkSelected.size}件を一括編集`;
+  document.getElementById('bulk-stock').value='';
+  document.getElementById('bulk-price').value='';
+  document.getElementById('bulk-price-pct').value='';
+  document.getElementById('bulk-date').value='';
+  document.getElementById('bulk-kuchi').value='';
+  document.getElementById('bulk-ntan').value='';
+  panel.scrollIntoView({behavior:'smooth'});
+}
+function applyBulkEdit(){
+  const stock=document.getElementById('bulk-stock').value;
+  const price=document.getElementById('bulk-price').value;
+  const pricePct=document.getElementById('bulk-price-pct').value;
+  const date=document.getElementById('bulk-date').value;
+  const kuchi=document.getElementById('bulk-kuchi').value;
+  const ntan=document.getElementById('bulk-ntan').value;
+  let changed=0;
+  bulkSelected.forEach(i=>{
+    if(i>=allData.length)return;
+    if(stock!=='')allData[i].stock=stock==='true';
+    if(price!=='')allData[i].price=parseInt(price)||null;
+    if(pricePct!==''&&allData[i].price){
+      const pct=parseFloat(pricePct);
+      allData[i].price=Math.round(allData[i].price*(1+pct/100)/10)*10;
+    }
+    if(date!=='')allData[i].date=date;
+    if(kuchi!=='')allData[i].kuchi=kuchi;
+    if(ntan!=='')allData[i].ntan=ntan;
+    changed++;
+  });
+  saveExtra();
+  renderBulkList();
+  renderAdminList();
+  applyFilters();
+  document.getElementById('bulk-edit-panel').style.display='none';
+  bulkSelected=new Set();
+  renderBulkList();
+  alert(`${changed}件を更新しました！`);
+}
+function clearBulkSelection(){
+  bulkSelected=new Set();
+  document.getElementById('bulk-edit-panel').style.display='none';
+  renderBulkList();
+}
+
+// ===== FORM =====
 function showForm(idx){
   editingIdx=idx;
-  document.getElementById('admin-list-view').style.display='none';
+  document.getElementById('atab-list-view').style.display='none';
   document.getElementById('admin-form-view').style.display='';
   document.getElementById('form-title').textContent=idx===null?'新規追加':'銘柄を編集';
   const s=idx===null?{}:allData[idx];
   ['name','kura','mai','kuchi','ntan','place','detail','desc'].forEach(k=>document.getElementById('f-'+k).value=s[k]||'');
   document.getElementById('f-price').value=s.price||'';
+  document.getElementById('f-date').value=s.date||'';
   document.getElementById('f-stock').checked=s.stock!==false;
+  const imgVal=s.img||'';
+  document.getElementById('f-img').value=imgVal;
+  previewImg(imgVal);
 }
-function showAdminList(){document.getElementById('admin-list-view').style.display='';document.getElementById('admin-form-view').style.display='none';}
+function showAdminList(){
+  document.getElementById('atab-list-view').style.display='';
+  document.getElementById('admin-form-view').style.display='none';
+}
+function previewImg(url){
+  const wrap=document.getElementById('img-preview-wrap');
+  const img=document.getElementById('img-preview');
+  if(url&&url.trim()){wrap.style.display='';img.src=url;}
+  else{wrap.style.display='none';img.src='';}
+}
 function saveForm(){
   const name=document.getElementById('f-name').value.trim();
   if(!name){alert('銘柄名を入力してください');return;}
-  const d={name,kura:document.getElementById('f-kura').value.trim(),mai:document.getElementById('f-mai').value.trim(),kuchi:document.getElementById('f-kuchi').value,ntan:document.getElementById('f-ntan').value,price:parseInt(document.getElementById('f-price').value)||null,place:document.getElementById('f-place').value.trim(),detail:document.getElementById('f-detail').value.trim(),desc:document.getElementById('f-desc').value.trim(),stock:document.getElementById('f-stock').checked};
+  const d={
+    name,kura:document.getElementById('f-kura').value.trim(),
+    mai:document.getElementById('f-mai').value.trim(),
+    kuchi:document.getElementById('f-kuchi').value,
+    ntan:document.getElementById('f-ntan').value,
+    price:parseInt(document.getElementById('f-price').value)||null,
+    date:document.getElementById('f-date').value,
+    place:document.getElementById('f-place').value.trim(),
+    detail:document.getElementById('f-detail').value.trim(),
+    desc:document.getElementById('f-desc').value.trim(),
+    stock:document.getElementById('f-stock').checked,
+    img:document.getElementById('f-img').value.trim(),
+  };
   if(editingIdx===null)allData.push(d);else allData[editingIdx]=d;
-  buildColors();applyFilters();renderAdminList();showAdminList();
+  saveExtra();
+  buildColors();applyFilters();renderAdminList();renderBulkList();showAdminList();
 }
-function deleteItem(i){if(!confirm('この銘柄を削除しますか？'))return;allData.splice(i,1);buildColors();applyFilters();renderAdminList();}
+function deleteItem(i){
+  if(!confirm('この銘柄を削除しますか？'))return;
+  allData.splice(i,1);
+  saveExtra();buildColors();applyFilters();renderAdminList();renderBulkList();
+}
+
 loadData();
 </script>
 </body>
