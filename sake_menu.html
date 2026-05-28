@@ -598,11 +598,13 @@ async function loadData(){
   document.getElementById('loading').style.display='flex';
   document.getElementById('menu-content').style.display='none';
   try{
-    const res=await fetch(url+'?action=get');
+    const controller=new AbortController();
+    const timer=setTimeout(()=>controller.abort(),8000);
+    const res=await fetch(url+'?action=get',{signal:controller.signal});
+    clearTimeout(timer);
     if(!res.ok)throw new Error();
     const json=await res.json();
     if(!Array.isArray(json)||!json.length)throw new Error();
-    // 既存の画像・仕入れ日データをマージ
     const saved=getSavedExtra();
     allData=json.filter(d=>d.name).map(d=>{
       const ex=saved[d.name]||{};
