@@ -211,12 +211,13 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
 <style>
 /* CROPPER MODAL */
-.crop-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:9999;flex-direction:column;align-items:center;justify-content:center;gap:12px;}
+.crop-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:99999;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:20px;}
 .crop-modal.show{display:flex;}
-.crop-wrap{width:min(90vw,560px);max-height:60vh;overflow:hidden;background:#000;border-radius:10px;}
+.crop-wrap{width:min(88vw,540px);height:min(55vh,420px);overflow:hidden;background:#111;border-radius:10px;position:relative;}
 .crop-wrap img{display:block;max-width:100%;}
-.crop-btns{display:flex;gap:10px;}
-.crop-info{font-size:12px;color:rgba(255,255,255,0.6);}
+.crop-btns{display:flex;gap:12px;z-index:100000;position:relative;}
+.crop-btns button{pointer-events:all !important;cursor:pointer !important;}
+.crop-info{font-size:12px;color:rgba(255,255,255,0.7);}
 </style>
 </head>
 <body>
