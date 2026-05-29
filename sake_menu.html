@@ -211,12 +211,6 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
 <style>
 /* CROPPER MODAL */
-.crop-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:99999;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:20px;}
-.crop-modal.show{display:flex;}
-.crop-wrap{width:min(88vw,540px);height:min(55vh,420px);overflow:hidden;background:#111;border-radius:10px;position:relative;}
-.crop-wrap img{display:block;max-width:100%;}
-.crop-btns{display:flex;gap:12px;z-index:100000;position:relative;}
-.crop-btns button{pointer-events:all !important;cursor:pointer !important;}
 .crop-info{font-size:12px;color:rgba(255,255,255,0.7);}
 </style>
 </head>
@@ -1054,7 +1048,7 @@ function uploadImg(e) {
 function openCropper(src) {
   const modal = document.getElementById('crop-modal');
   const img = document.getElementById('crop-img');
-  modal.classList.add('show');
+  modal.style.display='block';
   img.src = src;
   // Cropperは画像ロード後に初期化
   img.onload = () => {
@@ -1072,7 +1066,7 @@ function openCropper(src) {
 }
 
 function closeCropper() {
-  document.getElementById('crop-modal').classList.remove('show');
+  document.getElementById('crop-modal').style.display='none';
   if (cropperInst) { cropperInst.destroy(); cropperInst = null; }
 }
 
@@ -1115,12 +1109,16 @@ function handleArowClick(e, i) {
 init();
 </script>
 <!-- CROP MODAL -->
-<div class="crop-modal" id="crop-modal">
-  <div class="crop-info">ドラッグで切り取り範囲を調整 → 「決定」で保存</div>
-  <div class="crop-wrap"><img id="crop-img" src=""></div>
-  <div class="crop-btns">
-    <button class="btn btn-gold" id="crop-ok-btn">✂️ 決定</button>
-    <button class="btn-sm" id="crop-cancel-btn" style="color:#fff;border-color:rgba(255,255,255,0.3);background:transparent">キャンセル</button>
+<div id="crop-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.88);z-index:99999;">
+  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(90vw,560px);display:flex;flex-direction:column;gap:12px;align-items:center;">
+    <div style="font-size:12px;color:rgba(255,255,255,0.7);">ドラッグで切り取り範囲を調整 → 「決定」で保存</div>
+    <div style="width:100%;height:min(56vh,400px);overflow:hidden;background:#000;border-radius:10px;">
+      <img id="crop-img" src="" style="display:block;max-width:100%;">
+    </div>
+    <div style="display:flex;gap:12px;position:relative;z-index:100000;">
+      <button id="crop-ok-btn" style="background:#D4A055;color:#fff;border:none;border-radius:8px;padding:10px 24px;font-size:14px;font-weight:600;cursor:pointer;pointer-events:all;">✂️ 決定</button>
+      <button id="crop-cancel-btn" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.4);border-radius:8px;padding:10px 20px;font-size:14px;cursor:pointer;pointer-events:all;">キャンセル</button>
+    </div>
   </div>
 </div>
 </body>
