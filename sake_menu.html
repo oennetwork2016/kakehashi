@@ -540,6 +540,47 @@ function init() {
   document.getElementById('sort').addEventListener('change', renderMenu);
   document.getElementById('chip-stock').addEventListener('click', () => { fStock=!fStock; document.getElementById('chip-stock').classList.toggle('on',fStock); renderMenu(); });
   document.getElementById('chip-kan').addEventListener('click', () => { fKan=!fKan; document.getElementById('chip-kan').classList.toggle('on',fKan); renderMenu(); });
+
+  // フィルターチップのクリック（delegation: 一度だけ登録）
+  document.getElementById('chips-kuchi').addEventListener('click', e => {
+    const c=e.target.closest('.chip'); if(!c||!c.dataset.val===undefined) return;
+    if(c.dataset.val===undefined) return;
+    fKuchi=c.dataset.val;
+    document.querySelectorAll('#chips-kuchi .chip').forEach(x=>x.classList.toggle('on',x.dataset.val===fKuchi));
+    renderMenu();
+  });
+  document.getElementById('chips-ntan').addEventListener('click', e => {
+    const c=e.target.closest('.chip'); if(!c||c.dataset.val===undefined) return;
+    fNtan=c.dataset.val;
+    document.querySelectorAll('#chips-ntan .chip').forEach(x=>x.classList.toggle('on',x.dataset.val===fNtan));
+    renderMenu();
+  });
+  document.getElementById('chips-aroma').addEventListener('click', e => {
+    const c=e.target.closest('.chip'); if(!c||c.dataset.val===undefined) return;
+    fAroma=c.dataset.val;
+    document.querySelectorAll('#chips-aroma .chip').forEach(x=>x.classList.toggle('on',x.dataset.val===fAroma));
+    renderMenu();
+  });
+  document.getElementById('kura-chips').addEventListener('click', e => {
+    const c=e.target.closest('.kchip'); if(!c||c.dataset.kura===undefined) return;
+    fKura=c.dataset.kura;
+    document.querySelectorAll('#kura-chips .kchip').forEach(x=>{
+      x.classList.remove('all','on'); x.style.background=''; x.style.color=''; x.style.borderColor='';
+    });
+    if(fKura===''){c.classList.add('all');}
+    else{c.classList.add('on');c.style.background=kuraColors[fKura];c.style.color='#fff';c.style.borderColor=kuraColors[fKura];}
+    renderMenu();
+  });
+  document.getElementById('cat-chips').addEventListener('click', e => {
+    const c=e.target.closest('.kchip'); if(!c||c.dataset.cat===undefined) return;
+    fCat=c.dataset.cat;
+    document.querySelectorAll('#cat-chips .kchip').forEach(x=>{
+      x.classList.remove('all','on'); x.style.background=''; x.style.color=''; x.style.borderColor='';
+    });
+    if(fCat===''){c.classList.add('all');}
+    else{c.classList.add('on');c.style.background='var(--gold)';c.style.color='#fff';c.style.borderColor='var(--gold)';}
+    renderMenu();
+  });
   document.getElementById('form-back-btn').addEventListener('click', closeForm);
   document.getElementById('form-save-btn').addEventListener('click', saveForm);
   document.getElementById('img-clear-btn').addEventListener('click', clearImg);
@@ -635,11 +676,6 @@ function buildFilterChips() {
   const ntans  = [...new Set(data.map(d=>d.ntan).filter(Boolean))].sort((a,b)=>NTAN_ORD.indexOf(a)-NTAN_ORD.indexOf(b));
   const aromas = [...new Set(data.map(d=>d.aroma).filter(Boolean))];
 
-  const mkChips = (items, selectedVal, onClickFn, prefix='') =>
-    ['<span class="chip on" data-val="">すべて</span>',
-     ...items.map(v => `<span class="chip ${prefix}${v}" data-val="${v}">${v}</span>`)
-    ].join('');
-
   document.getElementById('chips-kuchi').innerHTML = kuchis.length
     ? ['<span class="chip on" data-val="">すべて</span>', ...kuchis.map(k=>`<span class="chip k-${k}" data-val="${k}">${k}</span>`)].join('')
     : '<span style="font-size:11px;color:var(--tx3)">—</span>';
@@ -652,25 +688,10 @@ function buildFilterChips() {
     ? ['<span class="chip on" data-val="">すべて</span>', ...aromas.map(a=>`<span class="chip" data-val="${a}">🌸 ${a}</span>`)].join('')
     : '<span style="font-size:11px;color:var(--tx3)">—</span>';
 
-  // イベント
-  document.getElementById('chips-kuchi').addEventListener('click', e => {
-    const chip = e.target.closest('.chip'); if(!chip) return;
-    fKuchi = chip.dataset.val;
-    document.querySelectorAll('#chips-kuchi .chip').forEach(c => { c.classList.toggle('on', c.dataset.val===fKuchi); });
-    renderMenu();
-  });
-  document.getElementById('chips-ntan').addEventListener('click', e => {
-    const chip = e.target.closest('.chip'); if(!chip) return;
-    fNtan = chip.dataset.val;
-    document.querySelectorAll('#chips-ntan .chip').forEach(c => { c.classList.toggle('on', c.dataset.val===fNtan); });
-    renderMenu();
-  });
-  document.getElementById('chips-aroma').addEventListener('click', e => {
-    const chip = e.target.closest('.chip'); if(!chip) return;
-    fAroma = chip.dataset.val;
-    document.querySelectorAll('#chips-aroma .chip').forEach(c => { c.classList.toggle('on', c.dataset.val===fAroma); });
-    renderMenu();
-  });
+  // 選択状態を反映
+  document.querySelectorAll('#chips-kuchi .chip').forEach(c=>c.classList.toggle('on', c.dataset.val===fKuchi));
+  document.querySelectorAll('#chips-ntan .chip').forEach(c=>c.classList.toggle('on', c.dataset.val===fNtan));
+  document.querySelectorAll('#chips-aroma .chip').forEach(c=>c.classList.toggle('on', c.dataset.val===fAroma));
 }
 
 function buildKuraChips() {
@@ -678,16 +699,14 @@ function buildKuraChips() {
   document.getElementById('kura-chips').innerHTML =
     `<span class="kchip all" data-kura="">すべて</span>` +
     kuras.map(k=>`<span class="kchip" data-kura="${k}"><span class="kdot" style="background:${kuraColors[k]}"></span>${k}</span>`).join('');
-  document.getElementById('kura-chips').addEventListener('click', e => {
-    const chip = e.target.closest('.kchip'); if(!chip) return;
-    fKura = chip.dataset.kura;
-    document.querySelectorAll('#kura-chips .kchip').forEach(c => {
-      c.classList.remove('all','on');
-      c.style.background=''; c.style.color=''; c.style.borderColor='';
-    });
-    if (fKura === '') { chip.classList.add('all'); }
-    else { chip.classList.add('on'); chip.style.background=kuraColors[fKura]; chip.style.color='#fff'; chip.style.borderColor=kuraColors[fKura]; }
-    renderMenu();
+  // 選択状態を反映
+  document.querySelectorAll('#kura-chips .kchip').forEach(c => {
+    c.classList.remove('all','on'); c.style.background=''; c.style.color=''; c.style.borderColor='';
+    if(c.dataset.kura===fKura){
+      if(fKura===''){c.classList.add('all');}
+      else{c.classList.add('on');c.style.background=kuraColors[fKura];c.style.color='#fff';c.style.borderColor=kuraColors[fKura];}
+    }
+    if(fKura===''&&c.dataset.kura==='') c.classList.add('all');
   });
 }
 
@@ -695,16 +714,14 @@ function buildCatChips() {
   document.getElementById('cat-chips').innerHTML =
     `<span class="kchip all" data-cat="">すべて</span>` +
     CATS.map(c=>`<span class="kchip" data-cat="${c}"><span class="kdot" style="background:var(--gold)"></span>${c}</span>`).join('');
-  document.getElementById('cat-chips').addEventListener('click', e => {
-    const chip = e.target.closest('.kchip'); if(!chip) return;
-    fCat = chip.dataset.cat;
-    document.querySelectorAll('#cat-chips .kchip').forEach(c => {
-      c.classList.remove('all','on');
-      c.style.background=''; c.style.color=''; c.style.borderColor='';
-    });
-    if (fCat === '') { chip.classList.add('all'); }
-    else { chip.classList.add('on'); chip.style.background='var(--gold)'; chip.style.color='#fff'; chip.style.borderColor='var(--gold)'; }
-    renderMenu();
+  // 選択状態を反映
+  document.querySelectorAll('#cat-chips .kchip').forEach(c => {
+    c.classList.remove('all','on'); c.style.background=''; c.style.color=''; c.style.borderColor='';
+    if(c.dataset.cat===fCat){
+      if(fCat===''){c.classList.add('all');}
+      else{c.classList.add('on');c.style.background='var(--gold)';c.style.color='#fff';c.style.borderColor='var(--gold)';}
+    }
+    if(fCat===''&&c.dataset.cat==='') c.classList.add('all');
   });
 }
 
