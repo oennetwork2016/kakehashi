@@ -208,6 +208,7 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
 }
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
 <style>
 /* CROPPER MODAL */
 .crop-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:9999;flex-direction:column;align-items:center;justify-content:center;gap:12px;}
@@ -522,24 +523,24 @@ let adminTab = 'list';
 // ===== INIT =====
 function init() {
   // イベント登録
-  document.getElementById('tab-menu').addEventListener('click', () => switchTab('menu'));
-  document.getElementById('tab-admin').addEventListener('click', () => switchTab('admin'));
-  document.getElementById('reload-btn').addEventListener('click', loadFromGas);
-  document.getElementById('login-btn').addEventListener('click', tryLogin);
-  document.getElementById('pw').addEventListener('keydown', e => { if(e.key==='Enter') tryLogin(); });
-  document.getElementById('logout-btn').addEventListener('click', doLogout);
-  document.getElementById('export-btn').addEventListener('click', doExport);
-  document.getElementById('export-btn2').addEventListener('click', doExport);
-  document.getElementById('add-btn').addEventListener('click', () => openForm(null));
-  document.getElementById('atab-list').addEventListener('click', () => switchAdmin('list'));
-  document.getElementById('atab-bulk').addEventListener('click', () => switchAdmin('bulk'));
-  document.getElementById('atab-sync').addEventListener('click', () => switchAdmin('sync'));
-  document.getElementById('gas-save-btn').addEventListener('click', saveGasUrl);
-  document.getElementById('gas-test-btn').addEventListener('click', loadFromGas);
-  document.getElementById('search').addEventListener('input', renderMenu);
-  document.getElementById('sort').addEventListener('change', renderMenu);
-  document.getElementById('chip-stock').addEventListener('click', () => { fStock=!fStock; document.getElementById('chip-stock').classList.toggle('on',fStock); renderMenu(); });
-  document.getElementById('chip-kan').addEventListener('click', () => { fKan=!fKan; document.getElementById('chip-kan').classList.toggle('on',fKan); renderMenu(); });
+  on('tab-menu','click',()=>switchTab('menu'));
+  on('tab-admin','click',()=>switchTab('admin'));
+  on('reload-btn','click', loadFromGas);
+  on('login-btn','click', tryLogin);
+  on('pw','keydown', e=>{ if(e.key==='Enter') tryLogin(); });
+  on('logout-btn','click', doLogout);
+  on('export-btn','click', doExport);
+  on('export-btn2','click', doExport);
+  on('add-btn','click',()=>openForm(null));
+  on('atab-list','click',()=>switchAdmin('list'));
+  on('atab-bulk','click',()=>switchAdmin('bulk'));
+  on('atab-sync','click',()=>switchAdmin('sync'));
+  on('gas-save-btn','click', saveGasUrl);
+  on('gas-test-btn','click', loadFromGas);
+  on('search','input', renderMenu);
+  on('sort','change', renderMenu);
+  on('chip-stock','click',()=>{ fStock=!fStock; const el=document.getElementById('chip-stock'); if(el) el.classList.toggle('on',fStock); renderMenu(); });
+  on('chip-kan','click',()=>{ fKan=!fKan; const el=document.getElementById('chip-kan'); if(el) el.classList.toggle('on',fKan); renderMenu(); });
 
   // フィルターは document に対してdelegation（チップが再生成されても動く）
   document.addEventListener('click', e => {
@@ -587,24 +588,28 @@ function init() {
       renderMenu(); return;
     }
   });
-  document.getElementById('form-back-btn').addEventListener('click', closeForm);
-  document.getElementById('form-save-btn').addEventListener('click', saveForm);
-  document.getElementById('img-clear-btn').addEventListener('click', clearImg);
-  document.getElementById('imgarea').addEventListener('click', () => document.getElementById('img-file').click());
-  document.getElementById('img-file').addEventListener('change', uploadImg);
-  document.getElementById('sel-all-btn').addEventListener('click', () => { bulkSel=new Set(data.map((_,i)=>i)); renderBulkList(); });
-  document.getElementById('sel-none-btn').addEventListener('click', () => { bulkSel=new Set(); renderBulkList(); });
-  document.getElementById('sel-stock-btn').addEventListener('click', () => { bulkSel=new Set(data.map((s,i)=>s.stock?i:null).filter(i=>i!==null)); renderBulkList(); });
-  document.getElementById('bulk-open-btn').addEventListener('click', openBulkPanel);
-  document.getElementById('bulk-apply-btn').addEventListener('click', applyBulk);
-  document.getElementById('bulk-cancel-btn').addEventListener('click', () => { document.getElementById('bulk-panel').style.display='none'; });
-
-  // cropイベント
-  document.getElementById('crop-ok-btn').addEventListener('click', cropAndUpload);
-  document.getElementById('crop-cancel-btn').addEventListener('click', closeCropper);
+  on('form-back-btn','click', closeForm);
+  on('form-save-btn','click', saveForm);
+  on('img-clear-btn','click', clearImg);
+  on('imgarea','click',()=>{ const f=document.getElementById('img-file'); if(f) f.click(); });
+  on('img-file','change', uploadImg);
+  on('sel-all-btn','click',()=>{ bulkSel=new Set(data.map((_,i)=>i)); renderBulkList(); });
+  on('sel-none-btn','click',()=>{ bulkSel=new Set(); renderBulkList(); });
+  on('sel-stock-btn','click',()=>{ bulkSel=new Set(data.map((s,i)=>s.stock?i:null).filter(i=>i!==null)); renderBulkList(); });
+  on('bulk-open-btn','click', openBulkPanel);
+  on('bulk-apply-btn','click', applyBulk);
+  on('bulk-cancel-btn','click',()=>{ const el=document.getElementById('bulk-panel'); if(el) el.style.display='none'; });
+  on('crop-ok-btn','click', cropAndUpload);
+  on('crop-cancel-btn','click', closeCropper);
 
   // データ読み込み（即座にフォールバック）
   loadData();
+}
+
+// null安全なaddEventListener
+function on(id, ev, fn) {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener(ev, fn);
 }
 
 function loadData() {
@@ -1108,7 +1113,6 @@ function handleArowClick(e, i) {
 }
 init();
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
 <!-- CROP MODAL -->
 <div class="crop-modal" id="crop-modal">
   <div class="crop-info">ドラッグで切り取り範囲を調整 → 「決定」で保存</div>
