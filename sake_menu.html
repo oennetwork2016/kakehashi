@@ -541,45 +541,51 @@ function init() {
   document.getElementById('chip-stock').addEventListener('click', () => { fStock=!fStock; document.getElementById('chip-stock').classList.toggle('on',fStock); renderMenu(); });
   document.getElementById('chip-kan').addEventListener('click', () => { fKan=!fKan; document.getElementById('chip-kan').classList.toggle('on',fKan); renderMenu(); });
 
-  // フィルターチップのクリック（delegation: 一度だけ登録）
-  document.getElementById('chips-kuchi').addEventListener('click', e => {
-    const c=e.target.closest('.chip'); if(!c||!c.dataset.val===undefined) return;
-    if(c.dataset.val===undefined) return;
-    fKuchi=c.dataset.val;
-    document.querySelectorAll('#chips-kuchi .chip').forEach(x=>x.classList.toggle('on',x.dataset.val===fKuchi));
-    renderMenu();
-  });
-  document.getElementById('chips-ntan').addEventListener('click', e => {
-    const c=e.target.closest('.chip'); if(!c||c.dataset.val===undefined) return;
-    fNtan=c.dataset.val;
-    document.querySelectorAll('#chips-ntan .chip').forEach(x=>x.classList.toggle('on',x.dataset.val===fNtan));
-    renderMenu();
-  });
-  document.getElementById('chips-aroma').addEventListener('click', e => {
-    const c=e.target.closest('.chip'); if(!c||c.dataset.val===undefined) return;
-    fAroma=c.dataset.val;
-    document.querySelectorAll('#chips-aroma .chip').forEach(x=>x.classList.toggle('on',x.dataset.val===fAroma));
-    renderMenu();
-  });
-  document.getElementById('kura-chips').addEventListener('click', e => {
-    const c=e.target.closest('.kchip'); if(!c||c.dataset.kura===undefined) return;
-    fKura=c.dataset.kura;
-    document.querySelectorAll('#kura-chips .kchip').forEach(x=>{
-      x.classList.remove('all','on'); x.style.background=''; x.style.color=''; x.style.borderColor='';
-    });
-    if(fKura===''){c.classList.add('all');}
-    else{c.classList.add('on');c.style.background=kuraColors[fKura];c.style.color='#fff';c.style.borderColor=kuraColors[fKura];}
-    renderMenu();
-  });
-  document.getElementById('cat-chips').addEventListener('click', e => {
-    const c=e.target.closest('.kchip'); if(!c||c.dataset.cat===undefined) return;
-    fCat=c.dataset.cat;
-    document.querySelectorAll('#cat-chips .kchip').forEach(x=>{
-      x.classList.remove('all','on'); x.style.background=''; x.style.color=''; x.style.borderColor='';
-    });
-    if(fCat===''){c.classList.add('all');}
-    else{c.classList.add('on');c.style.background='var(--gold)';c.style.color='#fff';c.style.borderColor='var(--gold)';}
-    renderMenu();
+  // フィルターは document に対してdelegation（チップが再生成されても動く）
+  document.addEventListener('click', e => {
+    // 飲み口チップ
+    const kChip = e.target.closest('#chips-kuchi .chip');
+    if (kChip && kChip.dataset.val !== undefined) {
+      fKuchi = kChip.dataset.val;
+      document.querySelectorAll('#chips-kuchi .chip').forEach(x=>x.classList.toggle('on',x.dataset.val===fKuchi));
+      renderMenu(); return;
+    }
+    // 濃淡チップ
+    const nChip = e.target.closest('#chips-ntan .chip');
+    if (nChip && nChip.dataset.val !== undefined) {
+      fNtan = nChip.dataset.val;
+      document.querySelectorAll('#chips-ntan .chip').forEach(x=>x.classList.toggle('on',x.dataset.val===fNtan));
+      renderMenu(); return;
+    }
+    // 香りチップ
+    const aChip = e.target.closest('#chips-aroma .chip');
+    if (aChip && aChip.dataset.val !== undefined) {
+      fAroma = aChip.dataset.val;
+      document.querySelectorAll('#chips-aroma .chip').forEach(x=>x.classList.toggle('on',x.dataset.val===fAroma));
+      renderMenu(); return;
+    }
+    // 酒蔵チップ
+    const kuraChip = e.target.closest('#kura-chips .kchip');
+    if (kuraChip && kuraChip.dataset.kura !== undefined) {
+      fKura = kuraChip.dataset.kura;
+      document.querySelectorAll('#kura-chips .kchip').forEach(x=>{
+        x.classList.remove('all','on'); x.style.background=''; x.style.color=''; x.style.borderColor='';
+      });
+      if(fKura==='') kuraChip.classList.add('all');
+      else { kuraChip.classList.add('on'); kuraChip.style.background=kuraColors[fKura]; kuraChip.style.color='#fff'; kuraChip.style.borderColor=kuraColors[fKura]; }
+      renderMenu(); return;
+    }
+    // カテゴリチップ
+    const catChip = e.target.closest('#cat-chips .kchip');
+    if (catChip && catChip.dataset.cat !== undefined) {
+      fCat = catChip.dataset.cat;
+      document.querySelectorAll('#cat-chips .kchip').forEach(x=>{
+        x.classList.remove('all','on'); x.style.background=''; x.style.color=''; x.style.borderColor='';
+      });
+      if(fCat==='') catChip.classList.add('all');
+      else { catChip.classList.add('on'); catChip.style.background='#D4A055'; catChip.style.color='#fff'; catChip.style.borderColor='#D4A055'; }
+      renderMenu(); return;
+    }
   });
   document.getElementById('form-back-btn').addEventListener('click', closeForm);
   document.getElementById('form-save-btn').addEventListener('click', saveForm);
@@ -668,6 +674,33 @@ function renderAll() {
   renderAdminList();
   renderBulkList();
   const inp = document.getElementById('gas-url'); if(inp) inp.value = localStorage.getItem('gasUrl')||'';
+}
+
+function rebuildChipStates() {
+  // chips-kuchi
+  document.querySelectorAll('#chips-kuchi .chip').forEach(c=>c.classList.toggle('on', c.dataset.val===fKuchi));
+  // chips-ntan
+  document.querySelectorAll('#chips-ntan .chip').forEach(c=>c.classList.toggle('on', c.dataset.val===fNtan));
+  // chips-aroma
+  document.querySelectorAll('#chips-aroma .chip').forEach(c=>c.classList.toggle('on', c.dataset.val===fAroma));
+  // kura-chips
+  document.querySelectorAll('#kura-chips .kchip').forEach(c=>{
+    c.classList.remove('all','on'); c.style.background=''; c.style.color=''; c.style.borderColor='';
+    if(c.dataset.kura===fKura){
+      if(fKura==='') c.classList.add('all');
+      else { c.classList.add('on'); c.style.background=kuraColors[fKura]; c.style.color='#fff'; c.style.borderColor=kuraColors[fKura]; }
+    }
+  });
+  if(fKura===''){ const el=document.querySelector('#kura-chips .kchip[data-kura=""]'); if(el) el.classList.add('all'); }
+  // cat-chips
+  document.querySelectorAll('#cat-chips .kchip').forEach(c=>{
+    c.classList.remove('all','on'); c.style.background=''; c.style.color=''; c.style.borderColor='';
+    if(c.dataset.cat===fCat){
+      if(fCat==='') c.classList.add('all');
+      else { c.classList.add('on'); c.style.background='#D4A055'; c.style.color='#fff'; c.style.borderColor='#D4A055'; }
+    }
+  });
+  if(fCat===''){ const el=document.querySelector('#cat-chips .kchip[data-cat=""]'); if(el) el.classList.add('all'); }
 }
 
 // ===== FILTER CHIPS =====
