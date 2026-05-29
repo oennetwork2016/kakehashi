@@ -1036,59 +1036,96 @@ function setPreview(url) {
 }
 function clearImg() { setPreview(''); document.getElementById('img-file').value=''; }
 let cropperInst = null;
+let pendingBlob = null;
 
 function uploadImg(e) {
   const file = e.target.files[0]; if (!file) return;
   const reader = new FileReader();
   reader.onload = ev => openCropper(ev.target.result);
   reader.readAsDataURL(file);
-  e.target.value = ''; // reset so same file can be re-selected
+  e.target.value = '';
 }
 
 function openCropper(src) {
+  // 古いCropperを破棄
+  if (cropperInst) { try { cropperInst.destroy(); } catch(e){} cropperInst = null; }
+
   const modal = document.getElementById('crop-modal');
-  const img = document.getElementById('crop-img');
-  modal.style.display='block';
-  img.src = src;
-  // Cropperは画像ロード後に初期化
-  img.onload = () => {
-    if (cropperInst) { cropperInst.destroy(); cropperInst = null; }
-    cropperInst = new Cropper(img, {
-      aspectRatio: 4/3,
-      viewMode: 1,
-      autoCropArea: 0.85,
-      movable: true,
-      zoomable: true,
-      guides: true,
-      background: false,
-    });
-  };
+  const imgEl = document.getElementById('crop-img');
+
+  // imgを完全リセット
+  imgEl.removeAttribute('src');
+  imgEl.style.display = 'none';
+  modal.style.display = 'block';
+
+  // 少し待ってから画像をセットしてCropper初期化
+  setTimeout(() => {
+    imgEl.style.display = 'block';
+    imgEl.onload = null;
+    imgEl.onload = function() {
+      if (cropperInst) { try { cropperInst.destroy(); } catch(e){} cropperInst = null; }
+      cropperInst = new Cropper(imgEl, {
+        aspectRatio: 4/3,
+        viewMode: 1,
+        autoCropArea: 0.8,
+        movable: true,
+        zoomable: true,
+        guides: true,
+        background: false,
+        ready: function() {
+          console.log('Cropper ready');
+        }
+      });
+    };
+    imgEl.src = src;
+    // すでにキャッシュ済みの場合onloadが発火しないことへの対策
+    if (imgEl.complete && imgEl.naturalWidth > 0) {
+      imgEl.onload();
+    }
+  }, 50);
 }
 
 function closeCropper() {
-  document.getElementById('crop-modal').style.display='none';
-  if (cropperInst) { cropperInst.destroy(); cropperInst = null; }
+  document.getElementById('crop-modal').style.display = 'none';
+  if (cropperInst) { try { cropperInst.destroy(); } catch(e){} cropperInst = null; }
 }
 
 async function cropAndUpload() {
-  if (!cropperInst) return;
+  if (!cropperInst) {
+    alert('画像を選択してください');
+    return;
+  }
   const msg = document.getElementById('img-msg');
-  const canvas = cropperInst.getCroppedCanvas({ width:1200, height:900, imageSmoothingQuality:'high' });
+  let canvas;
+  try {
+    canvas = cropperInst.getCroppedCanvas({ width:1200, height:900, imageSmoothingQuality:'high' });
+  } catch(e) {
+    alert('切り取りに失敗しました: ' + e.message);
+    return;
+  }
   closeCropper();
-  msg.style.display=''; msg.style.color='var(--tx3)'; msg.textContent='📤 アップロード中…';
+  msg.style.display = '';
+  msg.style.color = 'var(--tx3)';
+  msg.textContent = '📤 アップロード中…';
+
   canvas.toBlob(async blob => {
     try {
       const fd = new FormData();
       fd.append('file', blob, 'sake.jpg');
       fd.append('upload_preset', UPLOAD_PRESET);
-      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {method:'POST', body:fd});
+      const res = await fetch(
+        `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+        { method:'POST', body:fd }
+      );
       const json = await res.json();
-      if (!json.secure_url) throw new Error(json.error?.message||'Upload failed');
+      if (!json.secure_url) throw new Error(json.error?.message || 'Upload failed');
       setPreview(json.secure_url);
-      msg.style.color='var(--teal-dk)'; msg.textContent='✓ アップロード完了！';
-      setTimeout(() => msg.style.display='none', 2000);
+      msg.style.color = 'var(--teal-dk)';
+      msg.textContent = '✓ アップロード完了！';
+      setTimeout(() => { msg.style.display = 'none'; }, 2000);
     } catch(err) {
-      msg.style.color='var(--red)'; msg.textContent='❌ '+err.message;
+      msg.style.color = 'var(--red)';
+      msg.textContent = '❌ ' + err.message;
     }
   }, 'image/jpeg', 0.92);
 }
@@ -1116,8 +1153,8 @@ init();
       <img id="crop-img" src="" style="display:block;max-width:100%;">
     </div>
     <div style="display:flex;gap:12px;position:relative;z-index:100000;">
-      <button id="crop-ok-btn" style="background:#D4A055;color:#fff;border:none;border-radius:8px;padding:10px 24px;font-size:14px;font-weight:600;cursor:pointer;pointer-events:all;">✂️ 決定</button>
-      <button id="crop-cancel-btn" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.4);border-radius:8px;padding:10px 20px;font-size:14px;cursor:pointer;pointer-events:all;">キャンセル</button>
+      <button id="crop-ok-btn" onclick="cropAndUpload()" style="background:#D4A055;color:#fff;border:none;border-radius:8px;padding:12px 28px;font-size:15px;font-weight:600;cursor:pointer;pointer-events:all;position:relative;z-index:100001;">✂️ 決定</button>
+      <button id="crop-cancel-btn" onclick="closeCropper()" style="background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.4);border-radius:8px;padding:12px 20px;font-size:15px;cursor:pointer;pointer-events:all;position:relative;z-index:100001;">キャンセル</button>
     </div>
   </div>
 </div>
