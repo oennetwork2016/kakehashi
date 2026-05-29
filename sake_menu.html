@@ -207,6 +207,16 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
   .fg.full{grid-column:1;}
 }
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
+<style>
+/* CROPPER MODAL */
+.crop-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:9999;flex-direction:column;align-items:center;justify-content:center;gap:12px;}
+.crop-modal.show{display:flex;}
+.crop-wrap{width:min(90vw,560px);max-height:60vh;overflow:hidden;background:#000;border-radius:10px;}
+.crop-wrap img{display:block;max-width:100%;}
+.crop-btns{display:flex;gap:10px;}
+.crop-info{font-size:12px;color:rgba(255,255,255,0.6);}
+</style>
 </head>
 <body>
 <div class="topbar">
@@ -542,6 +552,10 @@ function init() {
   document.getElementById('bulk-apply-btn').addEventListener('click', applyBulk);
   document.getElementById('bulk-cancel-btn').addEventListener('click', () => { document.getElementById('bulk-panel').style.display='none'; });
 
+  // cropイベント
+  document.getElementById('crop-ok-btn').addEventListener('click', cropAndUpload);
+  document.getElementById('crop-cancel-btn').addEventListener('click', closeCropper);
+
   // データ読み込み（即座にフォールバック）
   loadData();
 }
@@ -814,7 +828,7 @@ function renderAdminList() {
     const thumb = s.img
       ? `<div class="athumb"><img src="${s.img}" onerror="this.parentNode.textContent='🍶'"></div>`
       : `<div class="athumb">🍶</div>`;
-    return `<div class="arow">
+    return `<div class="arow" style="cursor:pointer" onclick="handleArowClick(event,${i})">
       ${thumb}
       <div class="astrip" style="background:${kc}"></div>
       <div class="aleft">
@@ -826,8 +840,7 @@ function renderAdminList() {
         <div class="aprice">${s.price?'¥'+Number(s.price).toLocaleString():'価格未定'}</div>
         <div class="${s.stock?'astock-y':'astock-n'}">${s.stock?'● 在庫あり':'○ 在庫なし'}</div>
       </div>
-      <div class="aact">
-        <button class="btn-sm" onclick="openForm(${i})">✏️</button>
+      <div class="aact" onclick="event.stopPropagation()">
         <button class="btn-sm btn-danger" onclick="deleteItem(${i})">🗑</button>
       </div>
     </div>`;
@@ -972,25 +985,62 @@ function setPreview(url) {
   else      { img.src=''; wrap.style.display='none'; area.style.display=''; }
 }
 function clearImg() { setPreview(''); document.getElementById('img-file').value=''; }
-async function uploadImg(e) {
+let cropperInst = null;
+
+function uploadImg(e) {
   const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => openCropper(ev.target.result);
+  reader.readAsDataURL(file);
+  e.target.value = ''; // reset so same file can be re-selected
+}
+
+function openCropper(src) {
+  const modal = document.getElementById('crop-modal');
+  const img = document.getElementById('crop-img');
+  modal.classList.add('show');
+  img.src = src;
+  // Cropperは画像ロード後に初期化
+  img.onload = () => {
+    if (cropperInst) { cropperInst.destroy(); cropperInst = null; }
+    cropperInst = new Cropper(img, {
+      aspectRatio: 4/3,
+      viewMode: 1,
+      autoCropArea: 0.85,
+      movable: true,
+      zoomable: true,
+      guides: true,
+      background: false,
+    });
+  };
+}
+
+function closeCropper() {
+  document.getElementById('crop-modal').classList.remove('show');
+  if (cropperInst) { cropperInst.destroy(); cropperInst = null; }
+}
+
+async function cropAndUpload() {
+  if (!cropperInst) return;
   const msg = document.getElementById('img-msg');
+  const canvas = cropperInst.getCroppedCanvas({ width:1200, height:900, imageSmoothingQuality:'high' });
+  closeCropper();
   msg.style.display=''; msg.style.color='var(--tx3)'; msg.textContent='📤 アップロード中…';
-  document.getElementById('imgarea').style.opacity='0.5';
-  try {
-    const fd = new FormData();
-    fd.append('file', file);
-    fd.append('upload_preset', UPLOAD_PRESET);
-    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {method:'POST', body:fd});
-    const json = await res.json();
-    if (!json.secure_url) throw new Error(json.error?.message||'Upload failed');
-    setPreview(json.secure_url);
-    msg.style.color='var(--teal-dk)'; msg.textContent='✓ アップロード完了！';
-    setTimeout(() => msg.style.display='none', 2000);
-  } catch(err) {
-    msg.style.color='var(--red)'; msg.textContent='❌ '+err.message;
-  }
-  document.getElementById('imgarea').style.opacity='1';
+  canvas.toBlob(async blob => {
+    try {
+      const fd = new FormData();
+      fd.append('file', blob, 'sake.jpg');
+      fd.append('upload_preset', UPLOAD_PRESET);
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {method:'POST', body:fd});
+      const json = await res.json();
+      if (!json.secure_url) throw new Error(json.error?.message||'Upload failed');
+      setPreview(json.secure_url);
+      msg.style.color='var(--teal-dk)'; msg.textContent='✓ アップロード完了！';
+      setTimeout(() => msg.style.display='none', 2000);
+    } catch(err) {
+      msg.style.color='var(--red)'; msg.textContent='❌ '+err.message;
+    }
+  }, 'image/jpeg', 0.92);
 }
 
 // ===== UTIL =====
@@ -1002,7 +1052,21 @@ function setMsg(id, txt, type) {
 }
 
 // ===== START =====
+function handleArowClick(e, i) {
+  if (e.target.closest('button')) return;
+  openForm(i);
+}
 init();
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+<!-- CROP MODAL -->
+<div class="crop-modal" id="crop-modal">
+  <div class="crop-info">ドラッグで切り取り範囲を調整 → 「決定」で保存</div>
+  <div class="crop-wrap"><img id="crop-img" src=""></div>
+  <div class="crop-btns">
+    <button class="btn btn-gold" id="crop-ok-btn">✂️ 決定</button>
+    <button class="btn-sm" id="crop-cancel-btn" style="color:#fff;border-color:rgba(255,255,255,0.3);background:transparent">キャンセル</button>
+  </div>
+</div>
 </body>
 </html>
