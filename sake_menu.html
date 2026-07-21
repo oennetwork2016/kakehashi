@@ -239,8 +239,8 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
       <div class="frow">
         <input class="sinp" id="search" placeholder="🔍 銘柄名・酒蔵・酒米・産地で検索…">
         <select class="ssel" id="sort">
-          <option value="date_asc">仕入れ日：古い順</option>
-          <option value="date_desc">仕入れ日：新しい順</option>
+          <option value="date_asc">開栓日：古い順</option>
+          <option value="date_desc">開栓日：新しい順</option>
           <option value="kuchi_asc">飲み口：甘→辛</option>
           <option value="kuchi_desc">飲み口：辛→甘</option>
           <option value="ntan_asc">濃淡：スッキリ→濃厚</option>
@@ -312,6 +312,9 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
             <button class="btn btn-gold" id="add-btn">＋ 新規追加</button>
           </div>
         </div>
+        <div style="margin-bottom:10px">
+          <input id="admin-search" class="sinp" placeholder="🔍 銘柄名・酒蔵で検索…" style="width:100%;font-size:13px">
+        </div>
         <div class="alist" id="admin-list"></div>
       </div>
 
@@ -327,7 +330,7 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
             <div class="bfg"><label>在庫</label><select id="bulk-stock"><option value="">— 変更しない —</option><option value="true">有</option><option value="false">無</option></select></div>
             <div class="bfg"><label>グラス価格（円）</label><input type="number" id="bulk-price" placeholder="空欄=変更なし"></div>
             <div class="bfg"><label>価格を%で変更</label><input type="number" id="bulk-pct" placeholder="例：10 → 10%値上げ"></div>
-            <div class="bfg"><label>仕入れ日</label><input type="date" id="bulk-date"></div>
+            <div class="bfg"><label>開栓日</label><input type="date" id="bulk-date"></div>
             <div class="bfg"><label>飲み口</label><select id="bulk-kuchi"><option value="">— 変更しない —</option><option>甘口</option><option>やや甘口</option><option>中口</option><option>やや辛口</option><option>辛口</option></select></div>
             <div class="bfg"><label>濃淡</label><select id="bulk-ntan"><option value="">— 変更しない —</option><option>スッキリ</option><option>ややスッキリ</option><option>やや濃厚</option><option>濃厚</option></select></div>
           </div>
@@ -418,7 +421,7 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
               <select id="f-aroma"><option value="">—</option><option>フルーティ</option><option>さわやか</option><option>フルーティ・さわやか</option><option>穏やか</option><option>芳醇</option></select>
             </div>
             <div class="fg"><label>グラス価格（円）</label><input type="number" id="f-price" placeholder="850"></div>
-            <div class="fg"><label>仕入れ日</label><input type="date" id="f-date"></div>
+            <div class="fg"><label>開栓日</label><input type="date" id="f-date"></div>
             <div class="fg"><label>産地</label><input id="f-place" placeholder="例：岡山市"></div>
             <div class="fg full"><label>カテゴリ（複数選択可）</label>
               <div style="display:flex;gap:10px;flex-wrap:wrap;padding:6px 0">
@@ -428,6 +431,7 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--bg);
                 <label style="display:flex;align-items:center;gap:4px;font-size:12px;font-weight:400;cursor:pointer"><input type="checkbox" id="fc-genshu" style="accent-color:var(--gold)"> 原酒</label>
                 <label style="display:flex;align-items:center;gap:4px;font-size:12px;font-weight:400;cursor:pointer"><input type="checkbox" id="fc-nigori" style="accent-color:var(--gold)"> にごり</label>
                 <label style="display:flex;align-items:center;gap:4px;font-size:12px;font-weight:400;cursor:pointer"><input type="checkbox" id="fc-nama" style="accent-color:var(--gold)"> 生酒</label>
+                <label style="display:flex;align-items:center;gap:4px;font-size:12px;font-weight:400;cursor:pointer"><input type="checkbox" id="fc-muroka" style="accent-color:var(--gold)"> 無濾過</label>
               </div>
             </div>
             <div class="fg full"><label>スタッフメモ</label><input id="f-detail" placeholder="おすすめポイント、ペアリングなど"></div>
@@ -452,7 +456,7 @@ const CLOUD_NAME = 'dh1igbzzc';
 const UPLOAD_PRESET = 'sakemenu_kakehashi';
 const KUCHI_ORD = ['甘口','やや甘口','中口','やや辛口','辛口'];
 const NTAN_ORD  = ['スッキリ','ややスッキリ','やや濃厚','濃厚'];
-const CATS = ['純米酒','大吟醸','吟醸','原酒','にごり','生酒'];
+const CATS = ['純米酒','大吟醸','吟醸','原酒','にごり','生酒','無濾過'];
 const KURA_COLORS = ['#E8608A','#7C6FD4','#2BAE82','#E09040','#5BB8D4','#C05090','#4488CC','#88AA44','#CC7733','#7755BB','#44AAAA','#DD5555','#AA6633','#558844'];
 const KUCHI_BAR = {甘口:'#D4537E',やや甘口:'#E07090',中口:'#7C6FD4',やや辛口:'#2BAE82',辛口:'#3A8CCA'};
 const NTAN_BAR  = {スッキリ:'#5BB8D4',ややスッキリ:'#7EC8A0',やや濃厚:'#D4A055',濃厚:'#C07040'};
@@ -533,6 +537,7 @@ function init() {
   on('gas-save-btn','click', saveGasUrl);
   on('gas-test-btn','click', loadFromGas);
   on('search','input', renderMenu);
+  on('admin-search','input', renderAdminList);
   on('sort','change', renderMenu);
   on('chip-stock','click',()=>{ fStock=!fStock; const el=document.getElementById('chip-stock'); if(el) el.classList.toggle('on',fStock); renderMenu(); });
   on('chip-kan','click',()=>{ fKan=!fKan; const el=document.getElementById('chip-kan'); if(el) el.classList.toggle('on',fKan); renderMenu(); });
@@ -760,8 +765,10 @@ function buildCatChips() {
 
 // ===== RENDER MENU =====
 function renderMenu() {
-  const q = document.getElementById('search').value;
-  const sort = document.getElementById('sort').value;
+  const searchEl = document.getElementById('search');
+  const sortEl = document.getElementById('sort');
+  const q = searchEl ? searchEl.value : '';
+  const sort = sortEl ? sortEl.value : 'date_asc';
 
   let list = data.filter(s => {
     if (fStock && !s.stock) return false;
@@ -785,13 +792,16 @@ function renderMenu() {
   else if(sort==='price_desc') list.sort((a,b)=>(b.price||0)-(a.price||0));
 
   const stk = data.filter(d=>d.stock).length;
-  document.getElementById('cnt').textContent = `在庫 ${stk} / 全 ${data.length} 銘柄`;
-  document.getElementById('result-cnt').textContent = `${list.length} 銘柄を表示中`;
+  const cntEl = document.getElementById('cnt');
+  if (cntEl) cntEl.textContent = `在庫 ${stk} / 全 ${data.length} 銘柄`;
+  const rcntEl = document.getElementById('result-cnt');
+  if (rcntEl) rcntEl.textContent = `${list.length} 銘柄を表示中`;
 
   const grid = document.getElementById('sake-grid');
   const empty = document.getElementById('empty');
-  if (!list.length) { grid.innerHTML=''; empty.style.display=''; return; }
-  empty.style.display = 'none';
+  if (!grid) return;
+  if (!list.length) { grid.innerHTML=''; if(empty) empty.style.display=''; return; }
+  if (empty) empty.style.display = 'none';
 
   grid.innerHTML = list.map(s => {
     const kc = kuraColors[s.kura] || '#888';
@@ -827,7 +837,7 @@ function renderMenu() {
         ${sd?`<div class="cdesc">${sd}</div>`:''}
         <div class="cfoot">
           ${s.place?`<div class="cplace">📍${s.place}</div>`:'<div></div>'}
-          ${s.date?`<div class="cdate">仕入 ${s.date}</div>`:''}
+          ${s.date?`<div class="cdate">開栓 ${s.date}</div>`:''}
         </div>
       </div>
     </div>`;
@@ -869,11 +879,16 @@ function switchAdmin(tab) {
 
 // ===== ADMIN LIST =====
 function renderAdminList() {
+  const searchEl = document.getElementById('admin-search');
+  const q = searchEl ? searchEl.value.trim() : '';
+  const filtered = q
+    ? data.map((s,i) => ({s,i})).filter(({s}) => s.name.includes(q) || s.kura.includes(q) || (s.mai||'').includes(q))
+    : data.map((s,i) => ({s,i}));
   const el = document.getElementById('admin-cnt');
-  if (el) el.textContent = `全 ${data.length} 銘柄`;
+  if (el) el.textContent = q ? `${filtered.length} / 全 ${data.length} 銘柄` : `全 ${data.length} 銘柄`;
   const list = document.getElementById('admin-list');
   if (!list) return;
-  list.innerHTML = data.map((s,i) => {
+  list.innerHTML = filtered.map(({s,i}) => {
     const kc = kuraColors[s.kura] || '#ccc';
     const thumb = s.img
       ? `<div class="athumb"><img src="${s.img}" onerror="this.parentNode.textContent='🍶'"></div>`
@@ -884,7 +899,7 @@ function renderAdminList() {
       <div class="aleft">
         <div class="aname">${s.name}</div>
         <div class="asub">${s.kura}${s.mai?' · '+s.mai:''}${s.kuchi?' · '+s.kuchi:''}</div>
-        ${s.date?`<div class="asub">仕入 ${s.date}</div>`:''}
+        ${s.date?`<div class="asub">開栓 ${s.date}</div>`:''}
       </div>
       <div class="aright">
         <div class="aprice">${s.price?'¥'+Number(s.price).toLocaleString():'価格未定'}</div>
@@ -979,7 +994,7 @@ function openForm(idx) {
   document.getElementById('f-stock').checked = s.stock !== false;
   document.getElementById('f-kan').checked   = !!s.kan;
   const cats = s.categories||[];
-  const catMap = {junmai:'純米酒',daiginjo:'大吟醸',ginjo:'吟醸',genshu:'原酒',nigori:'にごり',nama:'生酒'};
+  const catMap = {junmai:'純米酒',daiginjo:'大吟醸',ginjo:'吟醸',genshu:'原酒',nigori:'にごり',nama:'生酒',muroka:'無濾過'};
   Object.entries(catMap).forEach(([id,label]) => { const el=document.getElementById('fc-'+id); if(el) el.checked=cats.includes(label); });
   setPreview(s.img||'');
   // av-formを表示、他を非表示
@@ -995,7 +1010,7 @@ function closeForm() {
 function saveForm() {
   const name = document.getElementById('f-name').value.trim();
   if (!name) { alert('銘柄名を入力してください'); return; }
-  const catMap = {junmai:'純米酒',daiginjo:'大吟醸',ginjo:'吟醸',genshu:'原酒',nigori:'にごり',nama:'生酒'};
+  const catMap = {junmai:'純米酒',daiginjo:'大吟醸',ginjo:'吟醸',genshu:'原酒',nigori:'にごり',nama:'生酒',muroka:'無濾過'};
   const categories = Object.entries(catMap).filter(([id])=>document.getElementById('fc-'+id).checked).map(([,v])=>v);
   const d = {
     name, kura: document.getElementById('f-kura').value.trim(),
